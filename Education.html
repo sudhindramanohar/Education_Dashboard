@@ -3,6 +3,11 @@
 <head>
     <title>Education System</title>
     <link rel="stylesheet" type="text/css" href="styles/Custom.css">
+	<script src="node_modules/es6"></script>
+	<script src="node_modules/file-saver/FileSaver.js"></script>
+	<script src="node_modules/dataframe-js/dist/dataframe.js"></script>
+	<script src="node_modules/Chart.js/dist/Chart.js"></script>
+	<script src="scripts/Education.js"></script>
 </head>
 <body>
     <h1 align="center">Welcome to Education System</h1>
@@ -15,18 +20,14 @@
               <option value="Campus_Arrests.csv">Campus_Arrests</option>
               <option value="School_Progress_Report.csv">School_Progress_Report</option>
         </select>          
-        <input type="button" name="Select" onclick="import_data()" value="Submit" /><br><br>
+        <input type="button" name="Select" onclick="import_data()" value="Submit"></input><br><br>
         </form>
         <div id="showData"></div>
+		<div id="filter"></div>
     </div>
     <div> 
         <canvas id="myChart" height="200" width="200"></canvas>
     </div>
 </body>
-<script src="node_modules/es6"></script>
-<script src="node_modules/file-saver/FileSaver.js"></script>
-<script src="node_modules/dataframe-js/dist/dataframe.js"></script>
-<script src="node_modules/Chart.js/dist/Chart.js"></script>
-<script src="scripts/Education.js"></script>
 </html>
 
