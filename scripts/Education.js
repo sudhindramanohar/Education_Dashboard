@@ -23,7 +23,6 @@ function export_data(dataset)
     dataframeSet = dataset;
     CreateTableFromJSON();
 	CreateFilterElements();
-	CreateRowFilters();
 }
 
 let myChart = new Chart(ctx, {
@@ -190,8 +189,4 @@ function CreateCheckbox(columnName) {
 		divContainer.appendChild(label);
 		divContainer.appendChild(checkbox);
 	}	
-}
-
-function CreateRowFilters() {
-	
 }
