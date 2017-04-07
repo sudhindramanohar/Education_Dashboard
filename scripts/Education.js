@@ -135,7 +135,7 @@ function CreateFilter() {
 		var select_column_div = document.getElementById("select-column");
 		CreateAddFilterHeader(select_column_div);	
 		
-		for(i = 0; i < th.length; i++) {
+		for(var i = 0; i < th.length; i++) {
 			CreateCheckbox(th[i].innerText);
 		}
 			
