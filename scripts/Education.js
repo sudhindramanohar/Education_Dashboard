@@ -160,7 +160,7 @@ function CreateAddFilterButton(select_column_div) {
 	addFilterButton.setAttribute('type','button');
 	addFilterButton.setAttribute('name','addFilterButton');
 	addFilterButton.setAttribute('value','Add Filter');
-	//addFilterButton.attachEvent('OnClick',Hi());
+	addFilterButton.addEventListener('click',function(event){CreateRowFilters()});
 	select_column_div.appendChild(document.createElement("br"));
 	select_column_div.appendChild(document.createElement("br"));
 	select_column_div.appendChild(addFilterButton);
@@ -189,4 +189,9 @@ function CreateCheckbox(columnName) {
 		divContainer.appendChild(label);
 		divContainer.appendChild(checkbox);
 	}	
+}
+
+function CreateRowFilters() {
+	var graphCheckbox = document.getElementById("plot-graph");
+	graphCheckbox.hidden=false;
 }
