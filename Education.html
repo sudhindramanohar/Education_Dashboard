@@ -24,6 +24,18 @@
         </form>
         <div id="showData"></div>
 		<div id="filter"></div>
+		<div id="filter-row">
+			<div id="categorical-filter"></div>
+			<div id="numerical-filter"></div>
+			<div id="numerical-condition"></div><br>
+			<div id="plot-graph" hidden="true">
+				<label>Please Select the Chart Type</label><br>
+				<input type="checkbox" name="pieChart" value="pieChart">Pie Chart
+				<input type="checkbox" name="barChart" value="barChart"> Bar Chart
+				<input type="checkbox" name="lineChart" value="lineChart"> Line Chart
+				<input type="checkbox" name="stackedChart" value="stackedChart"> Stacked Chart<br>
+			</div>
+		</div>
     </div>
     <div> 
         <canvas id="myChart" height="200" width="200"></canvas>
