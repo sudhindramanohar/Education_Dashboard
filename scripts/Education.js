@@ -3,6 +3,7 @@ let ctx = document.getElementById("myChart");
 let c = document.getElementById("newChart");
 var dataframeSet = 0;
 
+
 function import_data()
 {
     var vals = document.getElementById("datasets");
@@ -25,7 +26,7 @@ function export_data(dataset)
 	CreateFilterElements();
 }
 
-let myChart = new Chart(ctx, {
+/* let myChart = new Chart(ctx, {
     type: 'bar',
     data: {
         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -66,7 +67,8 @@ let myChart = new Chart(ctx, {
         }
     }
 });
-
+ */
+ 
 function CreateTableFromJSON() {
 	var col = [];
 	var data = JSON.parse(dataframeSet);
@@ -122,7 +124,7 @@ function CreateFilterElements() {
     divContainer.innerHTML = "";
     divContainer.appendChild(filter);
 	
-	CreateFilter();	
+	CreateFilter();
 }	
 
 /*
@@ -135,8 +137,17 @@ function CreateFilter() {
 		var select_column_div = document.getElementById("select-column");
 		CreateAddFilterHeader(select_column_div);	
 		
+		let view = new ViewableColumnConstant();
+		let schoolProfileInfoCols = view.schoolProfileInfo;
+		var schoolProfileInfoColsArr = schoolProfileInfoCols.split(',');
+		
 		for(i = 0; i < th.length; i++) {
-			CreateCheckbox(th[i].innerText);
+			var innerText = th[i].innerText;
+			for(var j=0;j<schoolProfileInfoColsArr.length;j++){
+				if(innerText.match(schoolProfileInfoColsArr[j]) != null){
+					CreateCheckbox(th[i].innerText);
+				}
+			}		
 		}
 			
 		CreateAddFilterButton(select_column_div);
