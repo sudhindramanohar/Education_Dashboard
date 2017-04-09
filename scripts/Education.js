@@ -89,8 +89,11 @@ function CreateTableFromJSON() {
 	table.style.display='block';
 	
 	// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
-	var tr = table.insertRow(-1);                   // TABLE ROW.
-	tr.appendChild(document.createElement("th"));	//create an empty header
+	var tr = table.insertRow(-1);  	// TABLE ROW.
+	
+	var emptyTh = document.createElement("th");	//create an empty header for checkbox
+	emptyTh.innerHTML = '&nbsp';
+	tr.appendChild(emptyTh);
 	
 	for (var i = 0; i < col.length; i++) {
 		var th = document.createElement("th");      // TABLE HEADER.
@@ -102,11 +105,15 @@ function CreateTableFromJSON() {
 	for (var i = 0; i < data.length; i++) {
 		var objData = "";
 		tr = table.insertRow(-1);
+		
 		// Create a checkbox for each row
 		var cb = document.createElement("INPUT");
 		cb.type = "checkbox";
-		tr.append(cb);
-
+		cb.id = i.toString();
+		var checbBoxCell = tr.insertCell(-1);
+		checbBoxCell.append(cb);
+		tr.appendChild(checbBoxCell);
+		
 		for (var j = 0; j < col.length; j++) {
 			var tabCell = tr.insertCell(-1);
 			tabCell.innerHTML = data[i][col[j]];
