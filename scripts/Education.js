@@ -160,7 +160,7 @@ function CreateFilter() {
 	if(table) {
 		var th = table.getElementsByTagName("th");
 		var select_column_div = document.getElementById("select-column");
-		CreateAddFilterHeader(select_column_div);	
+		CreateHeader(select_column_div,"Please Select The Data Labels(Columns)");	
 		
 		let view = new ViewableColumnConstant();
 		let schoolProfileInfoCols = view.schoolProfileInfo;
@@ -177,15 +177,6 @@ function CreateFilter() {
 		}		
 		CreateAddFilterButton(select_column_div);
 	}
-}
-
-/*
- * Function added to create header for filter
- */ 
-function CreateAddFilterHeader(select_column_div) {
-	var heading = document.createElement('h3');
-	heading.innerHTML="Please Select The Data Labels(Columns)";
-	select_column_div.appendChild(heading);
 }
 
 /*
@@ -227,7 +218,18 @@ function CreateCheckbox(columnName) {
 	}	
 }
 
+/*
+ * Function added to create header
+ */ 
+function CreateHeader(divId,headerLabel) {
+	var heading = document.createElement('label');
+	heading.style.fontWeight = 'bold';
+	heading.innerHTML=headerLabel;
+	divId.appendChild(heading);
+	divId.appendChild(document.createElement('br'));
+}
+
 function CreateRowFilters() {
-	var graphCheckbox = document.getElementById("plot-graph");
-	graphCheckbox.hidden=false;
+	
+	document.getElementById("plot-graph").hidden=false;
 }
