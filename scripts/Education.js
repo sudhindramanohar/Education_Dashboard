@@ -171,7 +171,7 @@ function CreateFilter() {
 			var innerText = th[i].innerText;
 			for(var j=0;j<schoolProfileInfoColsArr.length;j++){
 				if(innerText.indexOf(schoolProfileInfoColsArr[j]) == 0){
-					CreateCheckbox(th[i].innerText);
+					CreateCheckbox(th[i].innerText,"select-column");
 				}
 			}	
 		}		
@@ -189,14 +189,13 @@ function CreateAddFilterButton(select_column_div) {
 	addFilterButton.setAttribute('value','Add Filter');
 	addFilterButton.addEventListener('click',function(event){CreateRowFilters()});
 	select_column_div.appendChild(document.createElement("br"));
-	select_column_div.appendChild(document.createElement("br"));
 	select_column_div.appendChild(addFilterButton);
 }
 
 /*
  * Function added to create checkbox for Column selection
  */
-function CreateCheckbox(columnName) {
+function CreateCheckbox(columnName,parentDivId) {
 	var checkbox = document.createElement('input');
 	checkbox.type = "checkbox";
 	checkbox.name = columnName;
@@ -211,7 +210,7 @@ function CreateCheckbox(columnName) {
 	label.style.textAlign = "left";
 	label.style.paddingLeft = "10px";
 	
-	var divContainer = document.getElementById("select-column");
+	var divContainer = document.getElementById(parentDivId);
 	if(divContainer){
 		divContainer.appendChild(label);
 		divContainer.appendChild(checkbox);
@@ -233,13 +232,33 @@ function CreateRowFilters() {
 	//show filter div
 	document.getElementById("filter-row").hidden=false;
 	
+	var categorisedColumnsSet = new Set();
+	for(var i = 0; i < schoolProfileInfoObjArr.length; i++){
+		var currentObject = schoolProfileInfoObjArr[i];
+	
+		for (var key in currentObject) {
+		  if (currentObject.hasOwnProperty(key)) {
+			if(isNaN(currentObject[key])){
+				categorisedColumnsSet.add(currentObject[key]);
+			}
+		  }
+		}
+	}
+	
+	//for each categorical value in set build checkbox
+	for (const value of categorisedColumnsSet) {
+		//CreateCheckbox(value,"categorical-filter");
+	}
+	
 	//build categorical filter div
 	var categoricalFilterDiv = document.getElementById('categorical-filter');
+		
 	
 	//build numerical condition div
 	var numericalConditionDiv = document.getElementById('numerical-condition');
 	
 	//build numerical value div
 	var numericalValueDiv = document.getElementById('numerical-value');
+	document.getElementById('numericalFilter').classList.remove("input");
 	
 }
