@@ -230,6 +230,16 @@ function CreateHeader(divId,headerLabel) {
 }
 
 function CreateRowFilters() {
+	//show filter div
+	document.getElementById("filter-row").hidden=false;
 	
-	document.getElementById("plot-graph").hidden=false;
+	//build categorical filter div
+	var categoricalFilterDiv = document.getElementById('categorical-filter');
+	
+	//build numerical condition div
+	var numericalConditionDiv = document.getElementById('numerical-condition');
+	
+	//build numerical value div
+	var numericalValueDiv = document.getElementById('numerical-value');
+	
 }
