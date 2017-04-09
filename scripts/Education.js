@@ -148,8 +148,8 @@ function CreateFilter() {
 					CreateCheckbox(th[i].innerText);
 				}
 			}	
-			CreateAddFilterButton(select_column_div);
 		}		
+		CreateAddFilterButton(select_column_div);
 	}
 }
 
