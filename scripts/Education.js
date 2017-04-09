@@ -2,10 +2,11 @@ let DataFrame = dfjs.DataFrame;
 let ctx = document.getElementById("myChart");
 let c = document.getElementById("newChart");
 var dataframeSet = 0;
-
+var schoolProfileInfoObjArr;
 
 function import_data()
 {
+	schoolProfileInfoObjArr = new Array();
     var vals = document.getElementById("datasets");
     var val = vals.options[vals.selectedIndex].value;
     DataFrame.fromCSV(val).then(df => 
@@ -89,7 +90,8 @@ function CreateTableFromJSON() {
 	
 	// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 	var tr = table.insertRow(-1);                   // TABLE ROW.
-
+	tr.appendChild(document.createElement("th"));	//create an empty header
+	
 	for (var i = 0; i < col.length; i++) {
 		var th = document.createElement("th");      // TABLE HEADER.
 		th.innerHTML = col[i];
@@ -98,19 +100,35 @@ function CreateTableFromJSON() {
 
 	// ADD JSON DATA TO THE TABLE AS ROWS.
 	for (var i = 0; i < data.length; i++) {
-
+		var objData = "";
 		tr = table.insertRow(-1);
+		// Create a checkbox for each row
+		var cb = document.createElement("INPUT");
+		cb.type = "checkbox";
+		tr.append(cb);
 
 		for (var j = 0; j < col.length; j++) {
 			var tabCell = tr.insertCell(-1);
 			tabCell.innerHTML = data[i][col[j]];
+			objData += "," + data[i][col[j]];
 		}
+		
+		var objDataArr = objData.substring(1).split(",");
+		createSchoolProfileInfoRecord(objDataArr);
 	}
 
 	// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
 	var divContainer = document.getElementById("showData");
 	divContainer.innerHTML = "";
 	divContainer.appendChild(table);
+}
+
+/*
+ * Function to create School Profile Info Record for every record in the dataset.
+ */
+function createSchoolProfileInfoRecord(objDataArr) {
+	let schoolProfileInfoObj = new SchoolProfileInfo(objDataArr[0],objDataArr[1],objDataArr[2],objDataArr[3],objDataArr[4],objDataArr[5]);
+	schoolProfileInfoObjArr.push(schoolProfileInfoObj);
 }
 
 /*
@@ -139,17 +157,18 @@ function CreateFilter() {
 		
 		let view = new ViewableColumnConstant();
 		let schoolProfileInfoCols = view.schoolProfileInfo;
-		var schoolProfileInfoColsArr = schoolProfileInfoCols.split(',');
+		var concatVal = schoolProfileInfoCols.Categorical + "," + schoolProfileInfoCols.Numerical;
+		var schoolProfileInfoColsArr = concatVal.split(",");
 		
 		for(i = 0; i < th.length; i++) {
 			var innerText = th[i].innerText;
 			for(var j=0;j<schoolProfileInfoColsArr.length;j++){
-				if(innerText.match(schoolProfileInfoColsArr[j]) != null){
+				if(innerText.indexOf(schoolProfileInfoColsArr[j]) == 0){
 					CreateCheckbox(th[i].innerText);
 				}
-			}	
-			CreateAddFilterButton(select_column_div);
-		}		
+			}			
+		}	
+		CreateAddFilterButton(select_column_div);		
 	}
 }
 
