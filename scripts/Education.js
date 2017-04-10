@@ -23,8 +23,8 @@ function export_data(dataset)
         //saveAs(blob,"sat.json");
     
     dataframeSet = dataset;
-    CreateTableFromJSON();
-	CreateFilterElements();
+    createTableFromJSON();
+	createFilterElements();
 }
 
 /* let myChart = new Chart(ctx, {
@@ -70,7 +70,7 @@ function export_data(dataset)
 });
  */
  
-function CreateTableFromJSON() {
+function createTableFromJSON() {
 	var col = [];
 	var data = JSON.parse(dataframeSet);
 	for (var i = 0; i < data.length; i++) {
@@ -141,7 +141,7 @@ function createSchoolProfileInfoRecord(objDataArr) {
 /*
  * Function added to create filter elements
  */	
-function CreateFilterElements() {
+function createFilterElements() {
 	var filter = document.createElement('div');
 	filter.id = 'select-column';
 
@@ -149,18 +149,18 @@ function CreateFilterElements() {
     divContainer.innerHTML = "";
     divContainer.appendChild(filter);
 	
-	CreateFilter();
+	createFilter();
 }	
 
 /*
  * Function added to create filter functionality
  */
-function CreateFilter() {
-	var table = GetDatasetTableDiv();
+function createFilter() {
+	var table = getDatasetTableDiv();
 	if(table) {
 		var th = table.getElementsByTagName("th");
 		var select_column_div = document.getElementById("select-column");
-		CreateHeader(select_column_div,"Please Select The Data Labels(Columns)");	
+		createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
 		
 		let view = new ViewableColumnConstant();
 		let schoolProfileInfoCols = view.schoolProfileInfo;
@@ -171,23 +171,23 @@ function CreateFilter() {
 			var innerText = th[i].innerText;
 			for(var j=0;j<schoolProfileInfoColsArr.length;j++){
 				if(innerText.indexOf(schoolProfileInfoColsArr[j]) == 0){
-					CreateCheckbox(th[i].innerText,"select-column");
+					createCheckbox(th[i].innerText,"select-column");
 				}
 			}	
 		}		
-		CreateAddFilterButton(select_column_div);
+		createAddFilterButton(select_column_div);
 	}
 }
 
 /*
  * Function added to create "Add Filter" for filter
  */
-function CreateAddFilterButton(select_column_div) {
+function createAddFilterButton(select_column_div) {
 	var addFilterButton= document.createElement('input');
 	addFilterButton.setAttribute('type','button');
 	addFilterButton.setAttribute('name','addFilterButton');
 	addFilterButton.setAttribute('value','Add Filter');
-	addFilterButton.addEventListener('click',function(event){CreateRowFilters()});
+	addFilterButton.addEventListener('click',function(event){createRowFilters()});
 	select_column_div.appendChild(document.createElement("br"));
 	select_column_div.appendChild(addFilterButton);
 }
@@ -195,12 +195,11 @@ function CreateAddFilterButton(select_column_div) {
 /*
  * Function added to create checkbox for Column selection
  */
-function CreateCheckbox(columnName,parentDivId) {
+function createCheckbox(columnName,parentDivId) {
 	var checkbox = document.createElement('input');
 	checkbox.type = "checkbox";
 	checkbox.name = columnName;
-	checkbox.value = "0";
-	checkbox.checked = 
+	checkbox.value = "0"; 
 	checkbox.id = columnName;
 		
 	var label = document.createElement('label')
@@ -221,7 +220,7 @@ function CreateCheckbox(columnName,parentDivId) {
 /*
  * Function added to create header
  */ 
-function CreateHeader(divId,headerLabel) {
+function createHeader(divId,headerLabel) {
 	var heading = document.createElement('label');
 	heading.style.fontWeight = 'bold';
 	heading.innerHTML=headerLabel;
@@ -232,25 +231,16 @@ function CreateHeader(divId,headerLabel) {
 /*
  * FUnction added to Create Row Filters
  */
-function CreateRowFilters() {
+function createRowFilters() {
 	//show filter div
 	document.getElementById("filter-row").hidden=false;
 	
-	var selectedRecords = GetSelectedRecords();
-	var categorisedColumnsSet = new Set();
-	for(var i = 0; i < schoolProfileInfoObjArr.length; i++){
-		var currentObject = schoolProfileInfoObjArr[i];
-	
-		for (var key in currentObject) {
-			if (currentObject.hasOwnProperty(key) && isNaN(currentObject[key])) {
-				categorisedColumnsSet.add(currentObject[key]);
-			}
-		}
-	}
+	var selectedRecords = getSelectedRecords();
+	var categorisedColumnsSet = getAllCategorisedValue();
 	
 	//for each categorical value in set build checkbox
 	for (const value of categorisedColumnsSet) {
-		//CreateCheckbox(value,"categorical-filter");
+		createCheckbox(value,"categorical-filter");
 	}
 	
 	//build categorical filter div
@@ -269,21 +259,54 @@ function CreateRowFilters() {
 /*
  * FUnction added to get selected records
  */ 
-function GetSelectedRecords(){
-	var selectedRecordsArray = new Array();
-	var table = GetDatasetTableDiv();
+function getSelectedRecords(){
+	var selectedRecordsSet = new Set();
+	var table = getDatasetTableDiv();
 	for(var i =1 ; i < table.rows.length; i++){
 		var currentCell = table.rows[i].cells[0].firstElementChild;
 		if(currentCell.checked){
-			selectedRecordsArray.push(schoolProfileInfoObjArr[i]);
+			selectedRecordsSet.add(schoolProfileInfoObjArr[i-1]); // since i start from 1, decrement array indexi.e., i by 1
 		}
 	}
-	return selectedRecordsArray;
+	return selectedRecordsSet;
 }
 
 /*
  * FUnction added to get Dataset Table Div
  */ 
-function GetDatasetTableDiv() {
+function getDatasetTableDiv() {
 	return document.getElementById("dataset_table");
+}
+
+/*
+ * Function to get All Categorised Value based on selection of columns
+ */
+function getAllCategorisedValue() {
+	var categorisedColumnsSet = new Set();
+	
+	for(var i = 0; i < schoolProfileInfoObjArr.length; i++){
+		var currentObject = schoolProfileInfoObjArr[i];
+		
+		for (var key in currentObject) {
+			if (isColumnSelected(key) && currentObject.hasOwnProperty(key) && isNaN(currentObject[key])) {
+				categorisedColumnsSet.add(currentObject[key]);
+			}
+		}
+	}
+	return categorisedColumnsSet;
+}
+
+/*
+ * Function to check if Column is Selected
+ */
+function isColumnSelected(columnName) {
+	var isColumnSelected = false;
+	var select_column_div = document.getElementById('select-column');
+	for(var i = 0 ; i < select_column_div.children.length; i++ ){
+		var childDiv = select_column_div.children[i];
+		if(childDiv.nodeName == 'checkbox' && childDiv.id == columnName) {
+			isColumnSelected = true;
+		}
+	}
+	return isColumnSelected;
 }
