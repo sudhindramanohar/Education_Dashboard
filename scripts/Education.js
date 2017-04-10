@@ -305,7 +305,8 @@ function isColumnSelected(columnName) {
 	for(var i = 0 ; i < select_column_div.children.length; i++ ){
 		var childDiv = select_column_div.children[i];
 		if(childDiv.nodeName == 'checkbox' && childDiv.id == columnName) {
-			isColumnSelected = true;
+			isColumnSelected = true
+			break;
 		}
 	}
 	return isColumnSelected;
