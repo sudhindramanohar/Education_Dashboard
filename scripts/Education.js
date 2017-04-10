@@ -156,7 +156,7 @@ function CreateFilterElements() {
  * Function added to create filter functionality
  */
 function CreateFilter() {
-	var table = document.getElementById("dataset_table");
+	var table = GetDatasetTableDiv();
 	if(table) {
 		var th = table.getElementsByTagName("th");
 		var select_column_div = document.getElementById("select-column");
@@ -199,9 +199,10 @@ function CreateCheckbox(columnName,parentDivId) {
 	var checkbox = document.createElement('input');
 	checkbox.type = "checkbox";
 	checkbox.name = columnName;
-	checkbox.value = columnName;
+	checkbox.value = "0";
+	checkbox.checked = 
 	checkbox.id = columnName;
-	
+		
 	var label = document.createElement('label')
 	label.htmlFor = "id";
 	label.appendChild(document.createTextNode(columnName));
@@ -228,20 +229,22 @@ function CreateHeader(divId,headerLabel) {
 	divId.appendChild(document.createElement('br'));
 }
 
+/*
+ * FUnction added to Create Row Filters
+ */
 function CreateRowFilters() {
 	//show filter div
 	document.getElementById("filter-row").hidden=false;
 	
+	var selectedRecords = GetSelectedRecords();
 	var categorisedColumnsSet = new Set();
 	for(var i = 0; i < schoolProfileInfoObjArr.length; i++){
 		var currentObject = schoolProfileInfoObjArr[i];
 	
 		for (var key in currentObject) {
-		  if (currentObject.hasOwnProperty(key)) {
-			if(isNaN(currentObject[key])){
+			if (currentObject.hasOwnProperty(key) && isNaN(currentObject[key])) {
 				categorisedColumnsSet.add(currentObject[key]);
 			}
-		  }
 		}
 	}
 	
@@ -261,4 +264,26 @@ function CreateRowFilters() {
 	var numericalValueDiv = document.getElementById('numerical-value');
 	document.getElementById('numericalFilter').classList.remove("input");
 	
+}
+
+/*
+ * FUnction added to get selected records
+ */ 
+function GetSelectedRecords(){
+	var selectedRecordsArray = new Array();
+	var table = GetDatasetTableDiv();
+	for(var i =1 ; i < table.rows.length; i++){
+		var currentCell = table.rows[i].cells[0].firstElementChild;
+		if(currentCell.checked){
+			selectedRecordsArray.push(schoolProfileInfoObjArr[i]);
+		}
+	}
+	return selectedRecordsArray;
+}
+
+/*
+ * FUnction added to get Dataset Table Div
+ */ 
+function GetDatasetTableDiv() {
+	return document.getElementById("dataset_table");
 }
