@@ -97,13 +97,14 @@ function CreateTableFromJSON() {
 	
 	for (var i = 0; i < col.length; i++) {
 		var th = document.createElement("th");      // TABLE HEADER.
-		th.innerHTML = col[i];
+		th.innerHTML = col[i].replace(/_/g," ");
 		tr.appendChild(th);
 	}
 
 	// ADD JSON DATA TO THE TABLE AS ROWS.
 	for (var i = 0; i < data.length; i++) {
-		var objData = "";
+		var objectMap = new Map();
+		//var objData = "";
 		tr = table.insertRow(-1);
 		
 		// Create a checkbox for each row
@@ -117,11 +118,12 @@ function CreateTableFromJSON() {
 		for (var j = 0; j < col.length; j++) {
 			var tabCell = tr.insertCell(-1);
 			tabCell.innerHTML = data[i][col[j]];
-			objData += "," + data[i][col[j]];
+			objectMap.set(col[j].replace(/_/g,""),data[i][col[j]])
+			//objData += "," + data[i][col[j]];
 		}
 		
-		var objDataArr = objData.substring(1).split(",");
-		createSchoolProfileInfoRecord(objDataArr);
+		//var objDataArr = objData.substring(1).split(",");
+		createSchoolProfileInfoRecord(objectMap);
 	}
 
 	// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
@@ -133,8 +135,9 @@ function CreateTableFromJSON() {
 /*
  * Function to create School Profile Info Record for every record in the dataset.
  */
-function createSchoolProfileInfoRecord(objDataArr) {
-	let schoolProfileInfoObj = new SchoolProfileInfo(objDataArr[0],objDataArr[1],objDataArr[2],objDataArr[3],objDataArr[4],objDataArr[5]);
+function createSchoolProfileInfoRecord(objectMap) {
+	//schoolId,schoolName,city,state,zip,studentCountTotal,dressCode,collegeEnrollmentRateSchool,graduationRateSchool,transportationEl
+	let schoolProfileInfoObj = new SchoolProfileInfo(objectMap.get("SchoolID"),objectMap.get("SCHOOL NAME"),objectMap.get("City"),objectMap.get("State"),objectMap.get("Zip"),objectMap.get("StudentCountTotal"),objectMap.get("DressCode"),objectMap.get("CollegeEnrollmentRateSchool"),objectMap.get("GraduationRateSchool"),objectMap.get("TransportationEl"));
 	schoolProfileInfoObjArr.push(schoolProfileInfoObj);
 }
 
@@ -168,7 +171,7 @@ function CreateFilter() {
 		var schoolProfileInfoColsArr = concatVal.split(",");
 		
 		for(i = 0; i < th.length; i++) {
-			var innerText = th[i].innerText;
+			var innerText = th[i].innerText.replace(/ /g,"");
 			for(var j=0;j<schoolProfileInfoColsArr.length;j++){
 				if(innerText.indexOf(schoolProfileInfoColsArr[j]) == 0){
 					CreateCheckbox(th[i].innerText,"select-column");
