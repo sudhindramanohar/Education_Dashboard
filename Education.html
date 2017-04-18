@@ -28,17 +28,20 @@
 			<br>
 			<div id="categorical-filter">
 				<label style="display:block;font-weight:bold">Please Select Filters To Exclude(Categorical)</label>
+				<input type="radio" name="categoricalFilter" value="schoolName"> School Name</input>
+				<input type="radio" name="categoricalFilter" value="city">City</input>
+				<input type="radio" name="categoricalFilter" value="state">State</input><br>
 			</div>
 			<br>
 			<div id="numerical-condition">
 				<label style="display:block;font-weight:bold">Please Select The Filter Condition</label>
-				<input type="radio" name="greaterThanEqualTo" value="greaterThanEqualTo"> Greater Than Equal To</input>
-				<input type="radio" name="lessThanEqualTo" value="lessThanEqualTo">Less Than Equal To</input>
-				<input type="radio" name="equalTo" value="equalTo">Equal To</input><br>
+				<input type="radio" name="numericalFilter" value="greaterThanEqualTo"> Greater Than Equal To</input>
+				<input type="radio" name="numericalFilter" value="lessThanEqualTo">Less Than Equal To</input>
+				<input type="radio" name="numericalFilter" value="equalTo">Equal To</input><br>
 			</div>
 			<br>
 			<div id="numerical-value">
-				<label style="display:block;font-weight:bold">Please Enter Values Of Filter</label>
+				<label style="display:block;font-weight:bold">Please Enter Value To Filter</label>
 				<input id= 'numericalFilter' style="background-color: white; border: groove;color: black;padding: 1px 0px; text-align: center; text-decoration: none;"  type="number" name="numericalFilter" value="numericalFilter"></input>
 			</div>
 			<br>
