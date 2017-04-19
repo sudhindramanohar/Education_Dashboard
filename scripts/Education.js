@@ -2,14 +2,16 @@ let DataFrame = dfjs.DataFrame;
 let ctx = document.getElementById("myChart");
 let c = document.getElementById("newChart");
 var dataframeSet = 0;
-var schoolProfileInfoObjArr;
+var objArr;
+
+var currentDataSet = "";
 
 function import_data()
 {
 	schoolProfileInfoObjArr = new Array();
     var vals = document.getElementById("datasets");
-    var val = vals.options[vals.selectedIndex].value;
-    DataFrame.fromCSV(val).then(df => 
+    currentDataSet = vals.options[vals.selectedIndex].value;
+    DataFrame.fromCSV(currentDataSet).then(df => 
     {
         data = df.toJSON('SAT.json');        
         export_data(data);
@@ -23,19 +25,7 @@ function export_data(dataset)
         //saveAs(blob,"sat.json");
     
     dataframeSet = dataset;
-	
     createTableFromJSON();
-	//createFilterElements();
-	
-	//testing chart for dummy values
-	var labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
-	var data = [12, 19, 3, 5, 2, 3];
-	let pieChart = new PieChart();
-	pieChart.plot(labels,data);
-	let barChart = new BarChart();
-	barChart.plot(labels,data);
-	let lineChart = new LineChart();
-	lineChart.plot(labels,data);
 }
  
 function createColumnHeaderForTable(col){
@@ -48,7 +38,7 @@ function createColumnHeaderForTable(col){
   {
     var column = {
       "index": col[i],
-        "title": col[i]
+      "title": col[i]
     }
     columnSet.columns.push(column);
   }
@@ -71,7 +61,6 @@ function createTableFromJSON() {
 			}
 		}
 	}
-
 
 	var Columns = createColumnHeaderForTable(colData);
 
@@ -96,19 +85,40 @@ function createTableFromJSON() {
 	    events: [{
 	    	init: function(){
 	      	createFilterElements();
+			createObjects(colData);
 	    	}
  	 	}]
 	});
-
 }
 
 /*
- * Function to create School Profile Info Record for every record in the dataset.
+ *	Function to create objects for the number of records in the dataset.
  */
-function createSchoolProfileInfoRecord(objectMap) {
-	//schoolId,schoolName,city,state,zip,studentCountTotal,dressCode,collegeEnrollmentRateSchool,graduationRateSchool,transportationEl
-	let schoolProfileInfoObj = new SchoolProfileInfo(objectMap.get("SchoolID"),objectMap.get("SCHOOL NAME"),objectMap.get("City"),objectMap.get("State"),objectMap.get("Zip"),objectMap.get("StudentCountTotal"),objectMap.get("DressCode"),objectMap.get("CollegeEnrollmentRateSchool"),objectMap.get("GraduationRateSchool"),objectMap.get("TransportationEl"));
-	schoolProfileInfoObjArr.push(schoolProfileInfoObj);
+function createObjects(colHeaderValues){
+	if(currentDataSet == "School_Profile_Info.csv"){
+		createSchoolProfileObjects(colHeaderValues);
+	} else if(currentDataSet == "SAT_Score.csv"){
+		
+	} else if(currentDataSet == "Demographics.csv"){
+		
+	} else if(currentDataSet == "Campus_Arrests.csv"){
+		
+	} else if(currentDataSet == "School_Progress_Report.csv"){
+		
+	}
+}
+
+/*
+ *	Function to create objects for the number of records in the dataset.
+ */
+function createSchoolProfileObjects(colHeaderValues){
+	var json = getParsedJson();
+	for(var i = 0 ; i < json.length; i++){
+		var record = json[i];
+		let schoolProfileInfoObj = new SchoolProfileInfo(record[colHeaderValues[0]],record[colHeaderValues[1]],record[colHeaderValues[2]],record[colHeaderValues[3]],record[colHeaderValues[4]],record[colHeaderValues[5]],record[colHeaderValues[6]],record[colHeaderValues[7]],record[colHeaderValues[8]],record[colHeaderValues[9]],record[colHeaderValues[10]],record[colHeaderValues[11]],record[colHeaderValues[12]]);
+		
+		objArr.push(schoolProfileInfoObj);
+	}
 }
 
 /*
@@ -130,15 +140,7 @@ function createFilterElements() {
  */
 function createFilter() {
 	var select_column_div = document.getElementById("select-column");	
-	createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
-	
-	var json = getParsedJson();	
-	for(var i = 0 ; i < json.length; i++){
-		for (var key in json[i]) {
-			createCheckbox(key,"select-column");
-		}
-		break;
-	}	
+	createHeader(select_column_div,"Please Select The Data Labels(Columns)");		
 	createAddFilterButton(select_column_div);
 }
 
@@ -153,31 +155,6 @@ function createAddFilterButton(select_column_div) {
 	addFilterButton.addEventListener('click',function(event){createRowFilters()});
 	select_column_div.appendChild(document.createElement("br"));
 	select_column_div.appendChild(addFilterButton);
-}
-
-/*
- * Function added to create checkbox for Column selection
- */
-function createCheckbox(columnName,parentDivId) {
-	var checkbox = document.createElement('input');
-	checkbox.type = "checkbox";
-	checkbox.name = columnName;
-	checkbox.value = "0"; 
-	checkbox.id = columnName;
-		
-	var label = document.createElement('label')
-	label.htmlFor = "id";
-	label.appendChild(document.createTextNode(columnName));
-	label.style.width = "180px";
-	label.style.clear = "right";
-	label.style.textAlign = "left";
-	label.style.paddingLeft = "10px";
-	
-	var divContainer = document.getElementById(parentDivId);
-	if(divContainer){
-		divContainer.appendChild(label);
-		divContainer.appendChild(checkbox);
-	}	
 }
 
 /*
