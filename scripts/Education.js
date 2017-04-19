@@ -165,18 +165,9 @@ function createFilter() {
 		var select_column_div = document.getElementById("select-column");
 		createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
 		
-		let view = new ViewableColumnConstant();
-		let schoolProfileInfoCols = view.schoolProfileInfo;
-		var concatVal = schoolProfileInfoCols.Categorical + "," + schoolProfileInfoCols.Numerical;
-		var schoolProfileInfoColsArr = concatVal.split(",");
-		
-		for(i = 0; i < th.length; i++) {
+		for(i = 1; i < th.length; i++) {
 			var innerText = th[i].innerText.replace(/ /g,"");
-			for(var j=0;j<schoolProfileInfoColsArr.length;j++){
-				if(innerText.indexOf(schoolProfileInfoColsArr[j]) == 0){
-					createCheckbox(th[i].innerText,"select-column");
-				}
-			}	
+			createCheckbox(th[i].innerText,"select-column");
 		}		
 		createAddFilterButton(select_column_div);
 	}
@@ -235,43 +226,51 @@ function createHeader(divId,headerLabel) {
  * FUnction added to Create Row Filters
  */
 function createRowFilters() {
+	
+	//clear previous checkbox div
+	var divContainer = document.getElementById('categorical-filter-checkbox');
+	divContainer.innerHTML = "";
 	//show filter div
 	document.getElementById("filter-row").hidden=false;
+	var categorisedColumnsSet = getAllCategorisedColumnSet();
 	
-	var selectedRecords = getSelectedRecords();
-	var categorisedColumnsSet = getAllCategorisedValue();
-	
-	//for each categorical value in set build checkbox
-	for (const value of categorisedColumnsSet) {
-		createCheckbox(value,"categorical-filter");
+	//for each categorical value in set build multiselect dropdown
+	for (const value of categorisedColumnsSet) {		
+		if(isColumnSelected(value)){
+			var select = document.createElement("select");
+			select.id = value;
+			select.name=value;
+			select.multiple = true;
+			select.text = value;
+			//createCheckbox(value,"categorical-filter-checkbox");
+			var categoryValueSet = getAllValuesForCategory(value);
+			for (const value of categoryValueSet) {
+				var option = document.createElement("option");
+				option.value = value;
+				option.selected ="";
+				option.innerHTML = value;
+				select.add(option);
+			}	
+		}
+		divContainer.append(select);		
 	}
-	
-	//build categorical filter div
-	var categoricalFilterDiv = document.getElementById('categorical-filter');
-		
-	
-	//build numerical condition div
-	var numericalConditionDiv = document.getElementById('numerical-condition');
-	
-	//build numerical value div
-	var numericalValueDiv = document.getElementById('numerical-value');
-	document.getElementById('numericalFilter').classList.remove("input");
 	
 }
 
-/*
- * FUnction added to get selected records
- */ 
-function getSelectedRecords(){
-	var selectedRecordsSet = new Set();
-	var table = getDatasetTableDiv();
-	for(var i =1 ; i < table.rows.length; i++){
-		var currentCell = table.rows[i].cells[0].firstElementChild;
-		if(currentCell.checked){
-			selectedRecordsSet.add(schoolProfileInfoObjArr[i-1]); // since i start from 1, decrement array indexi.e., i by 1
+function getAllValuesForCategory(categoryName) {
+	let categoryValueSet = new Set();
+	var tableDiv = getDatasetTableDiv();
+	//let columnNameFilterTypeMap = new Map();
+	for(var i =1 ; i < tableDiv.rows.length; i++){
+		for(var j=1; j < tableDiv.rows[i].cells.length; j++){
+			var columnName = tableDiv.rows[0].cells[j].innerText
+			var columnValue = tableDiv.rows[i].cells[j].innerText;
+			if(categoryName == columnName) {
+				categoryValueSet.add(columnValue);
+			}
 		}
-	}
-	return selectedRecordsSet;
+	}	
+	return categoryValueSet;
 }
 
 /*
@@ -284,18 +283,21 @@ function getDatasetTableDiv() {
 /*
  * Function to get All Categorised Value based on selection of columns
  */
-function getAllCategorisedValue() {
-	var categorisedColumnsSet = new Set();
-	
-	for(var i = 0; i < schoolProfileInfoObjArr.length; i++){
-		var currentObject = schoolProfileInfoObjArr[i];
-		
-		for (var key in currentObject) {
-			if (isColumnSelected(key) && currentObject.hasOwnProperty(key) && isNaN(currentObject[key])) {
-				categorisedColumnsSet.add(currentObject[key]);
+function getAllCategorisedColumnSet() {
+	let categorisedColumnsSet = new Set();
+	var tableDiv = getDatasetTableDiv();
+	//let columnNameFilterTypeMap = new Map();
+	for(var i =1 ; i < tableDiv.rows.length; i++){
+		for(var j=1; j < tableDiv.rows[i].cells.length; j++){
+			var columnName = tableDiv.rows[0].cells[j].innerText
+			var columnValue = tableDiv.rows[i].cells[j].innerText;
+			if((columnName != null || columnName != '') && isNaN(columnValue)){
+				categorisedColumnsSet.add(columnName);
+			} else if(categorisedColumnsSet.length == tableDiv.rows[i].cells.length){
+				return categorisedColumnsSet;
 			}
-		}
-	}
+		}	
+	}		
 	return categorisedColumnsSet;
 }
 
@@ -307,7 +309,7 @@ function isColumnSelected(columnName) {
 	var select_column_div = document.getElementById('select-column');
 	for(var i = 0 ; i < select_column_div.children.length; i++ ){
 		var childDiv = select_column_div.children[i];
-		if(childDiv.nodeName == 'checkbox' && childDiv.id == columnName) {
+		if(childDiv.type == 'checkbox' && childDiv.id == columnName && childDiv.checked) {
 			isColumnSelected = true
 			break;
 		}
