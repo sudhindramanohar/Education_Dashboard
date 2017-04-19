@@ -24,7 +24,7 @@ function export_data(dataset)
     
     dataframeSet = dataset;
     createTableFromJSON();
-	//createFilterElements();
+	createFilterElements();
 }
 
 /* let myChart = new Chart(ctx, {
@@ -155,18 +155,17 @@ function createFilterElements() {
  * Function added to create filter functionality
  */
 function createFilter() {
-	var table = getDatasetTableDiv();
-	if(table) {
-		var th = table.getElementsByTagName("th");
-		var select_column_div = document.getElementById("select-column");
-		createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
-		
-		for(i = 1; i < th.length; i++) {
-			var innerText = th[i].innerText.replace(/ /g,"");
-			createCheckbox(th[i].innerText,"select-column");
-		}		
-		createAddFilterButton(select_column_div);
-	}
+	var select_column_div = document.getElementById("select-column");	
+	createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
+	
+	var json = getParsedJson();	
+	for(var i = 0 ; i < json.length; i++){
+		for (var key in json[i]) {
+			createCheckbox(key,"select-column");
+		}
+		break;
+	}	
+	createAddFilterButton(select_column_div);
 }
 
 /*
@@ -235,9 +234,15 @@ function createRowFilters() {
 		if(isColumnSelected(value)){
 			var select = document.createElement("select");
 			select.id = value;
-			select.name=value;
-			select.multiple = true;
-			select.text = value;
+			select.multiple = true; 
+			
+			var selectLabel = document.createElement('label')
+			selectLabel.htmlFor = "id";
+			selectLabel.appendChild(document.createTextNode(value));
+			selectLabel.style.width = "180px";
+			selectLabel.style.clear = "right";
+			selectLabel.style.textAlign = "left";
+			selectLabel.style.paddingLeft = "10px";
 			//createCheckbox(value,"categorical-filter-checkbox");
 			var categoryValueSet = getAllValuesForCategory(value);
 			for (const value of categoryValueSet) {
@@ -246,21 +251,24 @@ function createRowFilters() {
 				option.selected ="";
 				option.innerHTML = value;
 				select.add(option);
-			}	
+			}
+			selectLabel.appendChild(select);
+			divContainer.append(selectLabel);				
 		}
-		divContainer.append(select);		
 	}
 	
 }
 
+/*
+ * Function to get All values for particular category
+ */
 function getAllValuesForCategory(categoryName) {
 	let categoryValueSet = new Set();
-	var tableDiv = getDatasetTableDiv();
-	//let columnNameFilterTypeMap = new Map();
-	for(var i =1 ; i < tableDiv.rows.length; i++){
-		for(var j=1; j < tableDiv.rows[i].cells.length; j++){
-			var columnName = tableDiv.rows[0].cells[j].innerText
-			var columnValue = tableDiv.rows[i].cells[j].innerText;
+	var json = getParsedJson();	
+	for(var i = 0 ; i < json.length; i++){
+		for (var key in json[i]) {
+			var columnName = key;
+			var columnValue = json[i][key];
 			if(categoryName == columnName) {
 				categoryValueSet.add(columnValue);
 			}
@@ -269,27 +277,21 @@ function getAllValuesForCategory(categoryName) {
 	return categoryValueSet;
 }
 
-/*
- * FUnction added to get Dataset Table Div
- */ 
-function getDatasetTableDiv() {
-	return document.getElementById("table");
-}
 
 /*
  * Function to get All Categorised Value based on selection of columns
  */
 function getAllCategorisedColumnSet() {
 	let categorisedColumnsSet = new Set();
-	var tableDiv = getDatasetTableDiv();
+	var json = getParsedJson();
 	//let columnNameFilterTypeMap = new Map();
-	for(var i =1 ; i < tableDiv.rows.length; i++){
-		for(var j=1; j < tableDiv.rows[i].cells.length; j++){
-			var columnName = tableDiv.rows[0].cells[j].innerText
-			var columnValue = tableDiv.rows[i].cells[j].innerText;
+	for(var i = 0 ; i < json.length; i++){
+		for (var key in json[i]) {
+			var columnName = key;
+			var columnValue = json[i][key];
 			if((columnName != null || columnName != '') && isNaN(columnValue)){
 				categorisedColumnsSet.add(columnName);
-			} else if(categorisedColumnsSet.length == tableDiv.rows[i].cells.length){
+			} else if(categorisedColumnsSet.length == json[i].length){
 				return categorisedColumnsSet;
 			}
 		}	
@@ -313,5 +315,11 @@ function isColumnSelected(columnName) {
 	return isColumnSelected;
 }
 
+/*
+ * Function to get parsed json value of current dataset
+ */ 
+function getParsedJson() {
+	return JSON.parse(dataframeSet);
+}
 
 
