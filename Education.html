@@ -2,12 +2,17 @@
 <head>
     <title>Education System</title>
     <link rel="stylesheet" type="text/css" href="styles/Custom.css">
-	<script src="node_modules/es6"></script>
+	<link href="node_modules/fancygrid/client/fancy.min.css" rel="stylesheet">
+	<script src="node_modules/es6/es6.js"></script>
 	<script src="node_modules/file-saver/FileSaver.js"></script>
 	<script src="node_modules/dataframe-js/dist/dataframe.js"></script>
 	<script src="node_modules/chart.js/dist/Chart.js"></script>
 	<script src="scripts/Education.js"></script>
 	<script src="scripts/ModelUtility.js"></script>
+	<script src="node_modules/fancygrid/client/fancy.full.min.js"></script>
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+	
 </head>
 <body>
     <h1 align="center">Welcome to Education System</h1>
@@ -23,6 +28,9 @@
         <input type="button" name="Select" onclick="import_data()" value="Submit"></input><br><br>
         </form>
         <div id="showData"></div>
+		
+		<div id="container" style=""></div>
+		
 		<div id="filter"></div>
 		<div id="filter-row"  hidden="true">
 			<br>
@@ -54,9 +62,13 @@
 			</div>
 		</div>
     </div>
-    <div> 
-        <canvas id="myChart" height="200" width="200"></canvas>
+    <div class="chart"> 
+        <canvas id="piechart"></canvas>
+		<canvas id="barchart"></canvas>
+		<canvas id="linechart"></canvas>
     </div>
+	<input type="button" name="Select" onclick="load()" value="Submit">
+    <div id="container" style=""></div>
 </body>
 </html>
 
