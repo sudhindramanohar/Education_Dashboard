@@ -294,9 +294,9 @@ function getAllCategorisedColumnSet() {
 		for (var key in json[i]) {
 			var columnName = key;
 			var columnValue = json[i][key];
-			if((columnName != null || columnName != '') && isNaN(columnValue)){
+			if((columnName != null && columnName != '') && isNaN(columnValue)){
 				categorisedColumnsSet.add(columnName);
-			} else if(categorisedColumnsSet.length == json[i].length){
+			} else if(categorisedColumnsSet.size == json[i].length){
 				return categorisedColumnsSet;
 			}
 		}	
