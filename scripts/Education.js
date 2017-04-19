@@ -237,6 +237,10 @@ function createRowFilters() {
 	//for each categorical value in set build multiselect dropdown
 	for (const value of categorisedColumnsSet) {		
 		if(isColumnSelected(value)){
+			var selectDiv = document.createElement("div");
+			selectDiv.style.marginTop = "14px";
+			selectDiv.style.marginRight = "24px";
+			
 			var select = document.createElement("select");
 			select.id = value;
 			select.multiple = true; 
@@ -244,11 +248,6 @@ function createRowFilters() {
 			var selectLabel = document.createElement('label')
 			selectLabel.htmlFor = "id";
 			selectLabel.appendChild(document.createTextNode(value));
-			selectLabel.style.width = "180px";
-			selectLabel.style.clear = "right";
-			selectLabel.style.textAlign = "left";
-			selectLabel.style.paddingLeft = "10px";
-			//createCheckbox(value,"categorical-filter-checkbox");
 			var categoryValueSet = getAllValuesForCategory(value);
 			for (const value of categoryValueSet) {
 				var option = document.createElement("option");
@@ -257,11 +256,14 @@ function createRowFilters() {
 				option.innerHTML = value;
 				select.add(option);
 			}
-			selectLabel.appendChild(select);
-			divContainer.append(selectLabel);				
+			select.style.width = "180px";
+			select.style.overflowX = "auto";
+			selectLabel.append(document.createElement("br"));
+			selectLabel.append(select);
+			selectDiv.appendChild(selectLabel);
+			divContainer.append(selectDiv);				
 		}
 	}
-	
 }
 
 /*
