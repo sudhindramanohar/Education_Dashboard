@@ -71,7 +71,6 @@ function export_data(dataset)
  */
  
 function createColumnHeaderForTable(col){
-  debugger;
   var columnSet = {};
   var columns = [];
   columnSet.columns = columns;
