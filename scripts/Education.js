@@ -195,14 +195,11 @@ function createCheckbox(columnName,parentDivId) {
 	checkbox.name = columnName;
 	checkbox.value = "0"; 
 	checkbox.id = columnName;
-		
+	checkbox.style.marginRight = "30px";
+
 	var label = document.createElement('label')
 	label.htmlFor = "id";
 	label.appendChild(document.createTextNode(columnName));
-	label.style.width = "180px";
-	label.style.clear = "right";
-	label.style.textAlign = "left";
-	label.style.paddingLeft = "10px";
 	
 	var divContainer = document.getElementById(parentDivId);
 	if(divContainer){
@@ -248,6 +245,7 @@ function createRowFilters() {
 			var selectLabel = document.createElement('label')
 			selectLabel.htmlFor = "id";
 			selectLabel.appendChild(document.createTextNode(value));
+			
 			var categoryValueSet = getAllValuesForCategory(value);
 			for (const value of categoryValueSet) {
 				var option = document.createElement("option");
@@ -329,4 +327,9 @@ function getParsedJson() {
 	return JSON.parse(dataframeSet);
 }
 
-
+/*
+ * Function to apply chart
+ */ 
+function applyChart() {
+  	 
+}
