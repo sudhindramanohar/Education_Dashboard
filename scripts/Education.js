@@ -24,8 +24,8 @@ function export_data(dataset)
     
     dataframeSet = dataset;
 	
-    CreateTableFromJSON();
-	CreateFilterElements();
+    createTableFromJSON();
+	createFilterElements();
 	
 	//testing chart for dummy values
 	var labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
@@ -38,67 +38,63 @@ function export_data(dataset)
 	lineChart.plot(labels,data);
 }
  
-function CreateTableFromJSON() {
-	var col = [];
+function createColumnHeaderForTable(col){
+  var columnSet = {};
+  var columns = [];
+  columnSet.columns = columns;
+
+
+  for(var i=0; i <col.length; i++)
+  {
+    var column = {
+      "index": col[i],
+        "title": col[i]
+    }
+    columnSet.columns.push(column);
+  }
+
+  return columnSet;
+}
+
+function createTableFromJSON() {
+	var colData = [];
+	var div = document.getElementById('table');
+	if(div)
+	{
+		div.innerHTML = "";
+	}
 	var data = JSON.parse(dataframeSet);
 	for (var i = 0; i < data.length; i++) {
 		for (var key in data[i]) {
-			if (col.indexOf(key) === -1) {
-				col.push(key);
+			if (colData.indexOf(key) === -1) {
+				colData.push(key);
 			}
 		}
 	}
 
-	
+
+	var Columns = createColumnHeaderForTable(colData);
+
 	// CREATE DYNAMIC TABLE.
-	var table = document.createElement("table");
-	table.id= "dataset_table";
-	table.style.height='400px';
-	table.style.overflowY='scroll';
-	table.style.display='block';
-	
-	// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
-	var tr = table.insertRow(-1);  	// TABLE ROW.
-	
-	var emptyTh = document.createElement("th");	//create an empty header for checkbox
-	emptyTh.innerHTML = '&nbsp';
-	tr.appendChild(emptyTh);
-	
-	for (var i = 0; i < col.length; i++) {
-		var th = document.createElement("th");      // TABLE HEADER.
-		th.innerHTML = col[i].replace(/_/g," ");
-		tr.appendChild(th);
-	}
+	  new FancyGrid({
+	    title: 'Dataset',
+	    renderTo: 'table',
+	    width: 1300,
+	    height: 400,
+	    data: data,
+	    defaults: {
+	      type: 'string',
+	      width: 100,
+	      sortable: true,
+	      filter: {
+	        header: true,
+	        emptyText: ''
+	      }
+	    },
+	    clicksToEdit: 1,
+	    columns: Columns.columns
+	});
 
-	// ADD JSON DATA TO THE TABLE AS ROWS.
-	for (var i = 0; i < data.length; i++) {
-		var objectMap = new Map();
-		//var objData = "";
-		tr = table.insertRow(-1);
-		
-		// Create a checkbox for each row
-		var cb = document.createElement("INPUT");
-		cb.type = "checkbox";
-		cb.id = i.toString();
-		var checbBoxCell = tr.insertCell(-1);
-		checbBoxCell.append(cb);
-		tr.appendChild(checbBoxCell);
-		
-		for (var j = 0; j < col.length; j++) {
-			var tabCell = tr.insertCell(-1);
-			tabCell.innerHTML = data[i][col[j]];
-			objectMap.set(col[j].replace(/_/g,""),data[i][col[j]])
-			//objData += "," + data[i][col[j]];
-		}
-		
-		//var objDataArr = objData.substring(1).split(",");
-		createSchoolProfileInfoRecord(objectMap);
-	}
-
-	// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-	var divContainer = document.getElementById("showData");
-	divContainer.innerHTML = "";
-	divContainer.appendChild(table);
 }
 
 /*
@@ -113,7 +109,7 @@ function createSchoolProfileInfoRecord(objectMap) {
 /*
  * Function added to create filter elements
  */	
-function CreateFilterElements() {
+function createFilterElements() {
 	var filter = document.createElement('div');
 	filter.id = 'select-column';
 
@@ -121,47 +117,35 @@ function CreateFilterElements() {
     divContainer.innerHTML = "";
     divContainer.appendChild(filter);
 	
-	CreateFilter();
+	createFilter();
 }	
 
 /*
  * Function added to create filter functionality
  */
-function CreateFilter() {
-	var table = document.getElementById("dataset_table");
-	if(table) {
-		var th = table.getElementsByTagName("th");
-		var select_column_div = document.getElementById("select-column");
-		CreateHeader(select_column_div,"Please Select The Data Labels(Columns)");	
-		
-		let view = new ViewableColumnConstant();
-		let schoolProfileInfoCols = view.schoolProfileInfo;
-		var concatVal = schoolProfileInfoCols.Categorical + "," + schoolProfileInfoCols.Numerical;
-		var schoolProfileInfoColsArr = concatVal.split(",");
-		
-		for(i = 0; i < th.length; i++) {
-			var innerText = th[i].innerText.replace(/ /g,"");
-			for(var j=0;j<schoolProfileInfoColsArr.length;j++){
-				if(innerText.indexOf(schoolProfileInfoColsArr[j]) == 0){
-					CreateCheckbox(th[i].innerText,"select-column");
-				}
-			}	
-		}		
-		CreateAddFilterButton(select_column_div);
-		var categoricalCols = schoolProfileInfoCols.Categorical;
-		
-	}
+function createFilter() {
+	var select_column_div = document.getElementById("select-column");	
+	createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
+	
+	var json = getParsedJson();	
+	for(var i = 0 ; i < json.length; i++){
+		for (var key in json[i]) {
+			createCheckbox(key,"select-column");
+		}
+		break;
+	}	
+	createAddFilterButton(select_column_div);
 }
 
 /*
  * Function added to create "Add Filter" for filter
  */
-function CreateAddFilterButton(select_column_div) {
+function createAddFilterButton(select_column_div) {
 	var addFilterButton= document.createElement('input');
 	addFilterButton.setAttribute('type','button');
 	addFilterButton.setAttribute('name','addFilterButton');
 	addFilterButton.setAttribute('value','Add Filter');
-	addFilterButton.addEventListener('click',function(event){CreateRowFilters()});
+	addFilterButton.addEventListener('click',function(event){createRowFilters()});
 	select_column_div.appendChild(document.createElement("br"));
 	select_column_div.appendChild(addFilterButton);
 }
@@ -169,13 +153,13 @@ function CreateAddFilterButton(select_column_div) {
 /*
  * Function added to create checkbox for Column selection
  */
-function CreateCheckbox(columnName,parentDivId) {
+function createCheckbox(columnName,parentDivId) {
 	var checkbox = document.createElement('input');
 	checkbox.type = "checkbox";
 	checkbox.name = columnName;
-	checkbox.value = columnName;
+	checkbox.value = "0"; 
 	checkbox.id = columnName;
-	
+		
 	var label = document.createElement('label')
 	label.htmlFor = "id";
 	label.appendChild(document.createTextNode(columnName));
@@ -194,7 +178,7 @@ function CreateCheckbox(columnName,parentDivId) {
 /*
  * Function added to create header
  */ 
-function CreateHeader(divId,headerLabel) {
+function createHeader(divId,headerLabel) {
 	var heading = document.createElement('label');
 	heading.style.fontWeight = 'bold';
 	heading.innerHTML=headerLabel;
@@ -202,37 +186,109 @@ function CreateHeader(divId,headerLabel) {
 	divId.appendChild(document.createElement('br'));
 }
 
-function CreateRowFilters() {
+/*
+ * FUnction added to Create Row Filters
+ */
+function createRowFilters() {
+	
+	//clear previous checkbox div
+	var divContainer = document.getElementById('categorical-filter-checkbox');
+	divContainer.innerHTML = "";
 	//show filter div
 	document.getElementById("filter-row").hidden=false;
+	var categorisedColumnsSet = getAllCategorisedColumnSet();
 	
-	var categorisedColumnsSet = new Set();
-	for(var i = 0; i < schoolProfileInfoObjArr.length; i++){
-		var currentObject = schoolProfileInfoObjArr[i];
-	
-		for (var key in currentObject) {
-		  if (currentObject.hasOwnProperty(key)) {
-			if(isNaN(currentObject[key])){
-				categorisedColumnsSet.add(currentObject[key]);
+	//for each categorical value in set build multiselect dropdown
+	for (const value of categorisedColumnsSet) {		
+		if(isColumnSelected(value)){
+			var select = document.createElement("select");
+			select.id = value;
+			select.multiple = true; 
+			
+			var selectLabel = document.createElement('label')
+			selectLabel.htmlFor = "id";
+			selectLabel.appendChild(document.createTextNode(value));
+			selectLabel.style.width = "180px";
+			selectLabel.style.clear = "right";
+			selectLabel.style.textAlign = "left";
+			selectLabel.style.paddingLeft = "10px";
+			//createCheckbox(value,"categorical-filter-checkbox");
+			var categoryValueSet = getAllValuesForCategory(value);
+			for (const value of categoryValueSet) {
+				var option = document.createElement("option");
+				option.value = value;
+				option.selected ="";
+				option.innerHTML = value;
+				select.add(option);
 			}
-		  }
+			selectLabel.appendChild(select);
+			divContainer.append(selectLabel);				
 		}
 	}
 	
-	//for each categorical value in set build checkbox
-	for (const value of categorisedColumnsSet) {
-		//CreateCheckbox(value,"categorical-filter");
-	}
-	
-	//build categorical filter div
-	var categoricalFilterDiv = document.getElementById('categorical-filter');
-		
-	
-	//build numerical condition div
-	var numericalConditionDiv = document.getElementById('numerical-condition');
-	
-	//build numerical value div
-	var numericalValueDiv = document.getElementById('numerical-value');
-	document.getElementById('numericalFilter').classList.remove("input");
-	
 }
+
+/*
+ * Function to get All values for particular category
+ */
+function getAllValuesForCategory(categoryName) {
+	let categoryValueSet = new Set();
+	var json = getParsedJson();	
+	for(var i = 0 ; i < json.length; i++){
+		for (var key in json[i]) {
+			var columnName = key;
+			var columnValue = json[i][key];
+			if(categoryName == columnName) {
+				categoryValueSet.add(columnValue);
+			}
+		}
+	}	
+	return categoryValueSet;
+}
+
+
+/*
+ * Function to get All Categorised Value based on selection of columns
+ */
+function getAllCategorisedColumnSet() {
+	let categorisedColumnsSet = new Set();
+	var json = getParsedJson();
+	//let columnNameFilterTypeMap = new Map();
+	for(var i = 0 ; i < json.length; i++){
+		for (var key in json[i]) {
+			var columnName = key;
+			var columnValue = json[i][key];
+			if((columnName != null || columnName != '') && isNaN(columnValue)){
+				categorisedColumnsSet.add(columnName);
+			} else if(categorisedColumnsSet.length == json[i].length){
+				return categorisedColumnsSet;
+			}
+		}	
+	}		
+	return categorisedColumnsSet;
+}
+
+/*
+ * Function to check if Column is Selected
+ */
+function isColumnSelected(columnName) {
+	var isColumnSelected = false;
+	var select_column_div = document.getElementById('select-column');
+	for(var i = 0 ; i < select_column_div.children.length; i++ ){
+		var childDiv = select_column_div.children[i];
+		if(childDiv.type == 'checkbox' && childDiv.id == columnName && childDiv.checked) {
+			isColumnSelected = true
+			break;
+		}
+	}
+	return isColumnSelected;
+}
+
+/*
+ * Function to get parsed json value of current dataset
+ */ 
+function getParsedJson() {
+	return JSON.parse(dataframeSet);
+}
+
+

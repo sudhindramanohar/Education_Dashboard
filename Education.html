@@ -3,22 +3,20 @@
     <title>Education System</title>
     <link rel="stylesheet" type="text/css" href="styles/Custom.css">
 	<link href="node_modules/fancygrid/client/fancy.min.css" rel="stylesheet">
+	
 	<script src="node_modules/es6/es6.js"></script>
 	<script src="node_modules/file-saver/FileSaver.js"></script>
 	<script src="node_modules/dataframe-js/dist/dataframe.js"></script>
 	<script src="node_modules/chart.js/dist/Chart.js"></script>
 	<script src="scripts/Education.js"></script>
-	<script src="scripts/ModelUtility.js"></script>
-	<script src="node_modules/fancygrid/client/fancy.full.min.js"></script>
-	<script src="node_modules/jquery/dist/jquery.min.js"></script>
-
-	
+	<script src="scripts/ModelUtility.js"></script>	
+  	<script src="node_modules/fancygrid/client/fancy.min.js"></script>
 </head>
 <body>
-    <h1 align="center">Welcome to Education System</h1>
+    <h1 align="center">Education DashBoard</h1>
     <div>         
         <form>
-          <select id="datasets">
+          <select id="datasets" class="dropdown">
               <option value="School_Profile_Info.csv" selected="selected">School_Profile_Info</option>
               <option value="SAT_Score.csv">SAT_Score</option>
               <option value="Demographics.csv">Demographics</option>
@@ -26,6 +24,7 @@
               <option value="School_Progress_Report.csv">School_Progress_Report</option>
         </select>          
         <input type="button" name="Select" onclick="import_data()" value="Submit"></input><br><br>
+        <div id="table" style=""></div>
         </form>
         <div id="showData"></div>
 		
@@ -36,18 +35,19 @@
 			<br>
 			<div id="categorical-filter">
 				<label style="display:block;font-weight:bold">Please Select Filters To Exclude(Categorical)</label>
+				<div id="categorical-filter-checkbox"></div>
 			</div>
 			<br>
 			<div id="numerical-condition">
 				<label style="display:block;font-weight:bold">Please Select The Filter Condition</label>
-				<input type="radio" name="greaterThanEqualTo" value="greaterThanEqualTo"> Greater Than Equal To</input>
-				<input type="radio" name="lessThanEqualTo" value="lessThanEqualTo">Less Than Equal To</input>
-				<input type="radio" name="equalTo" value="equalTo">Equal To</input><br>
+				<input type="radio" name="numericalFilter" value="greaterThanEqualTo"> Greater Than Equal To</input>
+				<input type="radio" name="numericalFilter" value="lessThanEqualTo">Less Than Equal To</input>
+				<input type="radio" name="numericalFilter" value="equalTo">Equal To</input><br>
 			</div>
 			<br>
 			<div id="numerical-value">
-				<label style="display:block;font-weight:bold">Please Enter Values Of Filter Condition</label>
-				<input id= 'numericalFilter' type="number" name="numericalFilter" value="numericalFilter"></input>
+				<label style="display:block;font-weight:bold">Please Enter Numerical Value To Filter</label>
+				<input id= 'numericalFilter' style="background-color: white; border: groove;color: black;padding: 1px 0px; text-align: center; text-decoration: none;"  type="number" name="numericalFilter" value="numericalFilter"></input>
 			</div>
 			<br>
 			<div id="plot-graph">
@@ -56,7 +56,8 @@
 				<input type="checkbox" name="pieChart" value="pieChart">Pie Chart</input>
 				<input type="checkbox" name="barChart" value="barChart"> Bar Chart</input>
 				<input type="checkbox" name="lineChart" value="lineChart"> Line Chart</input>
-				<input type="checkbox" name="stackedChart" value="stackedChart"> Stacked Chart</input><br>
+				<input type="checkbox" name="stackedChart" value="stackedChart"> Stacked Chart</input>
+				<input type="checkbox" name="pivotChart" value="pivotChart"> Pivot Chart</input><br>
 				<input type="button" name="applyCharts" onclick="" value="Apply Charts"></input><br>
 			</form>	
 			</div>
@@ -67,7 +68,7 @@
 		<canvas id="barchart"></canvas>
 		<canvas id="linechart"></canvas>
     </div>
-	<input type="button" name="Select" onclick="load()" value="Submit">
+	<input type="button" name="Select" onclick="load()" value="Submit" style="display: block;">
     <div id="container" style=""></div>
 </body>
 </html>
