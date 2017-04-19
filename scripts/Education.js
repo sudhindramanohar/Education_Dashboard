@@ -149,7 +149,6 @@ function createFilter() {
 		}
 		break;
 	}
-	createHeader(select_column_div,"Please Select The Data Labels(Columns)");		
 	createAddFilterButton(select_column_div);
 }
 
