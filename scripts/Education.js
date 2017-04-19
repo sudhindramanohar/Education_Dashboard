@@ -24,7 +24,7 @@ function export_data(dataset)
     
     dataframeSet = dataset;
     createTableFromJSON();
-	createFilterElements();
+	//createFilterElements();
 }
 
 /* let myChart = new Chart(ctx, {
@@ -70,66 +70,63 @@ function export_data(dataset)
 });
  */
  
+function createColumnHeaderForTable(col){
+  debugger;
+  var columnSet = {};
+  var columns = [];
+  columnSet.columns = columns;
+
+
+  for(var i=0; i <col.length; i++)
+  {
+    var column = {
+      "index": col[i],
+        "title": col[i]
+    }
+    columnSet.columns.push(column);
+  }
+
+  return columnSet;
+}
+
 function createTableFromJSON() {
-	var col = [];
+	var colData = [];
+	var div = document.getElementById('table');
+	if(div)
+	{
+		div.innerHTML = "";
+	}
 	var data = JSON.parse(dataframeSet);
 	for (var i = 0; i < data.length; i++) {
 		for (var key in data[i]) {
-			if (col.indexOf(key) === -1) {
-				col.push(key);
+			if (colData.indexOf(key) === -1) {
+				colData.push(key);
 			}
 		}
 	}
 
+	var Columns = createColumnHeaderForTable(colData);
+
 	// CREATE DYNAMIC TABLE.
-	var table = document.createElement("table");
-	table.id= "dataset_table";
-	table.style.height='400px';
-	table.style.overflowY='scroll';
-	table.style.display='block';
-	
-	// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
-	var tr = table.insertRow(-1);  	// TABLE ROW.
-	
-	var emptyTh = document.createElement("th");	//create an empty header for checkbox
-	emptyTh.innerHTML = '&nbsp';
-	tr.appendChild(emptyTh);
-	
-	for (var i = 0; i < col.length; i++) {
-		var th = document.createElement("th");      // TABLE HEADER.
-		th.innerHTML = col[i].replace(/_/g," ");
-		tr.appendChild(th);
-	}
+	  new FancyGrid({
+	    title: 'Dataset',
+	    renderTo: 'table',
+	    width: 1300,
+	    height: 400,
+	    data: data,
+	    defaults: {
+	      type: 'string',
+	      width: 100,
+	      sortable: true,
+	      filter: {
+	        header: true,
+	        emptyText: ''
+	      }
+	    },
+	    clicksToEdit: 1,
+	    columns: Columns.columns
+	});
 
-	// ADD JSON DATA TO THE TABLE AS ROWS.
-	for (var i = 0; i < data.length; i++) {
-		var objectMap = new Map();
-		//var objData = "";
-		tr = table.insertRow(-1);
-		
-		// Create a checkbox for each row
-		var cb = document.createElement("INPUT");
-		cb.type = "checkbox";
-		cb.id = i.toString();
-		var checbBoxCell = tr.insertCell(-1);
-		checbBoxCell.append(cb);
-		tr.appendChild(checbBoxCell);
-		
-		for (var j = 0; j < col.length; j++) {
-			var tabCell = tr.insertCell(-1);
-			tabCell.innerHTML = data[i][col[j]];
-			objectMap.set(col[j].replace(/_/g,""),data[i][col[j]])
-			//objData += "," + data[i][col[j]];
-		}
-		
-		//var objDataArr = objData.substring(1).split(",");
-		createSchoolProfileInfoRecord(objectMap);
-	}
-
-	// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-	var divContainer = document.getElementById("showData");
-	divContainer.innerHTML = "";
-	divContainer.appendChild(table);
 }
 
 /*
@@ -277,7 +274,7 @@ function getAllValuesForCategory(categoryName) {
  * FUnction added to get Dataset Table Div
  */ 
 function getDatasetTableDiv() {
-	return document.getElementById("dataset_table");
+	return document.getElementById("table");
 }
 
 /*
@@ -316,3 +313,6 @@ function isColumnSelected(columnName) {
 	}
 	return isColumnSelected;
 }
+
+
+
