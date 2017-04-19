@@ -25,7 +25,7 @@ function export_data(dataset)
     dataframeSet = dataset;
 	
     createTableFromJSON();
-	createFilterElements();
+	//createFilterElements();
 	
 	//testing chart for dummy values
 	var labels = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
@@ -92,7 +92,12 @@ function createTableFromJSON() {
 	      }
 	    },
 	    clicksToEdit: 1,
-	    columns: Columns.columns
+	    columns: Columns.columns,
+	    events: [{
+	    	init: function(){
+	      	createFilterElements();
+	    	}
+ 	 	}]
 	});
 
 }
