@@ -365,7 +365,7 @@ function applyChart() {
 	var filter = document.getElementById('categorical-filter-checkbox');
 	for(var i = 0; i < filter.children.length ; i++){
 		var childElement = filter.children[i].firstElementChild.childNodes;
-		var columnName = childElement[0].data; //label field
+		var columnName = convertToCamelCase(childElement[0].data," "); //label field
 		var multiSelectDropDowns = childElement[2].options; // multi select dropdown field
 		let selectedCatValueSet = new Set();
 		for(var j = 0 ; j< multiSelectDropDowns.length; j++){
@@ -377,13 +377,13 @@ function applyChart() {
 			selectedCatColumnValueMap.set(columnName,selectedCatValueSet);
 		}	
 	}
-	filteredItem[0] = selectedCatColumnValueMap; //push categorical value map to first element in array
+	filteredItem.push(selectedCatColumnValueMap); //push categorical value map to first element in array
 	
 	//logic for numerical Values
 	var numericalFilters = getAllNumericalColumns();
 	for (const value of numericalFilters) {
 		if(isColumnSelected(value)){
-			numericalCheckBox.add(value);
+			numericalCheckBox.add(convertToCamelCase(value," "));
 		}
 	}
 	if(numericalCheckBox.size > 0){
@@ -391,6 +391,6 @@ function applyChart() {
 		selectedNumColumnValueMap.set('numericalFilterCondition',document.querySelector('input[name="numericalFilter"]:checked').value);
 		selectedNumColumnValueMap.set('numericalFilterValue',document.getElementById('numericalFilter').value);
 	}
-	filteredItem[1]	= selectedNumColumnValueMap; //push numerical related values to second element in array;
+	filteredItem.push(selectedNumColumnValueMap); //push numerical related values to second element in array;
 	return filteredItem;
 }
