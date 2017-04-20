@@ -266,7 +266,6 @@ function getAllValuesForCategory(categoryName) {
 function getAllCategorisedColumnSet() {
 	let categorisedColumnsSet = new Set();
 	var json = getParsedJson();
-	//let columnNameFilterTypeMap = new Map();
 	for(var i = 0 ; i < json.length; i++){
 		for (var key in json[i]) {
 			var columnName = key;
@@ -316,6 +315,9 @@ function getAllColumns() {
 	return columnSet;
 }
 
+/*
+ * Function to get Checked Categorised Column name
+ */
 function getCheckedCategorisedColumns() {
 	let checkedCategorisedColumnSet = new Set();
 	var categorisedColumnsSet = getAllCategorisedColumnSet();
@@ -327,6 +329,9 @@ function getCheckedCategorisedColumns() {
 	return checkedCategorisedColumnSet;
 }
 
+/*
+ * Function to get All Numerical Columns
+ */
 function getAllNumericalColumns() {
 	var numericalFilterColumnsSet = new Set();
 	var allColumns = getAllColumns();
@@ -339,6 +344,9 @@ function getAllNumericalColumns() {
 	return numericalFilterColumnsSet;
 }
 
+/*
+ * Function to convert string To a Camel Case
+ */
 function convertToCamelCase(string,seperator){
     var out = "";
 	if(seperator != null){
@@ -353,9 +361,9 @@ function convertToCamelCase(string,seperator){
 }
 
 /*
- * Function to apply chart
- */ 
-function applyChart() {
+ * Function to get all Filtered Conditions
+ */
+function getAllFilteredConditions() {
 	let filteredItem = [];
 	let selectedCatColumnValueMap = new Map();
 	let selectedNumColumnValueMap = new Map();
@@ -393,4 +401,11 @@ function applyChart() {
 	}
 	filteredItem.push(selectedNumColumnValueMap); //push numerical related values to second element in array;
 	return filteredItem;
+}
+
+/*
+ * Function to apply chart
+ */ 
+function applyChart() {
+	var filteredConditiontionsMap = getAllFilteredConditions();
 }
