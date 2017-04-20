@@ -1,4 +1,4 @@
-SchoolCode,SchoolName,City,StateCode,ZipCode,Student_Count_Black,Student_Count_Hispanic,Student_Count_White,Student_Count_Asian,Student_Count_Native_American,Student_Count_Low_Income,Student_Count_Total,men_total,women_total,Total
+﻿School Code,School Name,City,State Code,Zip Code,Student Count Black,Student Count Hispanic,Student Count White,Student Count Asian,Student Count Native American,Student Count Low Income,Student Count Total,Men total,Women total,Total
 E00254,LMU - LOYOLA LAW SCHOOL,LOS ANGELES,CA,90015,58,554,10,3,4,540,631,1029,1843,2872
 E00341,STANFORD UNIVERSITY - STANFORD LAW SCHOO,STANFORD,CA,94305,171,10,1,0,1,179,185,977,1687,2664
 E00374,UNIV OF CALIFORNIA LOS ANG SCH MED,LOS ANGELES,CA,90095,57,174,24,0,4,233,264,1836,3380,5216
