@@ -229,36 +229,38 @@ function createRowFilters() {
 	divContainer.innerHTML = "";
 	//show filter div
 	document.getElementById("filter-row").hidden=false;
-	var checkedCategorisedColumnsSet = getCheckedCategorisedColumns();
+	var categorisedColumnsSet = getAllCategorisedColumnSet();
 	
 	//for each categorical value in set build multiselect dropdown
-	for (const value of checkedCategorisedColumnsSet) {		
-		var selectDiv = document.createElement("div");
-		selectDiv.style.marginTop = "14px";
-		selectDiv.style.marginRight = "24px";
-		
-		var select = document.createElement("select");
-		select.id = value;
-		select.multiple = true;
-		select.style.width = "180px";
-		select.style.overflowX = "auto";			
-		
-		var selectLabel = document.createElement('label')
-		selectLabel.htmlFor = "id";
-		selectLabel.appendChild(document.createTextNode(value));
-		
-		var categoryValueSet = getAllValuesForCategory(value);
-		for (const value of categoryValueSet) {
-			var option = document.createElement("option");
-			option.value = value;
-			option.selected ="";
-			option.innerHTML = value;
-			select.add(option);
+	for (const value of categorisedColumnsSet) {		
+		if(isColumnSelected(value)){
+			var selectDiv = document.createElement("div");
+			selectDiv.style.marginTop = "14px";
+			selectDiv.style.marginRight = "24px";
+			
+			var select = document.createElement("select");
+			select.id = value;
+			select.multiple = true; 
+			
+			var selectLabel = document.createElement('label')
+			selectLabel.htmlFor = "id";
+			selectLabel.appendChild(document.createTextNode(value));
+			
+			var categoryValueSet = getAllValuesForCategory(value);
+			for (const value of categoryValueSet) {
+				var option = document.createElement("option");
+				option.value = value;
+				option.selected ="";
+				option.innerHTML = value;
+				select.add(option);
+			}
+			select.style.width = "180px";
+			select.style.overflowX = "auto";
+			selectLabel.append(document.createElement("br"));
+			selectLabel.append(select);
+			selectDiv.appendChild(selectLabel);
+			divContainer.append(selectDiv);				
 		}
-		selectLabel.append(document.createElement("br"));
-		selectLabel.append(select);
-		selectDiv.appendChild(selectLabel);
-		divContainer.append(selectDiv);				
 	}
 }
 
@@ -325,95 +327,9 @@ function getParsedJson() {
 	return JSON.parse(dataframeSet);
 }
 
-
-/*
- * Function to get all column names
- */ 
-function getAllColumns() {
-	let columnSet = new Set();
-	var json = getParsedJson();
-	for (var key in json[0]) {
-		columnSet.add(key);
-	}
-	return columnSet;
-}
-
-function getCheckedCategorisedColumns() {
-	let checkedCategorisedColumnSet = new Set();
-	var categorisedColumnsSet = getAllCategorisedColumnSet();
-	for (const value of categorisedColumnsSet) {		
-		if(isColumnSelected(value)){
-			checkedCategorisedColumnSet.add(value);
-		}
-	}	
-	return checkedCategorisedColumnSet;
-}
-
-function getAllNumericalColumns() {
-	var numericalFilterColumnsSet = new Set();
-	var allColumns = getAllColumns();
-	var categorisedColumnsSet = getAllCategorisedColumnSet();
-	for (const value of allColumns) {	
-		if(!categorisedColumnsSet.has(value)){
-			numericalFilterColumnsSet.add(value);
-		}
-	}
-	return numericalFilterColumnsSet;
-}
-
-function convertToCamelCase(string,seperator){
-    var out = "";
-	if(seperator != null){
-    string.split(seperator).forEach(function (el, idx) {
-        var add = el.toLowerCase();
-        out += (idx === 0 ? add : add[0].toUpperCase() + add.slice(1));
-    });
-	}else {
-		return string;
-	}	
-    return out;
-}
-
 /*
  * Function to apply chart
  */ 
 function applyChart() {
-	let filteredItem = [];
-	let selectedCatColumnValueMap = new Map();
-	let selectedNumColumnValueMap = new Map();
-	let numericalCheckBox = new Set();
-	
-	//logic for categorical filter map
-	var filter = document.getElementById('categorical-filter-checkbox');
-	for(var i = 0; i < filter.children.length ; i++){
-		var childElement = filter.children[i].firstElementChild.childNodes;
-		var columnName = childElement[0].data; //label field
-		var multiSelectDropDowns = childElement[2].options; // multi select dropdown field
-		let selectedCatValueSet = new Set();
-		for(var j = 0 ; j< multiSelectDropDowns.length; j++){
-			if(multiSelectDropDowns[j].selected){
-				selectedCatValueSet.add(multiSelectDropDowns[j].value);
-			}
-		}
-		if(selectedCatValueSet.size > 0){
-			selectedCatColumnValueMap.set(columnName,selectedCatValueSet);
-		}	
-	}
-	filteredItem[0] = selectedCatColumnValueMap; //push categorical value map to first element in array
-	
-	//logic for numerical Values
-	var numericalFilters = getAllNumericalColumns();
-	for (const value of numericalFilters) {
-		if(isColumnSelected(value)){
-			numericalCheckBox.add(value);
-		}
-	}
-	if(numericalCheckBox.size > 0){
-		selectedNumColumnValueMap.set('selectedNumericalValues',numericalCheckBox);
-		selectedNumColumnValueMap.set('numericalFilterCondition',document.querySelector('input[name="numericalFilter"]:checked').value);
-		selectedNumColumnValueMap.set('numericalFilterValue',document.getElementById('numericalFilter').value);
-	}
-	filteredItem[1]	= selectedNumColumnValueMap; //push numerical related values to second element in array;
-	
-	return filteredItem;
+  	 
 }
