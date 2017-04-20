@@ -85,20 +85,41 @@ function createTableFromJSON() {
 	    events: [{
 	    	init: function(){
 	      	createFilterElements();
+			createObjects(colData);
 	    	}
  	 	}]
 	});
-
 }
 
 /*
- * Function to create School Profile Info Record for every record in the dataset.
+ *	Function to create objects for the number of records in the dataset.
  */
-function createSchoolProfileInfoRecord(objectMap) {
-	//schoolId,schoolName,city,state,zip,studentCountTotal,dressCode,collegeEnrollmentRateSchool,graduationRateSchool,transportationEl
-	let schoolProfileInfoObj = new SchoolProfileInfo(objectMap.get("SchoolID"),objectMap.get("SCHOOL NAME"),objectMap.get("City"),objectMap.get("State"),objectMap.get("Zip"),objectMap.get("StudentCountTotal"),objectMap.get("DressCode"),objectMap.get("CollegeEnrollmentRateSchool"),objectMap.get("GraduationRateSchool"),objectMap.get("TransportationEl"));
-	schoolProfileInfoObjArr.push(schoolProfileInfoObj);
+function createObjects(colHeaderValues){
+	if(currentDataSet == "School_Profile_Info.csv"){
+		createSchoolProfileObjects(colHeaderValues);
+	} else if(currentDataSet == "SAT_Score.csv"){
+		
+	} else if(currentDataSet == "Demographics.csv"){
+		
+	} else if(currentDataSet == "Campus_Arrests.csv"){
+		
+	} else if(currentDataSet == "School_Progress_Report.csv"){
+		
+	}
 }
+
+/*
+ *	Function to create objects for the number of records in the dataset.
+ */
+function createSchoolProfileObjects(colHeaderValues){
+	var json = getParsedJson();
+	for(var i = 0 ; i < json.length; i++){
+		var record = json[i];
+		let schoolProfileInfoObj = new SchoolProfileInfo(record[colHeaderValues[0]],record[colHeaderValues[1]],record[colHeaderValues[2]],record[colHeaderValues[3]],record[colHeaderValues[4]],record[colHeaderValues[5]],record[colHeaderValues[6]],record[colHeaderValues[7]],record[colHeaderValues[8]],record[colHeaderValues[9]],record[colHeaderValues[10]],record[colHeaderValues[11]],record[colHeaderValues[12]]);
+		
+		objArr.push(schoolProfileInfoObj);
+	}
+}	
 
 /*
  * Function added to create filter elements
@@ -147,7 +168,7 @@ function createAddFilterButton(select_column_div) {
 /*
  * Function added to create checkbox for Column selection
  */
-function createCheckbox(columnName,parentDivId) {
+function createCheckbox(columnName, parentDivId) {
 	var checkbox = document.createElement('input');
 	checkbox.type = "checkbox";
 	checkbox.name = columnName;
