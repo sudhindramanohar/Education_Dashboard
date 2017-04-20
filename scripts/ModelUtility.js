@@ -1,10 +1,3 @@
-class ViewableColumnConstant {
-	constructor(){
-		this.schoolProfileInfo = {"Categorical":"DressCode,TransportationEl",
-								   "Numerical":"CollegeEnrollmentRateSchool,GraduationRateSchool,StudentCountTotal"};
-	}
-}
-
 class SchoolProfileInfo{
 	constructor(schoolId,schoolName,city,state,zip,studentCountTotal,dressCode,collegeEnrollmentRateSchool,graduationRateSchool,transportationEl){
 		this.schoolId = schoolId;
@@ -16,6 +9,12 @@ class SchoolProfileInfo{
 		this.dressCode = dressCode;
 		this.collegeEnrollmentRateSchool = collegeEnrollmentRateSchool;
 		this.graduationRateSchool = graduationRateSchool;
-		this.transportationEl = transportationEl;
+		this.overallRating = overallRating;
 	}
+}
+
+class CChart{
+	constructor(){}
+	plot(labels, data){};
+>>>>>>> 366cc23fa43b4ca677bfe2aa1e8a95b4d2ab20d1
 }
