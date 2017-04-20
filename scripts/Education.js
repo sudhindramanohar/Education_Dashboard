@@ -5,12 +5,11 @@ var dataframeSet = 0;
 var objArr = [];
 var currentDataSet = "";
 
-function import_data()
-{
+function import_data(){
 	schoolProfileInfoObjArr = new Array();
     var vals = document.getElementById("datasets");
-    var val = vals.options[vals.selectedIndex].value;
-    DataFrame.fromCSV(val).then(df => 
+    currentDataSet = vals.options[vals.selectedIndex].value;
+    DataFrame.fromCSV(currentDataSet).then(df => 
     {
         data = df.toJSON('SAT.json');        
         export_data(data);
@@ -98,7 +97,7 @@ function createObjects(colHeaderValues){
 	if(currentDataSet == "School_Profile_Info.csv"){
 		createSchoolProfileObjects(colHeaderValues);
 	} else if(currentDataSet == "SAT_Score.csv"){
-		
+
 	} else if(currentDataSet == "Demographics.csv"){
 		
 	} else if(currentDataSet == "Campus_Arrests.csv"){

@@ -16,7 +16,18 @@ class SchoolProfileInfo{
 	}
 }
 
-class CChart{
-	constructor(){}
-	plot(labels, data){};
+class SchoolProgressReport{
+	//constructor(schoolCode,schoolName,address,city,stateCode,zipCode,studentGrowthReading)
+}
+
+class SATScore{
+	
+}
+
+class CampusArrests{
+	
+}
+
+class Demographics{
+	
 }
