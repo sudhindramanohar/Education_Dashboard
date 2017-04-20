@@ -9,10 +9,10 @@ function import_data()
 {
 	schoolProfileInfoObjArr = new Array();
     var vals = document.getElementById("datasets");
-    var val = vals.options[vals.selectedIndex].value;
-    DataFrame.fromCSV(val).then(df => 
+    currentDataSet = vals.options[vals.selectedIndex].value;
+    DataFrame.fromCSV(currentDataSet).then(df => 
     {
-        data = df.toJSON('SAT.json');        
+        data = df.toJSON('test.json');        
         export_data(data);
     });
 }
@@ -86,6 +86,7 @@ function createTableFromJSON() {
 	    	init: function(){
 	      	createFilterElements();
 			createObjects(colData);
+			//filterData(); // TODO: remove later
 	    	}
  	 	}]
 	});
@@ -112,6 +113,7 @@ function createObjects(colHeaderValues){
  *	Function to create objects for the number of records in the dataset.
  */
 function createSchoolProfileObjects(colHeaderValues){
+	debugger
 	var json = getParsedJson();
 	for(var i = 0 ; i < json.length; i++){
 		var record = json[i];
@@ -392,5 +394,64 @@ function applyChart() {
 		selectedNumColumnValueMap.set('numericalFilterValue',document.getElementById('numericalFilter').value);
 	}
 	filteredItem[1]	= selectedNumColumnValueMap; //push numerical related values to second element in array;
+	preProcessFilter(filteredItem);
 	return filteredItem;
+}
+
+class Filter{
+	constructor(){}
+	filterRow(dataSet, columnName, columnValue, operand, isCategorical, isNumerical){
+		let result;
+		if(isCategorical){
+			result = dataSet.filter(fil => fil[columnName] === columnValue );		
+		}
+
+		if(isNumerical){
+			if(operand == '='){
+				result = dataSet.filter(fil => fil[columnName] === columnValue );
+			}
+			else if(operand == '>='){
+				result = dataSet.filter(fil => fil[columnName] >= columnValue );
+			}
+			else{
+				result = dataSet.filter(fil => fil[columnName] <= columnValue );
+			}
+		}
+		return result;
+    }
+}
+
+function preProcessFilter(filterCondition)
+{
+	let isCategorical;
+	let isNumerical;
+	let columnName = 0;
+	let columnValue = 0;
+	for (let key of filterCondition.keys()) {
+    	if(key == 0){
+    		isCategorical = 1;
+    		for(let val of filterCondition.values()){    			
+    			if(val.size > 0){
+    				for(let ikey of val.keys()){
+    					columnName = ikey;
+    					columnValue = val.get(ikey);
+    					for(let iColVal of columnValue.keys()){
+    						filterData(columnName, iColVal, isCategorical, isNumerical);
+    					}
+    				}
+    			}
+    		}
+    	}
+    	else{
+    		isNumerical = 1;
+    	}
+  }
+}
+
+function filterData(columnName,columnValue,isCategorical, isNumerical, operand = '=')
+{
+	debugger;
+	let filterdata = new Filter();
+	let result = filterdata.filterRow(objArr, columnName, columnValue, operand, isCategorical, isNumerical);
+
 }
