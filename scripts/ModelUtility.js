@@ -16,5 +16,4 @@ class SchoolProfileInfo{
 class CChart{
 	constructor(){}
 	plot(labels, data){};
->>>>>>> 366cc23fa43b4ca677bfe2aa1e8a95b4d2ab20d1
 }
