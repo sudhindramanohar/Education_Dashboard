@@ -50,25 +50,26 @@
 			<div id="plot-graph">
 			<form>
 				<label style="display:block;font-weight:bold">Please Select the Chart Type</label>
-				<input type="checkbox" name="pieChart" value="pieChart">Pie Chart</input>
-				<input type="checkbox" name="barChart" value="barChart"> Bar Chart</input>
-				<input type="checkbox" name="lineChart" value="lineChart"> Line Chart</input>
-				<input type="checkbox" name="stackedChart" value="stackedChart"> Stacked Chart</input>
-				<input type="checkbox" name="pivotChart" value="pivotChart"> Pivot Chart</input><br>
+				<input type="checkbox" id="pieChart" name="pieChart" value="Pie Chart">Pie Chart</input>
+				<input type="checkbox" id="barChart" name="barChart" value="Bar Chart"> Bar Chart</input>
+				<input type="checkbox" id="lineChart" name="lineChart" value="Line Chart"> Line Chart</input>
+				<input type="checkbox" id="stackedChart" name="stackedChart" value="Stacked Chart"> Stacked Chart</input>
+				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br>
 				<input type="button" name="applyCharts" onclick="applyChart()" value="Apply Charts"></input><br>
 			</form>	
 			</div>
 		</div>
     </div>
-    <div class="chart">
-        <canvas id="piechart"></canvas>
-  		<canvas id="barchart"></canvas>
-  		<canvas id="linechart"></canvas>
+	<div id="parentChart" hidden="true">
+		<div id="childChart" class="chart">
+			<canvas id="piechartcanvas" class="chartCanvas"></canvas>
+			<canvas id="barchartcanvas" class="chartCanvas"></canvas>
+			<canvas id="linechartcanvas" class="chartCanvas"></canvas>
+			<br/>
+			<canvas id="stackedchartcanvas" class="chartCanvas"></canvas>
+			<canvas id="pivotchartcanvas" class="chartCanvas"></canvas>
+		</div>
 	</div>
-	<div class="chart">	
- 		<canvas id="stackedchart"></canvas>
- 		<canvas id="pivotchart"></canvas>
-    </div>
 </body>
 </html>
 

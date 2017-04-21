@@ -403,11 +403,95 @@ function getAllFilteredConditions() {
 }
 
 /*
+ * Function to reset the canvas element.
+ */
+function cleanUpSpace(){
+	var bc = document.getElementById('barchartcanvas');
+	var lc = document.getElementById('linechartcanvas');
+	var pc = document.getElementById('piechartcanvas');
+	var sc = document.getElementById('stackedchartcanvas');
+	var pic = document.getElementById('pivotchartcanvas');
+	if(bc != undefined){
+		bc.remove();
+	}
+	if(lc != undefined){
+		lc.remove();
+	}
+	if(pc != undefined){
+		pc.remove();
+	}
+	if(sc != undefined){
+		sc.remove();
+	}
+	if(pic != undefined){
+		pic.remove();
+	}
+}
+/*
+ * Function to create a canvas chart element and append to the parent div.
+ */
+function createCanvasElement(chartType){
+	var canvas = document.createElement('canvas');
+	canvas.id=chartType;
+	canvas.class="chartCanvas";
+	document.getElementById('childChart').appendChild(canvas);
+}
+
+/*
  * Function to apply chart
  */ 
 function applyChart() {
+	cleanUpSpace();
 	var filteredConditiontionsMap = getAllFilteredConditions();
-	preProcessFilter(filteredConditiontionsMap);
+	var map = preProcessFilter(filteredConditiontionsMap);
+	var chartsSelected = getChartSelections();
+	var labels = [];
+	var vals = [];
+	for (let label of map.keys()){
+		labels.push(label);
+		vals.push(map.get(label));
+	}
+	
+	for(var i =0;i<chartsSelected.length;i++){
+		document.getElementById('parentChart').style.display = "block";
+		if(chartsSelected[i] == "Bar Chart"){
+			createCanvasElement("barchartcanvas");
+			let barChart = new BarChart();
+			barChart.plot(labels,vals);
+		} else if(chartsSelected[i] == "Line Chart"){
+			createCanvasElement("linechartcanvas");
+			let lineChart = new LineChart();
+			lineChart.plot(labels,vals);			
+		} else if(chartsSelected[i] == "Pie Chart"){
+			createCanvasElement("piechartcanvas");
+			let pieChart = new PieChart();
+			pieChart.plot(labels,vals);			
+		} else if(chartsSelected[i] == "Stacked Chart"){
+			createCanvasElement("stackedchartcanvas");
+			var stackedChartCanvasEl = document.getElementById('stackedchartcanvas');
+			var brEl = document.createElement('br');
+			document.getElementById('childChart').insertBefore(brEl,stackedChartCanvasEl);
+			let stackedChart = new StackedChart();
+			stackedChart.plot(labels,vals);			
+		} else if(chartsSelected[i] == "Pivot Chart"){
+			createCanvasElement("pivotchartcanvas");
+			let pivotChart = new PivotChart();
+			pivotChart.plot(labels,vals);			
+		}
+	}
+}
+
+function getChartSelections(){
+	var chartsSelected = [];
+	var select_column_div = document.getElementById('select-column');
+	var parentEl = document.getElementById('plot-graph').children[0];
+	for(var i = 0;i<parentEl.children.length;i++){
+		var childEl = parentEl.children[i];
+		if(childEl.type == 'checkbox' && childEl.checked){
+			chartsSelected.push(childEl.value);
+		}
+	}
+	return chartsSelected;
 }
 
 class Filter{
@@ -492,12 +576,11 @@ function preProcessFilter(filterCondition)
 			resultDataMap.set(col, count);
 		}
 	}
-	console.log(resultDataMap);
-
+	return resultDataMap;
 }
+
 function filterData(columnName,columnValue,isCategorical, isNumerical, operand = '=')
 {
-	//debugger;
 	let filterdata = new Filter();
 	let result = filterdata.filterRow(objArr, columnName, columnValue, operand, isCategorical, isNumerical);
 	return result;
