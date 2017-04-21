@@ -454,18 +454,25 @@ function applyChart() {
 	
 	for(var i =0;i<chartsSelected.length;i++){
 		document.getElementById('parentChart').style.display = "block";
+		let cs = new ChartStore();
+		var chart = null;
 		if(chartsSelected[i] == "Bar Chart"){
 			createCanvasElement("barchartcanvas");
-			let barChart = new BarChart();
-			barChart.plot(labels,vals);
+			chart = cs.createChart("bar");
+			/* let barChart = new BarChart();
+			barChart.plot(labels,vals); */
 		} else if(chartsSelected[i] == "Line Chart"){
 			createCanvasElement("linechartcanvas");
-			let lineChart = new LineChart();
-			lineChart.plot(labels,vals);			
+			chart = cs.createChart("line");
+			/* let lineChart = new LineChart();
+			lineChart.plot(labels,vals); */			
 		} else if(chartsSelected[i] == "Pie Chart"){
 			createCanvasElement("piechartcanvas");
-			let pieChart = new PieChart();
-			pieChart.plot(labels,vals);			
+			
+			chart = cs.createChart("pie");
+			
+			//let pieChart = new PieChart();
+			//pieChart.plot(labels,vals);			
 		} else if(chartsSelected[i] == "Stacked Chart"){
 			createCanvasElement("stackedchartcanvas");
 			var stackedChartCanvasEl = document.getElementById('stackedchartcanvas');
@@ -478,6 +485,9 @@ function applyChart() {
 			let pivotChart = new PivotChart();
 			pivotChart.plot(labels,vals);			
 		}
+		chart.setLabelAndData(labels,vals);
+		chart.setColor();
+		cs.plot(chart);
 	}
 }
 
