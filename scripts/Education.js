@@ -74,10 +74,10 @@ function createTableFromJSON() {
 	      type: 'string',
 	      width: 100,
 	      sortable: true,
-	      filter: {
-	        header: true,
-	        emptyText: ''
-	      }
+	      // filter: {
+	      //   header: true,
+	      //   emptyText: ''
+	      // }
 	    },
 	    clicksToEdit: 1,
 	    columns: Columns.columns,

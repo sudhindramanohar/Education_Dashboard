@@ -28,7 +28,7 @@ const colorCodes = ['rgba(255, 99, 132, 1)',
 				   'rgb(139,69,19)',
 				   'rgb(210,105,30)',
 				   'rgb(244,164,96)',
-]
+];
 
 class ChartOperation{
 	plot(chart){

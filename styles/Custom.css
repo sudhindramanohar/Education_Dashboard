@@ -65,3 +65,15 @@ input[type=checkbox]:checked:after {
 	padding-left:30px;
 	padding-top:30px;
 }
+
+.fancy-grid-header-cell-container {
+    white-space: normal !important;
+}
+
+.fancy-grid-header {
+    height: 65px !important;    
+}
+
+.fancy-grid-header-cell {
+    height: 65px !important;
+}
