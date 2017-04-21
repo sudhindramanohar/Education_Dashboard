@@ -1,4 +1,4 @@
-School_ID,SCHOOL NAME,City,State,Zip,Phone,Num of SAT Test Takers,SAT Critical Reading Avg. Score,SAT Math Avg. Score,SAT Writing Avg. Score,Graduation_Rate_School,College_Enrollment_Rate_School
+﻿School ID,School Name,City,State,Zip,Phone,Num of SAT Test Takers,SAT Critical Reading Avg. Score,SAT Math Avg. Score,SAT Writing Avg. Score,Graduation Rate School,College Enrollment Rate School
 E00254,LMU - LOYOLA LAW SCHOOL,LOS ANGELES,CA,90015,7738621449,29,355,404,363,92.8,84.7
 E00341,STANFORD UNIVERSITY - STANFORD LAW SCHOO,STANFORD,CA,94305,7738261137,91,383,423,366,,12.5
 E00374,UNIV OF CALIFORNIA LOS ANG SCH MED,LOS ANGELES,CA,90095,7734346300,70,377,402,370,0,18.8

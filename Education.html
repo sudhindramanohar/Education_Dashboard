@@ -2,17 +2,18 @@
 <head>
     <title>Education System</title>
     <link rel="stylesheet" type="text/css" href="styles/Custom.css">
-	<script src="node_modules/es6/es6.js"></script>
+	<script src="node_modules/es6/ES6.js"></script>
 	<script src="node_modules/file-saver/FileSaver.js"></script>
 	<script src="node_modules/dataframe-js/dist/dataframe.js"></script>
 	<script src="node_modules/chart.js/dist/Chart.js"></script>
 	<script src="scripts/Education.js"></script>
 	<script src="scripts/ModelUtility.js"></script>
+	<script src="scripts/ControllerUtility.js"></script>
 	<link href="node_modules/fancygrid/client/fancy.min.css" rel="stylesheet">
   	<script src="node_modules/fancygrid/client/fancy.min.js"></script>
 </head>
 <body>
-    <h1 align="center">Welcome to Education System</h1>
+    <h1 align="center">Education Dashboard</h1>
     <div>         
         <form>
           <select id="datasets" class="dropdown">
@@ -49,19 +50,26 @@
 			<div id="plot-graph">
 			<form>
 				<label style="display:block;font-weight:bold">Please Select the Chart Type</label>
-				<input type="checkbox" name="pieChart" value="pieChart">Pie Chart</input>
-				<input type="checkbox" name="barChart" value="barChart"> Bar Chart</input>
-				<input type="checkbox" name="lineChart" value="lineChart"> Line Chart</input>
-				<input type="checkbox" name="stackedChart" value="stackedChart"> Stacked Chart</input>
-				<input type="checkbox" name="pivotChart" value="pivotChart"> Pivot Chart</input><br>
+				<input type="checkbox" id="pieChart" name="pieChart" value="Pie Chart"> Pie Chart</input>
+				<input type="checkbox" id="barChart" name="barChart" value="Bar Chart"> Bar Chart</input>
+				<input type="checkbox" id="lineChart" name="lineChart" value="Line Chart"> Line Chart</input>
+				<input type="checkbox" id="stackedChart" name="stackedChart" value="Stacked Chart"> Stacked Chart</input>
+				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br>
 				<input type="button" name="applyCharts" onclick="applyChart()" value="Apply Charts"></input><br>
 			</form>	
 			</div>
 		</div>
     </div>
-    <div> 
-        <canvas id="myChart" height="200" width="200"></canvas>
-    </div>
+	<div id="parentChart" hidden="true">
+		<div id="childChart" class="chart">
+			<canvas id="piechartcanvas" class="chartCanvas"></canvas>
+			<canvas id="barchartcanvas" class="chartCanvas"></canvas>
+			<canvas id="linechartcanvas" class="chartCanvas"></canvas>
+			<br/>
+			<canvas id="stackedchartcanvas" class="chartCanvas"></canvas>
+			<canvas id="pivotchartcanvas" class="chartCanvas"></canvas>
+		</div>
+	</div>
 </body>
 </html>
 

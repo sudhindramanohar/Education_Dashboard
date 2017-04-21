@@ -57,3 +57,11 @@ input[type=checkbox]:checked:after {
   font-size: 22px;
   text-align: center;
 }
+
+.chart {
+	display: -webkit-inline-box;
+	width: 400px;
+	height:400px;
+	padding-left:30px;
+	padding-top:30px;
+}
