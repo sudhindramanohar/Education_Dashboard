@@ -17,11 +17,11 @@
     <div>         
         <form>
           <select id="datasets" class="dropdown">
-              <option value="School_Profile_Info.csv" selected="selected">School_Profile_Info</option>
-              <option value="SAT_Score.csv">SAT_Score</option>
+              <option value="School_Profile_Info.csv" selected="selected">School_Profile_Info</option>              
               <option value="Demographics.csv">Demographics</option>
               <option value="Campus_Arrests.csv">Campus_Arrests</option>
               <option value="School_Progress_Report.csv">School_Progress_Report</option>
+              <option value="SAT_Score.csv">SAT_Score</option>
         </select>          
         <input type="button" name="Select" onclick="import_data()" value="Submit"></input><br><br>
         <div id="table" style=""></div>
@@ -62,12 +62,12 @@
     </div>
 	<div id="parentChart" hidden="true">
 		<div id="childChart" class="chart">
-			<canvas id="piechartcanvas" class="chartCanvas"></canvas>
-			<canvas id="barchartcanvas" class="chartCanvas"></canvas>
-			<canvas id="linechartcanvas" class="chartCanvas"></canvas>
+			<canvas id="piechartcanvas"></canvas>
+			<canvas id="barchartcanvas"></canvas>
+			<canvas id="linechartcanvas"></canvas>
 			<br/>
-			<canvas id="stackedchartcanvas" class="chartCanvas"></canvas>
-			<canvas id="pivotchartcanvas" class="chartCanvas"></canvas>
+			<canvas id="stackedchartcanvas"></canvas>
+			<canvas id="pivotchartcanvas"></canvas>
 		</div>
 	</div>
 </body>

@@ -28,7 +28,7 @@ const colorCodes = ['rgba(255, 99, 132, 1)',
 				   'rgb(139,69,19)',
 				   'rgb(210,105,30)',
 				   'rgb(244,164,96)',
-];
+]
 
 class ChartOperation{
 	plot(chart){
@@ -106,13 +106,17 @@ class BaseChartOperation{
 class ChartConfig extends BaseChartOperation{
 	
 	setLabelAndData(labels, data){
+		debugger;
 	  this.labels = labels;
 	  this.chartData = data;
 	}
 	
-	setColor(){
+	setColor(bgcolor){
+		debugger;
 	  if(this.chartData){
-		  this.backgroundColor = this.getbgColor(this.chartData.length);
+	  	if(bgcolor){
+		  	this.backgroundColor = this.getbgColor(this.chartData.length);
+		}
 		  this.borderColor = this.getborderColor(this.chartData.length);
 	  }
 	}
@@ -163,7 +167,14 @@ class BarChart extends ChartConfig{
 				position: 'bottom',
 				fontSize: 20,
 				fontStyle: 'bold'
-			}
+			},
+			scales: {
+	            yAxes: [{
+	                ticks: {
+	                    min: 0	                   
+	                }
+	            }]
+        }
 		}
     });
   }

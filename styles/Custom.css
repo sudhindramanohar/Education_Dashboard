@@ -59,10 +59,8 @@ input[type=checkbox]:checked:after {
 }
 
 .chart {
-	display: -webkit-inline-box;
-	width: 400px;
-	height:400px;
-	padding-left:30px;
+  width: 800px;
+	padding-left:10px;
 	padding-top:30px;
 }
 
@@ -70,10 +68,14 @@ input[type=checkbox]:checked:after {
     white-space: normal !important;
 }
 
-.fancy-grid-header {
+.fancy-grid-header, .fancy-grid-header-cell  {
     height: 65px !important;    
 }
 
-.fancy-grid-header-cell {
-    height: 65px !important;
+.fancy-field .fancy-field-text-input {
+    visibility: hidden;
+}
+
+.fancy-scroll-bottom-inner, .fancy-scroll-right-inner{
+      background: #6dbadc !important;
 }
