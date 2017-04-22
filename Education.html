@@ -1,16 +1,17 @@
 <html>
 <head>
-    <title>Education System</title>
+<title>Education System Dashboard</title>
+	<link rel="icon" href="images/icon.png" type="image/png" />
     <link rel="stylesheet" type="text/css" href="styles/Custom.css">
 	<script src="node_modules/es6/ES6.js"></script>
 	<script src="node_modules/file-saver/FileSaver.js"></script>
 	<script src="node_modules/dataframe-js/dist/dataframe.js"></script>
 	<script src="node_modules/chart.js/dist/Chart.js"></script>
-	<script src="scripts/Education.js"></script>
-	<script src="scripts/ModelUtility.js"></script>
-	<script src="scripts/ControllerUtility.js"></script>
 	<link href="node_modules/fancygrid/client/fancy.min.css" rel="stylesheet">
   	<script src="node_modules/fancygrid/client/fancy.min.js"></script>
+  	<script src="scripts/Education.js"></script>
+	<script src="scripts/ModelUtility.js"></script>
+	<script src="scripts/ControllerUtility.js"></script>
 </head>
 <body>
     <div class="heading">
@@ -23,18 +24,17 @@
 	</table>	
 	</div>
 	<br />
-	<br />
 	<div class="datasetName">
 	<p>Choose a Dataset</p>
 	</div>
     <div>         
         <form>
           <select id="datasets" class="dropdown">
-              <option value="School_Profile_Info.csv" selected="selected">School_Profile_Info</option>
-              <option value="SAT_Score.csv">SAT_Score</option>
+              <option value="School_Profile_Info.csv" selected="selected">School_Profile_Info</option>              
               <option value="Demographics.csv">Demographics</option>
               <option value="Campus_Arrests.csv">Campus_Arrests</option>
               <option value="School_Progress_Report.csv">School_Progress_Report</option>
+              <option value="SAT_Score.csv">SAT_Score</option>
         </select>          
         <input type="button" name="Select" onclick="import_data()" value="Submit"></input><br><br>
         <div id="table" style=""></div>
@@ -75,12 +75,12 @@
     </div>
 	<div id="parentChart" hidden="true">
 		<div id="childChart" class="chart">
-			<canvas id="piechartcanvas" class="chartCanvas"></canvas>
-			<canvas id="barchartcanvas" class="chartCanvas"></canvas>
-			<canvas id="linechartcanvas" class="chartCanvas"></canvas>
+			<canvas id="piechartcanvas"></canvas>
+			<canvas id="barchartcanvas"></canvas>
+			<canvas id="linechartcanvas"></canvas>
 			<br/>
-			<canvas id="stackedchartcanvas" class="chartCanvas"></canvas>
-			<canvas id="pivotchartcanvas" class="chartCanvas"></canvas>
+			<canvas id="stackedchartcanvas"></canvas>
+			<canvas id="pivotchartcanvas"></canvas>
 		</div>
 	</div>
 	<div class="seperator"></div>

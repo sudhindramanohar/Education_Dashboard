@@ -110,9 +110,11 @@ class ChartConfig extends BaseChartOperation{
 	  this.chartData = data;
 	}
 	
-	setColor(){
+	setColor(bgcolor){
 	  if(this.chartData){
-		  this.backgroundColor = this.getbgColor(this.chartData.length);
+	  	if(bgcolor){
+		  	this.backgroundColor = this.getbgColor(this.chartData.length);
+		}
 		  this.borderColor = this.getborderColor(this.chartData.length);
 	  }
 	}
@@ -163,7 +165,14 @@ class BarChart extends ChartConfig{
 				position: 'bottom',
 				fontSize: 20,
 				fontStyle: 'bold'
-			}
+			},
+			scales: {
+	            yAxes: [{
+	                ticks: {
+	                    min: 0	                   
+	                }
+	            }]
+        }
 		}
     });
   }
