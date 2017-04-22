@@ -1,27 +1,3 @@
-
-class ChartOperation{
-	plot(chart){
-		var ctx = chart.ctx;
-		if(ctx){
-			ctx.innerHTML = "";
-		}
-		new Chart(ctx, {
-			type: chart.type,
-			data: {
-				labels: chart.labels,
-				datasets: [{
-					label: chart.labels,
-					data: chart.chartData,
-					backgroundColor: chart.backgroundColor,
-					borderColor: chart.borderColor,
-					borderWidth: 1
-				}]
-			},
-			options: chart.options
-		});
-	}
-}
-
 class ChartFactory{
 	createChart(chartType){
 		let chart = null;
@@ -113,9 +89,11 @@ class ChartConfig extends BaseChartOperation{
 	  this.chartData = data;
 	}
 	
-	setColor(){
+	setColor(bgcolor){
 	  if(this.chartData){
-		  this.backgroundColor = this.getbgColor(this.chartData.length);
+	  	if(bgcolor){
+		  	this.backgroundColor = this.getbgColor(this.chartData.length);
+		}
 		  this.borderColor = this.getborderColor(this.chartData.length);
 	  }
 	}
@@ -166,50 +144,17 @@ class BarChart extends ChartConfig{
 				position: 'bottom',
 				fontSize: 20,
 				fontStyle: 'bold'
-			}
+			},
+			scales: {
+	            yAxes: [{
+	                ticks: {
+	                    min: 0	                   
+	                }
+	            }]
+        }
 		}
     });
   }
-	/* plot(labels, chartData){
-		var ctx = document.getElementById("barchartcanvas");
-		if(ctx){
-			ctx.innerHTML = "";
-		}
-		new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: labels,
-				datasets: [{
-					label: '',
-					data: chartData,
-					backgroundColor:this.getbgColor(chartData.length),
-					borderColor: this.getborderColor(chartData.length),
-					borderWidth: 1
-				}]
-			},
-			options: {
-				title: {
-					display: true,
-					text: 'Bar Chart',
-					position: 'bottom',
-					fontSize: 20,
-					fontStyle: 'bold'
-				},
-				scales: {
-					xAxes: [{
-						ticks: {
-							beginAtZero:true
-						}
-					}],
-					yAxes: [{
-						ticks: {
-							beginAtZero:true
-						}
-					}]
-				}
-			}
-		});
-	} */
 }
 
 class LineChart extends ChartConfig{

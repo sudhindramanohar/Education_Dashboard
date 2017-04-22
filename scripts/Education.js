@@ -24,7 +24,6 @@ function export_data(dataset)
     
     dataframeSet = dataset;
     createTableFromJSON();
-	//createFilterElements();
 }
  
 function createColumnHeaderForTable(col){
@@ -48,6 +47,10 @@ function createColumnHeaderForTable(col){
 function createTableFromJSON() {
 	var colData = [];
 	var div = document.getElementById('table');
+	
+		// TABLE STYLES
+	createTableStyle(div);
+	
 	if(div)
 	{
 		div.innerHTML = "";
@@ -73,7 +76,7 @@ function createTableFromJSON() {
 	    defaults: {
 	      type: 'string',
 	      width: 100,
-	      sortable: true,
+	      sortable: false,
 	      filter: {
 	        header: true,
 	        emptyText: ''
@@ -97,13 +100,13 @@ function createObjects(colHeaderValues){
 	if(currentDataSet == "School_Profile_Info.csv"){
 		createSchoolProfileObjects(colHeaderValues);
 	} else if(currentDataSet == "SAT_Score.csv"){
-
+		createSatScoreObjects(colHeaderValues);
 	} else if(currentDataSet == "Demographics.csv"){
-		
+		createDemographicObjects(colHeaderValues);
 	} else if(currentDataSet == "Campus_Arrests.csv"){
-		
+		createCampusArrestObjects(colHeaderValues);
 	} else if(currentDataSet == "School_Progress_Report.csv"){
-		
+		createSchoolProgressReportObjects(colHeaderValues);
 	}
 }
 
@@ -118,7 +121,48 @@ function createSchoolProfileObjects(colHeaderValues){
 		
 		objArr.push(schoolProfileInfoObj);
 	}
-}	
+}
+
+function createSchoolProgressReportObjects(colHeaderValues){
+	var json = getParsedJson();
+	for(var i = 0 ; i < json.length; i++){
+		var record = json[i];
+		let schoolProgressReportObj = new SchoolProgressReport(record[colHeaderValues[0]],record[colHeaderValues[1]],record[colHeaderValues[2]],record[colHeaderValues[3]],record[colHeaderValues[4]],record[colHeaderValues[5]],record[colHeaderValues[6]],record[colHeaderValues[7]],record[colHeaderValues[8]],record[colHeaderValues[9]],record[colHeaderValues[10]],record[colHeaderValues[11]],record[colHeaderValues[12]], record[colHeaderValues[13]], record[colHeaderValues[14]], record[colHeaderValues[15]], record[colHeaderValues[16]], record[colHeaderValues[17]], record[colHeaderValues[18]]);
+		
+		objArr.push(schoolProgressReportObj);
+	}
+}
+
+function createDemographicObjects(colHeaderValues){
+	var json = getParsedJson();
+	for(var i = 0 ; i < json.length; i++){
+		var record = json[i];
+		let demographicObj = new Demographic(record[colHeaderValues[0]],record[colHeaderValues[1]],record[colHeaderValues[2]],record[colHeaderValues[3]],record[colHeaderValues[4]],record[colHeaderValues[5]],record[colHeaderValues[6]],record[colHeaderValues[7]],record[colHeaderValues[8]],record[colHeaderValues[9]],record[colHeaderValues[10]],record[colHeaderValues[11]],record[colHeaderValues[12]]);
+		
+		objArr.push(demographicObj);
+	}
+}
+
+function createCampusArrestObjects(colHeaderValues){
+	var json = getParsedJson();
+	for(var i = 0 ; i < json.length; i++){
+		var record = json[i];
+		let campusArrestObj = new CampusArrest(record[colHeaderValues[0]],record[colHeaderValues[1]],record[colHeaderValues[2]],record[colHeaderValues[3]],record[colHeaderValues[4]],record[colHeaderValues[5]],record[colHeaderValues[6]],record[colHeaderValues[7]],record[colHeaderValues[8]],record[colHeaderValues[9]],record[colHeaderValues[10]],record[colHeaderValues[11]],record[colHeaderValues[12]], record[colHeaderValues[13]], record[colHeaderValues[14]], record[colHeaderValues[15]], record[colHeaderValues[16]], record[colHeaderValues[17]]);
+		
+		objArr.push(campusArrestObj);
+	}
+}
+
+function createSatScoreObjects(colHeaderValues){
+	var json = getParsedJson();
+	for(var i = 0 ; i < json.length; i++){
+		var record = json[i];
+		let satScoreObj = new SATScore(record[colHeaderValues[0]],record[colHeaderValues[1]],record[colHeaderValues[2]],record[colHeaderValues[3]],record[colHeaderValues[4]],record[colHeaderValues[5]],record[colHeaderValues[6]],record[colHeaderValues[7]],record[colHeaderValues[8]],record[colHeaderValues[9]],record[colHeaderValues[10]],record[colHeaderValues[11]]);
+		
+		objArr.push(satScoreObj);
+	}
+}
+
 
 /*
  * Function added to create filter elements
@@ -140,14 +184,18 @@ function createFilterElements() {
 function createFilter() {
 	var select_column_div = document.getElementById("select-column");	
 	createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
-	
+	var br = document.createElement('br');
+	select_column_div.appendChild(br);
 	var json = getParsedJson();	
 	for(var i = 0 ; i < json.length; i++){
 		for (var key in json[i]) {
 			createCheckbox(key,"select-column");
 		}
 		break;
-	}	
+	}
+	
+	// Styles for the filter
+	createFilterStyles(select_column_div);
 	createAddFilterButton(select_column_div);
 }
 
@@ -157,8 +205,10 @@ function createFilter() {
 function createAddFilterButton(select_column_div) {
 	var addFilterButton= document.createElement('input');
 	addFilterButton.setAttribute('type','button');
+	addFilterButton.setAttribute('id', 'addFilter');
 	addFilterButton.setAttribute('name','addFilterButton');
 	addFilterButton.setAttribute('value','Add Filter');
+	addFilterButton.addEventListener('click', function(event){createDivAnimation()});
 	addFilterButton.addEventListener('click',function(event){createRowFilters()});
 	select_column_div.appendChild(document.createElement("br"));
 	select_column_div.appendChild(addFilterButton);
@@ -173,8 +223,10 @@ function createCheckbox(columnName, parentDivId) {
 	checkbox.name = columnName;
 	checkbox.value = "0"; 
 	checkbox.id = columnName;
-	checkbox.style.marginRight = "30px";
-
+	
+	// Styles for Checkbox
+	createCheckboxStyles(checkbox);
+	
 	var label = document.createElement('label')
 	label.htmlFor = "id";
 	label.appendChild(document.createTextNode(columnName));
@@ -456,12 +508,17 @@ function applyChart() {
 		document.getElementById('parentChart').style.display = "block";
 		let cs = new ChartStore();
 		var chart = null;
+		let isBackgroundColorRequired = true;
 		if(chartsSelected[i] == "Bar Chart"){
 			createCanvasElement("barchartcanvas");
 			chart = cs.orderChart("bar");
 		} else if(chartsSelected[i] == "Line Chart"){
 			createCanvasElement("linechartcanvas");
+
 			chart = cs.orderChart("line");	
+			isBackgroundColorRequired = false;
+			/* let lineChart = new LineChart();
+			lineChart.plot(labels,vals); */
 		} else if(chartsSelected[i] == "Pie Chart"){
 			createCanvasElement("piechartcanvas");
 			chart = cs.orderChart("pie");
@@ -478,8 +535,8 @@ function applyChart() {
 			pivotChart.plot(labels,vals);			
 		}
 		chart.setLabelAndData(labels,vals);
-		chart.setColor();
-		chart.plot(chart);
+		chart.setColor(isBackgroundColorRequired);
+		chart.plot();
 	}
 }
 
@@ -586,4 +643,38 @@ function filterData(columnName,columnValue,isCategorical, isNumerical, operand =
 	let filterdata = new Filter();
 	let result = filterdata.filterRow(objArr, columnName, columnValue, operand, isCategorical, isNumerical);
 	return result;
+}
+
+
+/*************************UI Changes***************************/
+
+// Table Style
+
+function createTableStyle(div1) {
+	div1.style.width = "150%";
+	div1.style.paddingBottom = "50px";
+}
+
+// Filter Style
+
+function createFilterStyles(col_div) {
+	var br = document.createElement('br');
+	col_div.style.fontFamily = "Century Gothic";
+	col_div.style.fontWeight = "bold";
+	col_div.appendChild(br);
+}
+
+// Div animations
+
+function createDivAnimation() {
+	var secondDivId = document.getElementById('filter-row');
+	secondDivId.style.fontFamily = "Century Gothic";
+	secondDivId.style.fontWeight = "bold";	
+}
+
+// Checkbox Style
+
+function createCheckboxStyles(chbk) {
+	chbk.style.marginRight = "45px";
+	chbk.style.marginLeft = "10px";
 }
