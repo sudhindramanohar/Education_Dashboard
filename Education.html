@@ -13,7 +13,19 @@
 	<script src="scripts/ControllerUtility.js"></script>
 </head>
 <body>
-    <h1 align="center">Education Dashboard</h1>
+    <div class="heading">
+	<table>
+		<tr>
+			<td><img src='images/ed2.png' alt = "Education" /></td>
+			<td><p><pre> Education System 
+		</tr>
+	</table>	
+	</div>
+	<br />
+	<br />
+	<div class="datasetName">
+	<p>Choose a Dataset</p>
+	</div>
     <div>         
         <form>
           <select id="datasets" class="dropdown">
@@ -37,9 +49,9 @@
 			<br>
 			<div id="numerical-condition">
 				<label style="display:block;font-weight:bold">Please Select The Filter Condition</label>
-				<input type="radio" name="numericalFilter" value="greaterThanEqualTo"> Greater Than Equal To</input>
-				<input type="radio" name="numericalFilter" value="lessThanEqualTo">Less Than Equal To</input>
-				<input type="radio" name="numericalFilter" value="equalTo">Equal To</input><br>
+				<input type="radio" name="numericalFilter" value="greaterThanEqualTo"> Greater Than Equal To</input><br />
+				<input type="radio" name="numericalFilter" value="lessThanEqualTo"> Less Than Equal To</input><br />
+				<input type="radio" name="numericalFilter" value="equalTo"> Equal To</input><br />
 			</div>
 			<br>
 			<div id="numerical-value">
@@ -54,7 +66,7 @@
 				<input type="checkbox" id="barChart" name="barChart" value="Bar Chart"> Bar Chart</input>
 				<input type="checkbox" id="lineChart" name="lineChart" value="Line Chart"> Line Chart</input>
 				<input type="checkbox" id="stackedChart" name="stackedChart" value="Stacked Chart"> Stacked Chart</input>
-				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br>
+				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br /><br />
 				<input type="button" name="applyCharts" onclick="applyChart()" value="Apply Charts"></input><br>
 			</form>	
 			</div>
@@ -70,6 +82,12 @@
 			<canvas id="pivotchartcanvas"></canvas>
 		</div>
 	</div>
+	<div class="seperator"></div>
+	<footer class="footerStyle">
+	<div class="footer-bottom">
+		<p>2017 &copy; Education System Dashboard</p>
+	</div>
+	</footer>
 </body>
 </html>
 
