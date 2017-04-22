@@ -48,6 +48,10 @@ function createColumnHeaderForTable(col){
 function createTableFromJSON() {
 	var colData = [];
 	var div = document.getElementById('table');
+	
+		// TABLE STYLES
+	createTableStyle(div);
+	
 	if(div)
 	{
 		div.innerHTML = "";
@@ -140,14 +144,18 @@ function createFilterElements() {
 function createFilter() {
 	var select_column_div = document.getElementById("select-column");	
 	createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
-	
+	var br = document.createElement('br');
+	select_column_div.appendChild(br);
 	var json = getParsedJson();	
 	for(var i = 0 ; i < json.length; i++){
 		for (var key in json[i]) {
 			createCheckbox(key,"select-column");
 		}
 		break;
-	}	
+	}
+	
+	// Styles for the filter
+	createFilterStyles(select_column_div);
 	createAddFilterButton(select_column_div);
 }
 
@@ -157,8 +165,10 @@ function createFilter() {
 function createAddFilterButton(select_column_div) {
 	var addFilterButton= document.createElement('input');
 	addFilterButton.setAttribute('type','button');
+	addFilterButton.setAttribute('id', 'addFilter');
 	addFilterButton.setAttribute('name','addFilterButton');
 	addFilterButton.setAttribute('value','Add Filter');
+	addFilterButton.addEventListener('click', function(event){createDivAnimation()});
 	addFilterButton.addEventListener('click',function(event){createRowFilters()});
 	select_column_div.appendChild(document.createElement("br"));
 	select_column_div.appendChild(addFilterButton);
@@ -173,8 +183,10 @@ function createCheckbox(columnName, parentDivId) {
 	checkbox.name = columnName;
 	checkbox.value = "0"; 
 	checkbox.id = columnName;
-	checkbox.style.marginRight = "30px";
-
+	
+	// Styles for Checkbox
+	createCheckboxStyles(checkbox);
+	
 	var label = document.createElement('label')
 	label.htmlFor = "id";
 	label.appendChild(document.createTextNode(columnName));
@@ -594,4 +606,38 @@ function filterData(columnName,columnValue,isCategorical, isNumerical, operand =
 	let filterdata = new Filter();
 	let result = filterdata.filterRow(objArr, columnName, columnValue, operand, isCategorical, isNumerical);
 	return result;
+}
+
+
+/*************************UI Changes***************************/
+
+// Table Style
+
+function createTableStyle(div1) {
+	div1.style.width = "150%";
+	div1.style.paddingBottom = "50px";
+}
+
+// Filter Style
+
+function createFilterStyles(col_div) {
+	var br = document.createElement('br');
+	col_div.style.fontFamily = "Century Gothic";
+	col_div.style.fontWeight = "bold";
+	col_div.appendChild(br);
+}
+
+// Div animations
+
+function createDivAnimation() {
+	var secondDivId = document.getElementById('filter-row');
+	secondDivId.style.fontFamily = "Century Gothic";
+	secondDivId.style.fontWeight = "bold";	
+}
+
+// Checkbox Style
+
+function createCheckboxStyles(chbk) {
+	chbk.style.marginRight = "45px";
+	chbk.style.marginLeft = "10px";
 }
