@@ -1,4 +1,3 @@
-let DataFrame = dfjs.DataFrame;
 let ctx = document.getElementById("myChart");
 let c = document.getElementById("newChart");
 var dataframeSet = 0;
@@ -6,6 +5,7 @@ var objArr = [];
 var currentDataSet = "";
 
 function import_data(){
+	let DataFrame = dfjs.DataFrame;
 	schoolProfileInfoObjArr = new Array();
     var vals = document.getElementById("datasets");
     currentDataSet = vals.options[vals.selectedIndex].value;
@@ -458,21 +458,13 @@ function applyChart() {
 		var chart = null;
 		if(chartsSelected[i] == "Bar Chart"){
 			createCanvasElement("barchartcanvas");
-			chart = cs.createChart("bar");
-			/* let barChart = new BarChart();
-			barChart.plot(labels,vals); */
+			chart = cs.orderChart("bar");
 		} else if(chartsSelected[i] == "Line Chart"){
 			createCanvasElement("linechartcanvas");
-			chart = cs.createChart("line");
-			/* let lineChart = new LineChart();
-			lineChart.plot(labels,vals); */			
+			chart = cs.orderChart("line");	
 		} else if(chartsSelected[i] == "Pie Chart"){
 			createCanvasElement("piechartcanvas");
-			
-			chart = cs.createChart("pie");
-			
-			//let pieChart = new PieChart();
-			//pieChart.plot(labels,vals);			
+			chart = cs.orderChart("pie");
 		} else if(chartsSelected[i] == "Stacked Chart"){
 			createCanvasElement("stackedchartcanvas");
 			var stackedChartCanvasEl = document.getElementById('stackedchartcanvas');
@@ -487,7 +479,7 @@ function applyChart() {
 		}
 		chart.setLabelAndData(labels,vals);
 		chart.setColor();
-		cs.plot(chart);
+		chart.plot(chart);
 	}
 }
 
