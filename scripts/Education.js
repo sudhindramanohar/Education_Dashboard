@@ -511,17 +511,27 @@ function applyChart() {
 		let isBackgroundColorRequired = true;
 		if(chartsSelected[i] == "Bar Chart"){
 			createCanvasElement("barchartcanvas");
+
+			let barChartDecorator = new BarChartDecorator();
 			chart = cs.orderChart("bar");
+			chart.setLabelAndData(labels,vals);
+			barChartDecorator.applyBackgroundColor(chart);
+			barChartDecorator.applyBorderColor(chart);
 		} else if(chartsSelected[i] == "Line Chart"){
+			let lineChartDecorator = new LineChartDecorator();
 			createCanvasElement("linechartcanvas");
 
-			chart = cs.orderChart("line");	
-			isBackgroundColorRequired = false;
-			/* let lineChart = new LineChart();
-			lineChart.plot(labels,vals); */
+			chart = cs.orderChart("line");
+			chart.setLabelAndData(labels,vals);
+			lineChartDecorator.applyBorderColor(chart);
+
 		} else if(chartsSelected[i] == "Pie Chart"){
+			let pieChartDecorator = new PieChartDecorator();
 			createCanvasElement("piechartcanvas");
 			chart = cs.orderChart("pie");
+			chart.setLabelAndData(labels,vals); 
+			pieChartDecorator.applyBackgroundColor(chart);
+			pieChartDecorator.applyBorderColor(chart);
 		} else if(chartsSelected[i] == "Stacked Chart"){
 			createCanvasElement("stackedchartcanvas");
 			var stackedChartCanvasEl = document.getElementById('stackedchartcanvas');
@@ -534,8 +544,6 @@ function applyChart() {
 			let pivotChart = new PivotChart();
 			pivotChart.plot(labels,vals);			
 		}
-		chart.setLabelAndData(labels,vals);
-		chart.setColor(isBackgroundColorRequired);
 		chart.plot();
 	}
 }
