@@ -106,13 +106,11 @@ class BaseChartOperation{
 class ChartConfig extends BaseChartOperation{
 	
 	setLabelAndData(labels, data){
-		debugger;
 	  this.labels = labels;
 	  this.chartData = data;
 	}
 	
 	setColor(bgcolor){
-		debugger;
 	  if(this.chartData){
 	  	if(bgcolor){
 		  	this.backgroundColor = this.getbgColor(this.chartData.length);
