@@ -1,4 +1,3 @@
-let DataFrame = dfjs.DataFrame;
 let ctx = document.getElementById("myChart");
 let c = document.getElementById("newChart");
 var dataframeSet = 0;
@@ -6,6 +5,7 @@ var objArr = [];
 var currentDataSet = "";
 
 function import_data(){
+	let DataFrame = dfjs.DataFrame;
 	schoolProfileInfoObjArr = new Array();
     var vals = document.getElementById("datasets");
     currentDataSet = vals.options[vals.selectedIndex].value;
@@ -24,7 +24,6 @@ function export_data(dataset)
     
     dataframeSet = dataset;
     createTableFromJSON();
-	//createFilterElements();
 }
  
 function createColumnHeaderForTable(col){
@@ -512,24 +511,29 @@ function applyChart() {
 		let isBackgroundColorRequired = true;
 		if(chartsSelected[i] == "Bar Chart"){
 			createCanvasElement("barchartcanvas");
+
 			let barChartDecorator = new BarChartDecorator();
-			chart = cs.createChart("bar");
+			chart = cs.orderChart("bar");
 			chart.setLabelAndData(labels,vals);
 			barChartDecorator.applyBackgroundColor(chart);
 			barChartDecorator.applyBorderColor(chart);
 		} else if(chartsSelected[i] == "Line Chart"){
 			let lineChartDecorator = new LineChartDecorator();
 			createCanvasElement("linechartcanvas");
-			chart = cs.createChart("line");
+
+			chart = cs.orderChart("line");
 			chart.setLabelAndData(labels,vals);
 			lineChartDecorator.applyBorderColor(chart);
+
+			chart = cs.orderChart("line");
+
 		} else if(chartsSelected[i] == "Pie Chart"){
 			let pieChartDecorator = new PieChartDecorator();
 			createCanvasElement("piechartcanvas");
-			chart = cs.createChart("pie");
+			chart = cs.orderChart("pie");
 			chart.setLabelAndData(labels,vals); 
 			pieChartDecorator.applyBackgroundColor(chart);
-			pieChartDecorator.applyBorderColor(chart);		
+			pieChartDecorator.applyBorderColor(chart);
 		} else if(chartsSelected[i] == "Stacked Chart"){
 			createCanvasElement("stackedchartcanvas");
 			var stackedChartCanvasEl = document.getElementById('stackedchartcanvas');
@@ -542,7 +546,7 @@ function applyChart() {
 			let pivotChart = new PivotChart();
 			pivotChart.plot(labels,vals);			
 		}
-		cs.plot(chart);
+		chart.plot();
 	}
 }
 
