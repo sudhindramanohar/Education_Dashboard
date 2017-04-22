@@ -525,8 +525,6 @@ function applyChart() {
 			chart.setLabelAndData(labels,vals);
 			lineChartDecorator.applyBorderColor(chart);
 
-			chart = cs.orderChart("line");
-
 		} else if(chartsSelected[i] == "Pie Chart"){
 			let pieChartDecorator = new PieChartDecorator();
 			createCanvasElement("piechartcanvas");
