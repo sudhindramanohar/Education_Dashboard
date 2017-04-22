@@ -72,15 +72,18 @@ class ChartStore extends ChartOperation{
 }
 
 class BaseChartOperation{
-	constructor({ name = '', type = '', ctx ='', labels = [], chartData = [], backgroundColor = '', borderColor = '', options = {}}) {
-		this.name = name;
-		this.type = type;
-		this.ctx = ctx;
-		this.labels = labels;
-		this.chartData = chartData;
-		this.backgroundColor = backgroundColor;
-		this.borderColor = borderColor;
-		this.options = options;
+	
+	constructor(chart, name,type, ctx, labels = [], chartData = [], backgroundColor = '', borderColor = '', options = {}) {
+		if(chart != undefined || chart != null){
+		this.name = chart.name;
+		this.type = chart.type;
+		this.ctx = chart.ctx;
+		this.labels = chart.labels;
+		this.chartData = chart.chartData;
+		this.backgroundColor = chart.backgroundColor;
+		this.borderColor = chart.borderColor;
+		this.options = chart.options;
+		}
 	}
 	getbgColor(noOfCols){
 		var bgColor = colorCodes;
@@ -105,23 +108,58 @@ class BaseChartOperation{
 
 class ChartConfig extends BaseChartOperation{
 	
+	constructor(chart) {
+		super(chart);
+	}
 	setLabelAndData(labels, data){
 	  this.labels = labels;
 	  this.chartData = data;
 	}
 	
-	setColor(bgcolor){
+	applyBackgroundColor(chartConfig){
+		
+	}
+
+	applyBorderColor(chartConfig){
+
+	}	
+	/*setColor(bgcolor){
 	  if(this.chartData){
 	  	if(bgcolor){
 		  	this.backgroundColor = this.getbgColor(this.chartData.length);
 		}
 		  this.borderColor = this.getborderColor(this.chartData.length);
 	  }
-	}
+	}*/
 	
 	randomScalingFactor() {
 		return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
 	}
+}
+
+class ChartDecorator extends ChartConfig {
+
+	applyBorderColor(chartConfig){
+		chartConfig.borderColor = chartConfig.getborderColor(chartConfig.chartData.length);
+	}
+}
+
+class BarChartDecorator extends ChartDecorator {
+
+	applyBackgroundColor(chartConfig){
+		chartConfig.backgroundColor = chartConfig.getbgColor(chartConfig.chartData.length);
+	}
+}
+
+class PieChartDecorator extends ChartDecorator {
+
+	applyBackgroundColor(chartConfig){
+		chartConfig.backgroundColor = chartConfig.getbgColor(chartConfig.chartData.length);
+	}
+}
+
+class LineChartDecorator extends ChartDecorator {
+
 }
 
 class PieChart extends ChartConfig{
