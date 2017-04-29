@@ -29,10 +29,17 @@ class ViewUtility {
 		let cs = new ChartStore();
 		viewObj.cleanUpSpace();
 		let filteredConditiontionsMap = filterObj.getAllFilteredConditions();
-		let map = filterObj.preProcessFilter(filteredConditiontionsMap);
 		let chartsSelected = this.getChartSelections();
+		// for(let i =0;i<chartsSelected.length;i++){
+		// 	if(chartsSelected[i] == "Stacked Chart"){
+		// 		isStackedChart = true;
+		// 		break;
+		// 	}
+		// }
+		let map = filterObj.preProcessFilter(filteredConditiontionsMap, false);
 		let labels = [];
 		let vals = [];
+
 		for (let label of map.keys()){
 			labels.push(label);
 			vals.push(map.get(label));
@@ -64,18 +71,31 @@ class ViewUtility {
 				pieChartDecorator.applyBackgroundColor(chart);
 				pieChartDecorator.applyBorderColor(chart);
 			} else if(chartsSelected[i] == "Stacked Chart"){
+				//let stackedChartDecorator = new StackedChartDecorator();
 				viewObj.createCanvasElement("stackedchartcanvas");
-				let stackedChartCanvasEl = document.getElementById('stackedchartcanvas');
-				let brEl = document.createElement('br');
-				document.getElementById('childChart').insertBefore(brEl,stackedChartCanvasEl);
-				let stackedChart = new StackedChart();
-				stackedChart.plot(labels,vals);			
+				chart = cs.orderChart("stacked");
+				let Smap = filterObj.preProcessFilter(filteredConditiontionsMap, true);
+				let Slabels = [];
+				let Svals = [];
+
+				for (let label of Smap.keys()){
+					Slabels.push(label);
+					Svals.push(Smap.get(label));
+				}
+				chart.setLabelAndData(Slabels,Svals);
+
+				//stackedChartDecorator.applyBackgroundColor(chart);
+				//stackedChartDecorator.applyBorderColor(chart);		
 			} else if(chartsSelected[i] == "Pivot Chart"){
 				viewObj.createCanvasElement("pivotchartcanvas");
 				let pivotChart = new PivotChart();
 				pivotChart.plot(labels,vals);			
 			}
-			chart.plot();
+			if(chartsSelected[i] != "Stacked Chart"){
+				chart.plot();
+			} else if(chartsSelected[i] == "Stacked Chart"){
+				chart.plotStackedChart();
+			}
 		}
 	}
 

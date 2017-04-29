@@ -20,14 +20,17 @@ class PieChartDecorator extends ChartDecorator {
 }
 
 class LineChartDecorator extends ChartDecorator {
-
 }
 
 
 class StackedChartDecorator extends BarChartDecorator {
-
+	applyBackgroundColor(chartConfig){
+		chartConfig.backgroundColor = chartConfig.getbgColor(chartConfig.chartData.length);
+	}
 }
 
 class PivotChartDecorator extends ChartDecorator {
-
+	applyBackgroundColor(chartConfig){
+		chartConfig.backgroundColor = chartConfig.getbgColor(chartConfig.chartData.length);
+	}
 }

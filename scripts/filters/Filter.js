@@ -157,7 +157,7 @@ class FilterData{
 		return filteredItem;
 	}
 
-	preProcessFilter(filterCondition)
+	preProcessFilter(filterCondition,isStackedChart)
 	{
 		let isCategorical = 0;
 		let isNumerical = 0;
@@ -166,15 +166,31 @@ class FilterData{
 		let columnValue;
 		let operand;
 		let colNames = [];
+		
+		
 		let resultDataMap = new Map();
 		for (let categoryKey of filterCondition[0].keys()){
 			isCategorical = 1;
 			isNumerical = 0;
 			columnName = categoryKey;
 			categoryValues = filterCondition[0].get(categoryKey);
+			let stackedDataMap = new Map();
+
 			for(let columnVal of categoryValues){
+
 				let count = this.filterDataValues(columnName, columnVal, isCategorical, isNumerical);
-				resultDataMap.set(columnVal, count);
+				if(isStackedChart)
+				{
+					stackedDataMap.set(columnVal, count);
+				}
+				else{
+					resultDataMap.set(columnVal, count);				
+				}
+
+			}
+
+			if(isStackedChart){
+				resultDataMap.set(categoryKey, stackedDataMap);
 			}
 		}
 
