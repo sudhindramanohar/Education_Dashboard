@@ -109,6 +109,20 @@ class Dataset{
 		}
 		return columnSet;
 	}
+	
+	/*
+	 * Function added to get Label based on parameterName
+     */	
+	getLabel(parameterName){
+		let allColumnsSet = this.getAllColumns();
+		let filterObj = new FilterData();
+		for (var key in allColumnsSet) {
+			if(parameterName == filterObj.convertToCamelCase(key," ")){
+				return key;
+			}
+		}
+		return parameterName;
+	}
 }
 
 let datasetInstance = new Dataset();
