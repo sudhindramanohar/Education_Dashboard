@@ -8,11 +8,31 @@
 	<script src="node_modules/dataframe-js/dist/dataframe.js"></script>
 	<script src="node_modules/chart.js/dist/Chart.js"></script>
 	<script src="scripts/Education.js"></script>
-	<script src="scripts/ModelUtility.js"></script>
-	<script src="scripts/ControllerUtility.js"></script>
+	<!--<script src="scripts/ModelUtility.js"></script>
+	<script src="scripts/ControllerUtility.js"></script>-->
 	<script src="scripts/constants/Constant.js"></script>
+	<script src="scripts/datasets/Dataset.js"></script>
+	<script src="scripts/view/View.js"></script>
+	<script src="scripts/view/ViewUtility.js"></script>
+	<script src="scripts/datasets/SchoolProfileInfo.js"></script>
+	<script src="scripts/datasets/CampusArrest.js"></script>
+	<script src="scripts/datasets/Demographics.js"></script>
+	<script src="scripts/datasets/SATScore.js"></script>
+	<script src="scripts/datasets/SchoolProgressReport.js"></script>
+	<script src="scripts/charts/BaseChartOperation.js"></script>
+	<script src="scripts/charts/ChartFactory.js"></script>
+	<script src="scripts/charts/ChartConfig.js"></script>
+	<script src="scripts/charts/ChartStore.js"></script>
+	<script src="scripts/charts/PieChart.js"></script>
+	<script src="scripts/charts/BarChart.js"></script>
+	<script src="scripts/charts/LineChart.js"></script>
+	<script src="scripts/charts/StackedChart.js"></script>
+	<script src="scripts/charts/PivotChart.js"></script>
+	<script src="scripts/filters/Filter.js"></script>
+	<script src="scripts/decorator/Decorator.js"></script>
+	
 	<link href="node_modules/fancygrid/client/fancy.min.css" rel="stylesheet">
-  	<script src="node_modules/fancygrid/client/fancy.min.js"></script>
+  	<script src="node_modules/fancygrid/client/fancy.full.min.js"></script>
 </head>
 <body>
     <div class="heading">
@@ -31,16 +51,21 @@
     <div>         
         <form>
           <select id="datasets" class="dropdown">
-              <option value="School_Profile_Info.csv" selected="selected">School_Profile_Info</option>              
+              <option value="School_Profile_Info.csv" selected="selected">School Profile Info</option>              
               <option value="Demographics.csv">Demographics</option>
-              <option value="Campus_Arrests.csv">Campus_Arrests</option>
-              <option value="School_Progress_Report.csv">School_Progress_Report</option>
-              <option value="SAT_Score.csv">SAT_Score</option>
+              <option value="Campus_Arrests.csv">Campus Arrests</option>
+              <option value="School_Progress_Report.csv">School Progress Report</option>
+              <option value="SAT_Score.csv">SAT Score</option>
         </select>          
-        <input type="button" name="Select" onclick="import_data()" value="Submit"></input><br><br>
+        <input type="button" name="Select" onclick="datasetInstance.import_data.call(datasetInstance)" value="Submit"></input><br><br>
         <div id="table" style=""></div>
         </form>
         <div id="showData"></div>
+		<div id="invalid-msg" class="invalid-msg" hidden="true">
+		  <span class="closebtn" onclick="viewUtilityInstance.hideErrorBox.call(viewUtilityInstance)">&times;</span>
+		  <strong>Error!</strong> Categorical Filters and more than one Numerical Filters cannot be chosen
+		  Please re-select!!!
+		</div>
 		<div id="filter"></div>
 		<div id="filter-row"  hidden="true">
 			<br>
@@ -61,17 +86,28 @@
 				<input id= "numericalFilter" style="background-color: white; border: groove;color: black;padding: 1px 0px; text-align: center; text-decoration: none;"  type="number" name="numericalFilter" value="numericalFilter"></input>
 			</div>
 			<br>
-			<div id="plot-graph">
+		</div>
+		<div id="plot-statistics" hidden="true">
+		<br>
+			<form>
+				<label style="display:block;font-weight:bold">Please Select the Statistics Type</label>
+				<input type="checkbox" id="min" name="min" value="min"> Min</input>
+				<input type="checkbox" id="max" name="max" value="max"> Max</input>
+				<input type="checkbox" id="average" name="average" value="average"> Average</input>
+				<input type="checkbox" id="mean" name="mean" value="mean"> Mean</input>
+				<input type="checkbox" id="standardDeviation" name="standardDeviation" value="standardDeviation"> Standard Deviation</input><br />
+			</form>	
+		</div>
+		<div id="plot-graph" hidden="true">
 			<form>
 				<label style="display:block;font-weight:bold">Please Select the Chart Type</label>
 				<input type="checkbox" id="pieChart" name="pieChart" value="Pie Chart"> Pie Chart</input>
 				<input type="checkbox" id="barChart" name="barChart" value="Bar Chart"> Bar Chart</input>
 				<input type="checkbox" id="lineChart" name="lineChart" value="Line Chart"> Line Chart</input>
 				<input type="checkbox" id="stackedChart" name="stackedChart" value="Stacked Chart"> Stacked Chart</input>
-				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br /><br />
-				<input type="button" name="applyCharts" onclick="applyChart()" value="Apply Charts"></input><br>
-			</form>	
-			</div>
+				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br />
+				<input type="button" name="applyCharts" onclick="viewUtilityInstance.applyChart.call(viewUtilityInstance)" value="Apply Charts"></input>
+			</form>
 		</div>
     </div>
 	<div id="parentChart" hidden="true">
