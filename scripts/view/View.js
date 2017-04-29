@@ -32,9 +32,7 @@ class EducationView {
 		let colData = [];
 		let div = document.getElementById('table');
 		let dataObj = new Dataset();
-			// TABLE STYLES
-		this.createTableStyle(div);
-		
+			
 		if(div)
 		{
 			div.innerHTML = "";
@@ -322,11 +320,6 @@ class EducationView {
 		canvas.id=chartType;
 		canvas.class="chartCanvas";
 		document.getElementById('childChart').appendChild(canvas);
-	}
-
-	// Table Style
-	createTableStyle(div1) {
-		div1.style.width = "150%";
 	}
 	
 	// Filter Styles
