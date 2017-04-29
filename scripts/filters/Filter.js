@@ -117,6 +117,7 @@ class FilterData{
 		let filteredItem = [];
 		let selectedCatColumnValueMap = new Map();
 		let selectedNumColumnValueMap = new Map();
+		let selectedStatisticsMap = new Map();
 		let numericalCheckBox = new Set();
 		
 		//logic for categorical filter map
@@ -151,9 +152,30 @@ class FilterData{
 			selectedNumColumnValueMap.set('numericalFilterValue',document.getElementById('numericalFilter').value);
 		}
 		filteredItem.push(selectedNumColumnValueMap); //push numerical related values to second element in array;
+		
+		// statistics related logic
+		selectedStatisticsMap.set('statistics',this.getAllCheckedStatistics());
+		filteredItem.push(selectedStatisticsMap);
+		
 		return filteredItem;
 	}
 
+	/*
+	 * Function to get all checked Statistics 
+	 */
+	getAllCheckedStatistics(){
+		let statisticsDiv = document.getElementById("plot-statistics");
+		let formDiv = statisticsDiv.children[1];
+		let checkedStatsSet = new Set();	
+		for(let i = 0;i < formDiv.children.length; i++){
+			let childDiv = formDiv.children[i];
+			if(childDiv.nodeName == 'INPUT' && childDiv.checked){
+				checkedStatsSet.add(childDiv.name);
+			}
+		}
+		return checkedStatsSet;
+	}
+	
 	preProcessFilter(filterCondition)
 	{
 		let isCategorical = 0;
