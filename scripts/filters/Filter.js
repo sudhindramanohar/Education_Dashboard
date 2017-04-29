@@ -8,7 +8,9 @@ class FilterData{
  	*/
 	getAllValuesForCategory(categoryName) {
 		let categoryValueSet = new Set();
-		var json = getParsedJson();	
+
+		let datasetObj = new Dataset();
+		var json = datasetObj.getParsedJson();	
 		for(var i = 0 ; i < json.length; i++){
 			for (var key in json[i]) {
 				var columnName = key;
@@ -26,7 +28,9 @@ class FilterData{
 	 */
 	getAllCategorisedColumnSet() {
 		let categorisedColumnsSet = new Set();
-		var json = getParsedJson();
+
+		let datasetObj = new Dataset();
+		var json = datasetObj.getParsedJson();
 		for(var i = 0 ; i < json.length; i++){
 			for (var key in json[i]) {
 				var columnName = key;
@@ -66,9 +70,11 @@ class FilterData{
 	 */
 	getCheckedCategorisedColumns() {
 		let checkedCategorisedColumnSet = new Set();
+
+		let viewUtility = new ViewUtility();
 		var categorisedColumnsSet = this.getAllCategorisedColumnSet();
 		for (const value of categorisedColumnsSet) {		
-			if(isColumnSelected(value)){
+			if(viewUtility.isColumnSelected(value)){
 				checkedCategorisedColumnSet.add(value);
 			}
 		}	
@@ -80,7 +86,8 @@ class FilterData{
 	 */
 	getAllNumericalColumns() {
 		var numericalFilterColumnsSet = new Set();
-		var allColumns = getAllColumns();
+		let datasetObj = new Dataset();
+		var allColumns = datasetObj.getAllColumns();
 		var categorisedColumnsSet = this.getAllCategorisedColumnSet();
 		for (const value of allColumns) {	
 			if(!categorisedColumnsSet.has(value)){
@@ -135,8 +142,9 @@ class FilterData{
 		
 		//logic for numerical Values
 		var numericalFilters = this.getAllNumericalColumns();
+		let viewUtility = new ViewUtility();
 		for (const value of numericalFilters) {
-			if(isColumnSelected(value)){
+			if(viewUtility.isColumnSelected(value)){
 				numericalCheckBox.add(this.convertToCamelCase(value," "));
 			}
 		}

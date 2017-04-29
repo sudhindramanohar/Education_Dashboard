@@ -4,7 +4,7 @@ var dataframeSet = 0;
 var objArr = [];
 var currentDataSet = "";
 
-function import_data(){
+/*function import_data(){
 	let DataFrame = dfjs.DataFrame;
 	schoolProfileInfoObjArr = new Array();
     var vals = document.getElementById("datasets");
@@ -96,6 +96,7 @@ function createTableFromJSON() {
 /*
  *	Function to create objects for the number of records in the dataset.
  */
+ /*
 function createObjects(colHeaderValues){
 	if(currentDataSet == "School_Profile_Info.csv"){
 		createSchoolProfileObjects(colHeaderValues);
@@ -109,10 +110,12 @@ function createObjects(colHeaderValues){
 		createSchoolProgressReportObjects(colHeaderValues);
 	}
 }
+*/
 
 /*
  *	Function to create objects for the number of records in the dataset.
  */
+ /*
 function createSchoolProfileObjects(colHeaderValues){
 	var json = getParsedJson();
 	for(var i = 0 ; i < json.length; i++){
@@ -162,11 +165,12 @@ function createSatScoreObjects(colHeaderValues){
 		objArr.push(satScoreObj);
 	}
 }
-
+*/
 
 /*
  * Function added to create filter elements
  */	
+ /*
 function createFilterElements() {
 	var filter = document.createElement('div');
 	filter.id = 'select-column';
@@ -181,6 +185,7 @@ function createFilterElements() {
 /*
  * Function added to create filter functionality
  */
+ /*
 function createFilter() {
 	var select_column_div = document.getElementById("select-column");	
 	createHeader(select_column_div,"Please Select The Data Labels(Columns)");	
@@ -202,6 +207,7 @@ function createFilter() {
 /*
  * Function added to create "Add Filter" for filter
  */
+ /*
 function createAddFilterButton(select_column_div) {
 	var addFilterButton= document.createElement('input');
 	addFilterButton.setAttribute('type','button');
@@ -217,6 +223,7 @@ function createAddFilterButton(select_column_div) {
 /*
  * Function added to create checkbox for Column selection
  */
+ /*
 function createCheckbox(columnName, parentDivId) {
 	var checkbox = document.createElement('input');
 	checkbox.type = "checkbox";
@@ -241,6 +248,7 @@ function createCheckbox(columnName, parentDivId) {
 /*
  * Function added to create header
  */ 
+ /*
 function createHeader(divId,headerLabel) {
 	var heading = document.createElement('label');
 	heading.style.fontWeight = 'bold';
@@ -252,14 +260,16 @@ function createHeader(divId,headerLabel) {
 /*
  * FUnction added to Create Row Filters
  */
+ /*
 function createRowFilters() {
 	
+	let filterData = new FilterData();
 	//clear previous checkbox div
 	var divContainer = document.getElementById('categorical-filter-checkbox');
 	divContainer.innerHTML = "";
 	//show filter div
 	document.getElementById("filter-row").hidden=false;
-	var filterData = new FilterData();
+
 	var checkedCategorisedColumnsSet = filterData.getCheckedCategorisedColumns();
 	
 	//for each categorical value in set build multiselect dropdown
@@ -277,7 +287,6 @@ function createRowFilters() {
 		var selectLabel = document.createElement('label')
 		selectLabel.htmlFor = "id";
 		selectLabel.appendChild(document.createTextNode(value));
-
 		var categoryValueSet = filterData.getAllValuesForCategory(value);
 		for (const value of categoryValueSet) {
 			var option = document.createElement("option");
@@ -293,11 +302,51 @@ function createRowFilters() {
 	}
 }
 
+/*
+ * Function to get All values for particular category
+ */
+ /*
+function getAllValuesForCategory(categoryName) {
+	let categoryValueSet = new Set();
+	var json = getParsedJson();	
+	for(var i = 0 ; i < json.length; i++){
+		for (var key in json[i]) {
+			var columnName = key;
+			var columnValue = json[i][key];
+			if(categoryName == columnName) {
+				categoryValueSet.add(columnValue);
+			}
+		}
+	}	
+	return categoryValueSet;
+}
 
+
+/*
+ * Function to get All Categorised Value based on selection of columns
+ */
+ /*
+function getAllCategorisedColumnSet() {
+	let categorisedColumnsSet = new Set();
+	var json = getParsedJson();
+	for(var i = 0 ; i < json.length; i++){
+		for (var key in json[i]) {
+			var columnName = key;
+			var columnValue = json[i][key];
+			if((columnName != null && columnName != '') && isNaN(columnValue)){
+				categorisedColumnsSet.add(columnName);
+			} else if(categorisedColumnsSet.size == json[i].length){
+				return categorisedColumnsSet;
+			}
+		}	
+	}		
+	return categorisedColumnsSet;
+}
 
 /*
  * Function to check if Column is Selected
  */
+ /*
 function isColumnSelected(columnName) {
 	var isColumnSelected = false;
 	var select_column_div = document.getElementById('select-column');
@@ -314,6 +363,7 @@ function isColumnSelected(columnName) {
 /*
  * Function to get parsed json value of current dataset
  */ 
+ /*
 function getParsedJson() {
 	return JSON.parse(dataframeSet);
 }
@@ -321,6 +371,7 @@ function getParsedJson() {
 /*
  * Function to get all column names
  */ 
+ /*
 function getAllColumns() {
 	let columnSet = new Set();
 	var json = getParsedJson();
@@ -330,10 +381,102 @@ function getAllColumns() {
 	return columnSet;
 }
 
+/*
+ * Function to get Checked Categorised Column name
+ */
+ /*
+function getCheckedCategorisedColumns() {
+	let checkedCategorisedColumnSet = new Set();
+	var categorisedColumnsSet = getAllCategorisedColumnSet();
+	for (const value of categorisedColumnsSet) {		
+		if(isColumnSelected(value)){
+			checkedCategorisedColumnSet.add(value);
+		}
+	}	
+	return checkedCategorisedColumnSet;
+}
+
+/*
+ * Function to get All Numerical Columns
+ */
+ /*
+function getAllNumericalColumns() {
+	var numericalFilterColumnsSet = new Set();
+	var allColumns = getAllColumns();
+	var categorisedColumnsSet = getAllCategorisedColumnSet();
+	for (const value of allColumns) {	
+		if(!categorisedColumnsSet.has(value)){
+			numericalFilterColumnsSet.add(value);
+		}
+	}
+	return numericalFilterColumnsSet;
+}
+
+/*
+ * Function to convert string To a Camel Case
+ */
+ /*
+function convertToCamelCase(string,seperator){
+    var out = "";
+	if(seperator != null){
+    string.split(seperator).forEach(function (el, idx) {
+        var add = el.toLowerCase();
+        out += (idx === 0 ? add : add[0].toUpperCase() + add.slice(1));
+    });
+	}else {
+		return string;
+	}	
+    return out;
+}
+
+/*
+ * Function to get all Filtered Conditions
+ */
+ /*
+function getAllFilteredConditions() {
+	let filteredItem = [];
+	let selectedCatColumnValueMap = new Map();
+	let selectedNumColumnValueMap = new Map();
+	let numericalCheckBox = new Set();
+	
+	//logic for categorical filter map
+	var filter = document.getElementById('categorical-filter-checkbox');
+	for(var i = 0; i < filter.children.length ; i++){
+		var childElement = filter.children[i].firstElementChild.childNodes;
+		var columnName = convertToCamelCase(childElement[0].data," "); //label field
+		var multiSelectDropDowns = childElement[2].options; // multi select dropdown field
+		let selectedCatValueSet = new Set();
+		for(var j = 0 ; j< multiSelectDropDowns.length; j++){
+			if(multiSelectDropDowns[j].selected){
+				selectedCatValueSet.add(multiSelectDropDowns[j].value);
+			}
+		}
+		if(selectedCatValueSet.size > 0){
+			selectedCatColumnValueMap.set(columnName,selectedCatValueSet);
+		}	
+	}
+	filteredItem.push(selectedCatColumnValueMap); //push categorical value map to first element in array
+	
+	//logic for numerical Values
+	var numericalFilters = getAllNumericalColumns();
+	for (const value of numericalFilters) {
+		if(isColumnSelected(value)){
+			numericalCheckBox.add(convertToCamelCase(value," "));
+		}
+	}
+	if(numericalCheckBox.size > 0){
+		selectedNumColumnValueMap.set('selectedNumericalValues',numericalCheckBox);
+		selectedNumColumnValueMap.set('numericalFilterCondition',document.querySelector('input[name="numericalFilter"]:checked').value);
+		selectedNumColumnValueMap.set('numericalFilterValue',document.getElementById('numericalFilter').value);
+	}
+	filteredItem.push(selectedNumColumnValueMap); //push numerical related values to second element in array;
+	return filteredItem;
+}
 
 /*
  * Function to reset the canvas element.
  */
+ /*
 function cleanUpSpace(){
 	var bc = document.getElementById('barchartcanvas');
 	var lc = document.getElementById('linechartcanvas');
@@ -359,6 +502,7 @@ function cleanUpSpace(){
 /*
  * Function to create a canvas chart element and append to the parent div.
  */
+ /*
 function createCanvasElement(chartType){
 	var canvas = document.createElement('canvas');
 	canvas.id=chartType;
@@ -369,9 +513,11 @@ function createCanvasElement(chartType){
 /*
  * Function to apply chart
  */ 
+ /*
 function applyChart() {
 	cleanUpSpace();
-	var filterData = new FilterData()
+
+	let filterData = new FilterData();
 	var filteredConditiontionsMap = filterData.getAllFilteredConditions();
 	var map = filterData.preProcessFilter(filteredConditiontionsMap);
 	var chartsSelected = getChartSelections();
@@ -443,7 +589,7 @@ function getChartSelections(){
 /*************************UI Changes***************************/
 
 // Table Style
-
+/*
 function createTableStyle(div1) {
 	div1.style.width = "150%";
 	div1.style.paddingBottom = "50px";
@@ -471,4 +617,4 @@ function createDivAnimation() {
 function createCheckboxStyles(chbk) {
 	chbk.style.marginRight = "45px";
 	chbk.style.marginLeft = "10px";
-}
+}*/
