@@ -9,6 +9,7 @@ input[type=button]{
     display: inline-block;
     font-size: 16px;
     font-family: Century Gothic;
+	margin-right: 20px;
 	cursor: pointer;
 }
 .dropdown{

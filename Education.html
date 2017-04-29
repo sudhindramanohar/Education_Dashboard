@@ -81,17 +81,28 @@
 				<input id= "numericalFilter" style="background-color: white; border: groove;color: black;padding: 1px 0px; text-align: center; text-decoration: none;"  type="number" name="numericalFilter" value="numericalFilter"></input>
 			</div>
 			<br>
-			<div id="plot-graph">
+		</div>
+		<div id="plot-statistics" hidden="true">
+		<br>
+			<form>
+				<label style="display:block;font-weight:bold">Please Select the Statistics Type</label>
+				<input type="checkbox" id="min" name="min" value="min"> Min</input>
+				<input type="checkbox" id="max" name="max" value="max"> Max</input>
+				<input type="checkbox" id="average" name="average" value="average"> Average</input>
+				<input type="checkbox" id="median" name="median" value="median"> Median</input>
+				<input type="checkbox" id="standardDeviation" name="standardDeviation" value="standardDeviation"> Standard Deviation</input><br />
+			</form>	
+		</div>
+		<div id="plot-graph" hidden="true">
 			<form>
 				<label style="display:block;font-weight:bold">Please Select the Chart Type</label>
 				<input type="checkbox" id="pieChart" name="pieChart" value="Pie Chart"> Pie Chart</input>
 				<input type="checkbox" id="barChart" name="barChart" value="Bar Chart"> Bar Chart</input>
 				<input type="checkbox" id="lineChart" name="lineChart" value="Line Chart"> Line Chart</input>
 				<input type="checkbox" id="stackedChart" name="stackedChart" value="Stacked Chart"> Stacked Chart</input>
-				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br /><br />
-				<input type="button" name="applyCharts" onclick="viewUtilityInstance.applyChart.call(viewUtilityInstance)" value="Apply Charts"></input><br>
-			</form>	
-			</div>
+				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br />
+				<input type="button" name="applyCharts" onclick="viewUtilityInstance.applyChart.call(viewUtilityInstance)" value="Apply Charts"></input>
+			</form>
 		</div>
     </div>
 	<div id="parentChart" hidden="true">
