@@ -156,9 +156,7 @@ class EducationView {
 	 * Function to handle on click of "Apply Statistics" button
 	 */
 	applyStatistics(){
-		document.getElementById("filter-row").hidden=true; //first hide existing row filter section
-		document.getElementById("plot-statistics").hidden=false; //show Statistics section
-		document.getElementById("plot-graph").hidden=false; //show Plot Chart section		
+		this.hideOrShowComponents(false);
 	}
 	
 	/*
@@ -204,10 +202,7 @@ class EducationView {
 		//clear previous checkbox div
 		let divContainer = document.getElementById('categorical-filter-checkbox');
 		divContainer.innerHTML = "";
-		document.getElementById("filter-row").hidden=false;//show filter div
-		document.getElementById("plot-statistics").hidden=true; //hide Statistics section
-		document.getElementById("plot-graph").hidden=false; //show Plot CHart section
-		
+        this.hideOrShowComponents(true);						
 		// Filter.js Object created
 		let filterObj = new FilterData();
 		
@@ -244,6 +239,55 @@ class EducationView {
 		}
 	}
 
+	/*
+	 * Function to hide or show div's based on 'apply filter' and 'apply statistics'
+	 */
+	 hideOrShowComponents(isFilterButtonClicked){
+		if(isFilterButtonClicked){
+			this.cleanUpSpace();
+			this.uncheckStatsticsCheckbox();
+			document.getElementById("filter-row").hidden=false;//show filter div
+			document.getElementById("plot-statistics").hidden=true; //hide Statistics section
+			document.getElementById("plot-graph").hidden=false; //show Plot CHart section
+		}else{
+			this.cleanUpSpace();
+			this.uncheckNumericalConditionsCheckbox();
+			document.getElementById('categorical-filter-checkbox').innerHTML = "";
+			document.getElementById('numericalFilter').value = "";
+			document.getElementById("filter-row").hidden=true; //first hide existing row filter section
+			document.getElementById("plot-statistics").hidden=false; //show Statistics section
+			document.getElementById("plot-graph").hidden=false; //show Plot Chart section		
+		}
+	 }
+	
+	/*
+	 * Function un-check Statstics Checkbox
+	 */
+	uncheckStatsticsCheckbox(){
+		let statisticsDiv = document.getElementById("plot-statistics");
+		let formDiv = statisticsDiv.children[1];
+		let checkedStatsSet = new Set();	
+		for(let i = 0;i < formDiv.children.length; i++){
+			let childDiv = formDiv.children[i];
+			if(childDiv.nodeName == 'INPUT' && childDiv.checked){
+				childDiv.checked = false;
+			}
+		}	
+	}
+	
+	/*
+	 * Function to un-check Numerical Conditions Checkbox
+	 */
+	uncheckNumericalConditionsCheckbox(){
+		let numericalConditionsDiv = document.getElementById("numerical-condition");
+		for(let i = 0;i < numericalConditionsDiv.children.length; i++){
+			let childDiv = numericalConditionsDiv.children[i];
+			if(childDiv.nodeName == 'INPUT' && childDiv.checked){
+				childDiv.checked = false;
+			}
+		}	
+	}
+	
 	/*
 	 * Function to reset the canvas element.
 	 */
@@ -283,7 +327,6 @@ class EducationView {
 	// Table Style
 	createTableStyle(div1) {
 		div1.style.width = "150%";
-		div1.style.paddingBottom = "50px";
 	}
 	
 	// Filter Styles
