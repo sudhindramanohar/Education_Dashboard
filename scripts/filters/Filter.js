@@ -77,6 +77,21 @@ class FilterData{
 		}	
 		return checkedCategorisedColumnSet;
 	}
+	
+	/*
+	 * Function to get Checked Numerical Column name
+	 */
+	getCheckedNumericalColumns() {
+		let checkedNumericalColumnSet = new Set();
+		let viewUtility = new ViewUtility();
+		var numericalColumnsSet = this.getAllNumericalColumns();
+		for (const value of numericalColumnsSet) {		
+			if(viewUtility.isColumnSelected(value)){
+				checkedNumericalColumnSet.add(value);
+			}
+		}	
+		return checkedNumericalColumnSet;
+	}
 
 	/*
 	 * Function to get All Numerical Columns
@@ -138,6 +153,7 @@ class FilterData{
 		}
 		filteredItem.push(selectedCatColumnValueMap); //push categorical value map to first element in array
 		
+		let checkedStatistics = this.getAllCheckedStatistics();
 		//logic for numerical Values
 		var numericalFilters = this.getAllNumericalColumns();
 		let viewUtility = new ViewUtility();
@@ -148,13 +164,15 @@ class FilterData{
 		}
 		if(numericalCheckBox.size > 0){
 			selectedNumColumnValueMap.set('selectedNumericalValues',numericalCheckBox);
-			selectedNumColumnValueMap.set('numericalFilterCondition',document.querySelector('input[name="numericalFilter"]:checked').value);
-			selectedNumColumnValueMap.set('numericalFilterValue',document.getElementById('numericalFilter').value);
+			if(checkedStatistics.size == 0){
+				selectedNumColumnValueMap.set('numericalFilterCondition',document.querySelector('input[name="numericalFilter"]:checked').value);
+				selectedNumColumnValueMap.set('numericalFilterValue',document.getElementById('numericalFilter').value);
+			}
 		}
 		filteredItem.push(selectedNumColumnValueMap); //push numerical related values to second element in array;
 		
 		// statistics related logic
-		selectedStatisticsMap.set('statistics',this.getAllCheckedStatistics());
+		selectedStatisticsMap.set('statistics',checkedStatistics);
 		filteredItem.push(selectedStatisticsMap);
 		
 		return filteredItem;
@@ -178,6 +196,7 @@ class FilterData{
 	
 	preProcessFilter(filterCondition)
 	{
+		let datasetObj = new Dataset();
 		let isCategorical = 0;
 		let isNumerical = 0;
 		let columnName;
@@ -227,14 +246,31 @@ class FilterData{
 			}
 			
 		}
-		
+		let statSet = filterCondition[2].get('statistics');
 		if(isNumerical){
-			for(let col of colNames)
-			{
-				let count = this.filterDataValues(col,columnValue, isCategorical, isNumerical, operand);
-				resultDataMap.set(col, count);
+			for(let col of colNames){
+				if(statSet == null && statSet.size == 0){ 
+					let count = this.filterDataValues(col,columnValue, isCategorical, isNumerical, operand);
+					resultDataMap.set(datasetObj.getLabel(col), count);
+				}else{
+					col = datasetObj.getLabel(col);
+					for (const value of statSet) {	
+						if(value == 'min'){
+							resultDataMap.set('Min', df.stat.min(col));
+						}else if(value == 'max'){
+							 resultDataMap.set('Max', df.stat.max(col));
+						}else if(value == 'average'){
+							resultDataMap.set('Average', df.stat.average(col));
+						}else if(value == 'mean'){
+							resultDataMap.set('Mean', df.stat.mean(col));
+						}else if(value == 'standardDeviation'){
+							resultDataMap.set('Standard Deviation', df.stat.sd(col));
+						}		 
+					}
+				}
 			}
 		}
+		
 		return resultDataMap;
 	}
 

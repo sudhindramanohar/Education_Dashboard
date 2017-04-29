@@ -61,6 +61,11 @@
         <div id="table" style=""></div>
         </form>
         <div id="showData"></div>
+		<div id="invalid-msg" class="invalid-msg" hidden="true">
+		  <span class="closebtn" onclick="viewUtilityInstance.hideErrorBox.call(viewUtilityInstance)">&times;</span>
+		  <strong>Error!</strong> Categorical Filters and more than one Numerical Filters cannot be chosen
+		  Please re-select!!!
+		</div>
 		<div id="filter"></div>
 		<div id="filter-row"  hidden="true">
 			<br>
@@ -89,7 +94,7 @@
 				<input type="checkbox" id="min" name="min" value="min"> Min</input>
 				<input type="checkbox" id="max" name="max" value="max"> Max</input>
 				<input type="checkbox" id="average" name="average" value="average"> Average</input>
-				<input type="checkbox" id="median" name="median" value="median"> Median</input>
+				<input type="checkbox" id="mean" name="mean" value="mean"> Mean</input>
 				<input type="checkbox" id="standardDeviation" name="standardDeviation" value="standardDeviation"> Standard Deviation</input><br />
 			</form>	
 		</div>

@@ -10,10 +10,12 @@ class Dataset{
 	import_data(){
 		var vals = document.getElementById("datasets");
 		currentDataSet = vals.options[vals.selectedIndex].value;
-		this.dataFrame.fromCSV(currentDataSet).then(df => 
+		this.dataFrame.fromCSV(currentDataSet).then(data => {df=data});
+
+		this.dataFrame.fromCSV(currentDataSet).then(dataframe => 
 		{
-			var data = df.toJSON('SAT.json');        
-			this.export_data(data);
+		var data = dataframe.toJSON('SAT.json');        
+		this.export_data(data);
 		});
 	}
 
@@ -116,7 +118,7 @@ class Dataset{
 	getLabel(parameterName){
 		let allColumnsSet = this.getAllColumns();
 		let filterObj = new FilterData();
-		for (var key in allColumnsSet) {
+		for (const key of allColumnsSet) {
 			if(parameterName == filterObj.convertToCamelCase(key," ")){
 				return key;
 			}
