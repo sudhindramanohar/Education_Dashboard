@@ -8,11 +8,31 @@
 	<script src="node_modules/dataframe-js/dist/dataframe.js"></script>
 	<script src="node_modules/chart.js/dist/Chart.js"></script>
 	<script src="scripts/Education.js"></script>
-	<script src="scripts/ModelUtility.js"></script>
-	<script src="scripts/ControllerUtility.js"></script>
+	<!--<script src="scripts/ModelUtility.js"></script>
+	<script src="scripts/ControllerUtility.js"></script>-->
 	<script src="scripts/constants/Constant.js"></script>
+	<script src="scripts/datasets/Dataset.js"></script>
+	<script src="scripts/view/View.js"></script>
+	<script src="scripts/view/ViewUtility.js"></script>
+	<script src="scripts/datasets/SchoolProfileInfo.js"></script>
+	<script src="scripts/datasets/CampusArrest.js"></script>
+	<script src="scripts/datasets/Demographics.js"></script>
+	<script src="scripts/datasets/SATScore.js"></script>
+	<script src="scripts/datasets/SchoolProgressReport.js"></script>
+	<script src="scripts/charts/BaseChartOperation.js"></script>
+	<script src="scripts/charts/ChartFactory.js"></script>
+	<script src="scripts/charts/ChartConfig.js"></script>
+	<script src="scripts/charts/ChartStore.js"></script>
+	<script src="scripts/charts/PieChart.js"></script>
+	<script src="scripts/charts/BarChart.js"></script>
+	<script src="scripts/charts/LineChart.js"></script>
+	<script src="scripts/charts/StackedChart.js"></script>
+	<script src="scripts/charts/PivotChart.js"></script>
+	<script src="scripts/filters/Filter.js"></script>
+	<script src="scripts/decorator/Decorator.js"></script>
+	
 	<link href="node_modules/fancygrid/client/fancy.min.css" rel="stylesheet">
-  	<script src="node_modules/fancygrid/client/fancy.min.js"></script>
+  	<script src="node_modules/fancygrid/client/fancy.full.min.js"></script>
 </head>
 <body>
     <div class="heading">
@@ -37,7 +57,7 @@
               <option value="School_Progress_Report.csv">School_Progress_Report</option>
               <option value="SAT_Score.csv">SAT_Score</option>
         </select>          
-        <input type="button" name="Select" onclick="import_data()" value="Submit"></input><br><br>
+        <input type="button" name="Select" onclick="datasetInstance.import_data.call(datasetInstance)" value="Submit"></input><br><br>
         <div id="table" style=""></div>
         </form>
         <div id="showData"></div>
@@ -69,7 +89,7 @@
 				<input type="checkbox" id="lineChart" name="lineChart" value="Line Chart"> Line Chart</input>
 				<input type="checkbox" id="stackedChart" name="stackedChart" value="Stacked Chart"> Stacked Chart</input>
 				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br /><br />
-				<input type="button" name="applyCharts" onclick="applyChart()" value="Apply Charts"></input><br>
+				<input type="button" name="applyCharts" onclick="viewUtilityInstance.applyChart.call(viewUtilityInstance)" value="Apply Charts"></input><br>
 			</form>	
 			</div>
 		</div>
