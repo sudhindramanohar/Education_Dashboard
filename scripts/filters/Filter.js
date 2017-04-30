@@ -8,6 +8,7 @@ class FilterData{
  	*/
 	getAllValuesForCategory(categoryName) {
 		let categoryValueSet = new Set();
+
 		let datasetObj = new Dataset();
 		var json = datasetObj.getParsedJson();	
 		for(var i = 0 ; i < json.length; i++){
@@ -27,6 +28,7 @@ class FilterData{
 	 */
 	getAllCategorisedColumnSet() {
 		let categorisedColumnsSet = new Set();
+
 		let datasetObj = new Dataset();
 		var json = datasetObj.getParsedJson();
 		for(var i = 0 ; i < json.length; i++){
@@ -68,6 +70,7 @@ class FilterData{
 	 */
 	getCheckedCategorisedColumns() {
 		let checkedCategorisedColumnSet = new Set();
+
 		let viewUtility = new ViewUtility();
 		var categorisedColumnsSet = this.getAllCategorisedColumnSet();
 		for (const value of categorisedColumnsSet) {		
@@ -194,7 +197,8 @@ class FilterData{
 		return checkedStatsSet;
 	}
 	
-	preProcessFilter(filterCondition)
+	
+	preProcessFilter(filterCondition,isStackedChart)
 	{
 		let datasetObj = new Dataset();
 		let isCategorical = 0;
@@ -204,15 +208,31 @@ class FilterData{
 		let columnValue;
 		let operand;
 		let colNames = [];
+		
+		
 		let resultDataMap = new Map();
 		for (let categoryKey of filterCondition[0].keys()){
 			isCategorical = 1;
 			isNumerical = 0;
 			columnName = categoryKey;
 			categoryValues = filterCondition[0].get(categoryKey);
+			let stackedDataMap = new Map();
+
 			for(let columnVal of categoryValues){
+
 				let count = this.filterDataValues(columnName, columnVal, isCategorical, isNumerical);
-				resultDataMap.set(columnVal, count);
+				if(isStackedChart)
+				{
+					stackedDataMap.set(columnVal, count);
+				}
+				else{
+					resultDataMap.set(columnVal, count);				
+				}
+
+			}
+
+			if(isStackedChart){
+				resultDataMap.set(categoryKey, stackedDataMap);
 			}
 		}
 
@@ -249,7 +269,7 @@ class FilterData{
 		let statSet = filterCondition[2].get('statistics');
 		if(isNumerical){
 			for(let col of colNames){
-				if(statSet == null && statSet.size == 0){ 
+				if(statSet == null || statSet.size == 0){ 
 					let count = this.filterDataValues(col,columnValue, isCategorical, isNumerical, operand);
 					resultDataMap.set(datasetObj.getLabel(col), count);
 				}else{
