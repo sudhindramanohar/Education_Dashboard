@@ -19,6 +19,13 @@ class PieChartDecorator extends ChartDecorator {
 	}
 }
 
+class DoughnutChartDecorator extends ChartDecorator {
+
+	applyBackgroundColor(chartConfig){
+		chartConfig.backgroundColor = chartConfig.getbgColor(chartConfig.chartData.length);
+	}
+}
+
 class LineChartDecorator extends ChartDecorator {
 }
 

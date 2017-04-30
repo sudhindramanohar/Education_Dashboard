@@ -295,6 +295,7 @@ class EducationView {
 		let pc = document.getElementById('piechartcanvas');
 		let sc = document.getElementById('stackedchartcanvas');
 		let pic = document.getElementById('pivotchartcanvas');
+		let dc = document.getElementById('doughnutchartcanvas');
 		if(bc != undefined){
 			bc.remove();
 		}
@@ -309,6 +310,9 @@ class EducationView {
 		}
 		if(pic != undefined){
 			pic.remove();
+		}
+		if(dc != undefined){
+			dc.remove();
 		}
 	}
 

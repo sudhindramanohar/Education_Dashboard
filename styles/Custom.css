@@ -63,8 +63,8 @@ input[type=checkbox]:checked:after {
 }
 
 .chart {
-  width: 800px;
-	padding-left:550px;
+  width: 700px;
+	padding-left:300px;
 	padding-top:30px;
 }
 

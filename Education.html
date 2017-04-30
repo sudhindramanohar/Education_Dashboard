@@ -24,6 +24,7 @@
 	<script src="scripts/charts/ChartConfig.js"></script>
 	<script src="scripts/charts/ChartStore.js"></script>
 	<script src="scripts/charts/PieChart.js"></script>
+	<script src="scripts/charts/DoughnutChart.js"></script>
 	<script src="scripts/charts/BarChart.js"></script>
 	<script src="scripts/charts/LineChart.js"></script>
 	<script src="scripts/charts/StackedChart.js"></script>
@@ -105,7 +106,8 @@
 				<input type="checkbox" id="barChart" name="barChart" value="Bar Chart"> Bar Chart</input>
 				<input type="checkbox" id="lineChart" name="lineChart" value="Line Chart"> Line Chart</input>
 				<input type="checkbox" id="stackedChart" name="stackedChart" value="Stacked Chart"> Stacked Chart</input>
-				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input><br />
+				<input type="checkbox" id="pivotChart" name="pivotChart" value="Pivot Chart"> Pivot Chart</input>
+				<input type="checkbox" id="doughnutChart" name="doughnutChart" value="Doughnut Chart"> Doughnut Chart</input><br />
 				<input type="button" name="applyCharts" onclick="viewUtilityInstance.applyChart.call(viewUtilityInstance)" value="Apply Charts"></input>
 			</form>
 		</div>
@@ -118,6 +120,7 @@
 			<br/>
 			<canvas id="stackedchartcanvas"></canvas>
 			<canvas id="pivotchartcanvas"></canvas>
+			<canvas id="doughnutchartcanvas"></canvas>
 		</div>
 	</div>
 	<div class="seperator"></div>

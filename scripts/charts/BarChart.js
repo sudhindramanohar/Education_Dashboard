@@ -31,13 +31,13 @@ class BarChart extends ChartConfig{
                             return value;
                         }                        
                     },
-					fontSize: 15,
+					fontSize: 12,
 					fontStyle: 'bold'
 					}
 				}],
 	            yAxes: [{
 	                ticks: {
-						fontSize: 17,
+						fontSize: 15,
 						fontStyle:'bold',
 	                    min: 0	                   
 	                }
