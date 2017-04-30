@@ -36,8 +36,9 @@ class BaseChartOperation{
 	plotStackedChart(){
 		let labels = this.labels;
         let data = this.chartData;
-        let stackedValue;
+        let stackedValue, stackedLabel;
         let max = 0;
+        let matrixLabelMap = new Map();
         let matrixMap = new Map();
          //let isNumerical = false;
         let isCategorical = false;
@@ -45,6 +46,7 @@ class BaseChartOperation{
         let datasetArray = [];
         for(let i=0;i<data.length;i++){
             stackedValue = [];
+            stackedLabel = [];
             if(!isNaN(data[i])){
             // 	let tempArr = [];
             // 	tempArr.push(data[i])
@@ -57,21 +59,29 @@ class BaseChartOperation{
             for(let s of valSet){
                 stackedValue.push(s);
             }
+            for(let l of keySet)
+            {
+            	stackedLabel.push(l);
+            }
             if(stackedValue.length > max){
                 max = stackedValue.length;
             }
-            matrixMap.set(i,stackedValue)
+            matrixMap.set(i, stackedValue)
+            matrixLabelMap.set(i, stackedLabel);
         }
     }
     	if(isCategorical){
 	        let eleMatrix = new Array(max);
+	        let labelMatix = new Array(max);
 	        let mapIndex =0;
 	        for(let i=0; i<eleMatrix.length;i++){
 	            if(matrixMap.get(i)){
 	                eleMatrix[i] = new Array(labels.length);
+	                labelMatix[i] = new Array(labels.length);
 	                for(let j=0;j<eleMatrix[i].length;){
 	                    for(let index=0;index<matrixMap.get(i).length;index++){
 	                        eleMatrix[i][j] = matrixMap.get(i)[index];
+	                        labelMatix[i][j] = matrixLabelMap.get(i)[index];
 	                        j++;
 	                    }
 	                }
@@ -79,26 +89,40 @@ class BaseChartOperation{
 	        }
 		
 	        let finalMap = new Map();
+	        let finalLabelMap = new Map();
 	        for(let i=0;i<eleMatrix.length;i++){
 	            let stackedValue = [];
+	            let stackedLabel = [];
 	            for(let j=0; j<eleMatrix.length;j++){
 	                if(eleMatrix[j]){
 	                    stackedValue.push(eleMatrix[j][i]);
+	                    stackedLabel.push(labelMatix[j][i]);
 	                }
 	            }
 	            finalMap.set(i,stackedValue);
+	            finalLabelMap.set(i, stackedLabel);
 	        }
-
-	        for(let key of finalMap){
-	            let dataObj = {
-	                label: 'DataSet',
+	        for(let i=0; i < finalMap.size; i++){
+	        	
+	        	let dataObj = {
+	                label: finalLabelMap.get(i),
 	                backgroundColor: this.getbgColor(10),
 	                borderColor: this.getborderColor(10),
-	                data: key[1],
+	                data: finalMap.get(i),
 	                borderWidth: 1
 	            }
-	            datasetArray.push(dataObj);
+	            datasetArray.push(dataObj);	
 	        }
+	        // for(let key of finalMap){
+	        //     let dataObj = {
+	        //         label: 'DataSet',
+	        //         backgroundColor: this.getbgColor(10),
+	        //         borderColor: this.getborderColor(10),
+	        //         data: key[1],
+	        //         borderWidth: 1
+	        //     }
+	        //     datasetArray.push(dataObj);
+	        // }
         }
         /*if(isNumerical){
         for(let i=0;i<numericalValArray.length;i++){
@@ -112,6 +136,7 @@ class BaseChartOperation{
             datasetArray.push(dataObj);
         }*/
     //}
+
 		var barChartData = {
             labels: labels,
             datasets: datasetArray
@@ -125,10 +150,6 @@ class BaseChartOperation{
                     title:{
                         display:true,
                         text:"Stacked Chart"
-                    },
-                    tooltips: {
-                        mode: 'index',
-                        intersect: false
                     },
                     responsive: true,
                     scales: {

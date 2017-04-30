@@ -23,7 +23,15 @@ class BarChart extends ChartConfig{
 	                    min: 0	                   
 	                }
 	            }]
-			}
+			},
+			tooltips: {
+					mode: 'label',
+		          callbacks: {
+			          label: function(tooltipItem, some) { 
+			          	return tooltipItem.xLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			          }
+		          }
+         }
 		}
     });
   }
