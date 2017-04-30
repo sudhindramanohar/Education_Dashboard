@@ -32,9 +32,7 @@ class EducationView {
 		let colData = [];
 		let div = document.getElementById('table');
 		let dataObj = new Dataset();
-			// TABLE STYLES
-		this.createTableStyle(div);
-		
+			
 		if(div)
 		{
 			div.innerHTML = "";
@@ -119,6 +117,7 @@ class EducationView {
 		// Styles for the filter
 		this.createFilterStyles(select_column_div);
 		this.createAddFilterButton(select_column_div);
+		this.createApplyStatisticsButton(select_column_div);
 	}
 
 	/*
@@ -132,10 +131,32 @@ class EducationView {
 		addFilterButton.setAttribute('value','Add Filter');
 		addFilterButton.addEventListener('click', function(event){viewInstance.createDivAnimation()});
 		addFilterButton.addEventListener('click',function(event){viewInstance.createRowFilters()});
-		select_column_div.appendChild(document.createElement("br"));
+		//select_column_div.appendChild(document.createElement("br"));
 		select_column_div.appendChild(addFilterButton);
 	}
 
+	/*
+	 * Function added to create "Apply Statistics" for filter
+	 */
+	createApplyStatisticsButton(select_column_div){
+		let addFilterButton= document.createElement('input');
+		addFilterButton.setAttribute('type','button');
+		addFilterButton.setAttribute('id', 'applyStatistics');
+		addFilterButton.setAttribute('name','applyStatistics');
+		addFilterButton.setAttribute('value','Apply Statistics');
+		addFilterButton.addEventListener('click', function(event){viewInstance.createDivAnimation()});
+		addFilterButton.addEventListener('click',function(event){viewInstance.applyStatistics()});
+		//select_column_div.appendChild(document.createElement("br"));
+		select_column_div.appendChild(addFilterButton);
+	}
+	
+	/*
+	 * Function to handle on click of "Apply Statistics" button
+	 */
+	applyStatistics(){
+		this.hideOrShowComponents(false);
+	}
+	
 	/*
 	 * Function added to create checkbox for Column selection
 	 */
@@ -179,9 +200,7 @@ class EducationView {
 		//clear previous checkbox div
 		let divContainer = document.getElementById('categorical-filter-checkbox');
 		divContainer.innerHTML = "";
-		//show filter div
-		document.getElementById("filter-row").hidden=false;
-		
+        this.hideOrShowComponents(true);						
 		// Filter.js Object created
 		let filterObj = new FilterData();
 		
@@ -219,6 +238,55 @@ class EducationView {
 	}
 
 	/*
+	 * Function to hide or show div's based on 'apply filter' and 'apply statistics'
+	 */
+	 hideOrShowComponents(isFilterButtonClicked){
+		if(isFilterButtonClicked){
+			this.cleanUpSpace();
+			this.uncheckStatsticsCheckbox();
+			document.getElementById("filter-row").hidden=false;//show filter div
+			document.getElementById("plot-statistics").hidden=true; //hide Statistics section
+			document.getElementById("plot-graph").hidden=false; //show Plot CHart section
+		}else{
+			this.cleanUpSpace();
+			this.uncheckNumericalConditionsCheckbox();
+			document.getElementById('categorical-filter-checkbox').innerHTML = "";
+			document.getElementById('numericalFilter').value = "";
+			document.getElementById("filter-row").hidden=true; //first hide existing row filter section
+			document.getElementById("plot-statistics").hidden=false; //show Statistics section
+			document.getElementById("plot-graph").hidden=false; //show Plot Chart section		
+		}
+	 }
+	
+	/*
+	 * Function un-check Statstics Checkbox
+	 */
+	uncheckStatsticsCheckbox(){
+		let statisticsDiv = document.getElementById("plot-statistics");
+		let formDiv = statisticsDiv.children[1];
+		let checkedStatsSet = new Set();	
+		for(let i = 0;i < formDiv.children.length; i++){
+			let childDiv = formDiv.children[i];
+			if(childDiv.nodeName == 'INPUT' && childDiv.checked){
+				childDiv.checked = false;
+			}
+		}	
+	}
+	
+	/*
+	 * Function to un-check Numerical Conditions Checkbox
+	 */
+	uncheckNumericalConditionsCheckbox(){
+		let numericalConditionsDiv = document.getElementById("numerical-condition");
+		for(let i = 0;i < numericalConditionsDiv.children.length; i++){
+			let childDiv = numericalConditionsDiv.children[i];
+			if(childDiv.nodeName == 'INPUT' && childDiv.checked){
+				childDiv.checked = false;
+			}
+		}	
+	}
+	
+	/*
 	 * Function to reset the canvas element.
 	 */
 	cleanUpSpace(){
@@ -227,6 +295,7 @@ class EducationView {
 		let pc = document.getElementById('piechartcanvas');
 		let sc = document.getElementById('stackedchartcanvas');
 		let pic = document.getElementById('pivotchartcanvas');
+		let dc = document.getElementById('doughnutchartcanvas');
 		if(bc != undefined){
 			bc.remove();
 		}
@@ -242,6 +311,9 @@ class EducationView {
 		if(pic != undefined){
 			pic.remove();
 		}
+		if(dc != undefined){
+			dc.remove();
+		}
 	}
 
 	/*
@@ -252,12 +324,6 @@ class EducationView {
 		canvas.id=chartType;
 		canvas.class="chartCanvas";
 		document.getElementById('childChart').appendChild(canvas);
-	}
-
-	// Table Style
-	createTableStyle(div1) {
-		div1.style.width = "150%";
-		div1.style.paddingBottom = "50px";
 	}
 	
 	// Filter Styles

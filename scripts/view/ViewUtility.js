@@ -23,82 +23,92 @@ class ViewUtility {
 	 * Function to apply chart
 	 */
 	applyChart() {
-		
-		let filterObj = new FilterData();
-		let viewObj = new EducationView();
-		let cs = new ChartStore();
-		viewObj.cleanUpSpace();
-		let filteredConditiontionsMap = filterObj.getAllFilteredConditions();
-		let chartsSelected = this.getChartSelections();
-		// for(let i =0;i<chartsSelected.length;i++){
-		// 	if(chartsSelected[i] == "Stacked Chart"){
-		// 		isStackedChart = true;
-		// 		break;
-		// 	}
-		// }
-		let map = filterObj.preProcessFilter(filteredConditiontionsMap, false);
-		let labels = [];
-		let vals = [];
 
-		for (let label of map.keys()){
-			labels.push(label);
-			vals.push(map.get(label));
-		}
-		
-		for(let i =0;i<chartsSelected.length;i++){
-			document.getElementById('parentChart').style.display = "block";
-			let chart = null;
-			let isBackgroundColorRequired = true;
-			if(chartsSelected[i] == "Bar Chart"){
-				viewObj.createCanvasElement("barchartcanvas");
-				let barChartDecorator = new BarChartDecorator();
-				chart = cs.orderChart("bar");
-				chart.setLabelAndData(labels,vals);
-				barChartDecorator.applyBackgroundColor(chart);
-				barChartDecorator.applyBorderColor(chart);
-			} else if(chartsSelected[i] == "Line Chart"){
-				let lineChartDecorator = new LineChartDecorator();
-				viewObj.createCanvasElement("linechartcanvas");
+		if(this.validateOnApplyStatistics() && this.validateOnAddFilter()){
+			
+			let filterObj = new FilterData();
+			let viewObj = new EducationView();
+			let cs = new ChartStore();
+			viewObj.cleanUpSpace();
+			let filteredConditiontionsMap = filterObj.getAllFilteredConditions();
+			let chartsSelected = this.getChartSelections();
+			// for(let i =0;i<chartsSelected.length;i++){
+			// 	if(chartsSelected[i] == "Stacked Chart"){
+			// 		isStackedChart = true;
+			// 		break;
+			// 	}
+			// }
+			let map = filterObj.preProcessFilter(filteredConditiontionsMap, false);
+			let labels = [];
+			let vals = [];
 
-				chart = cs.orderChart("line");
-				chart.setLabelAndData(labels,vals);
-				lineChartDecorator.applyBorderColor(chart);
-			} else if(chartsSelected[i] == "Pie Chart"){
-				let pieChartDecorator = new PieChartDecorator();
-				viewObj.createCanvasElement("piechartcanvas");
-				chart = cs.orderChart("pie");
-				chart.setLabelAndData(labels,vals); 
-				pieChartDecorator.applyBackgroundColor(chart);
-				pieChartDecorator.applyBorderColor(chart);
-			} else if(chartsSelected[i] == "Stacked Chart"){
-				//let stackedChartDecorator = new StackedChartDecorator();
-				viewObj.createCanvasElement("stackedchartcanvas");
-				chart = cs.orderChart("stacked");
-				let Smap = filterObj.preProcessFilter(filteredConditiontionsMap, true);
-				let Slabels = [];
-				let Svals = [];
-
-				for (let label of Smap.keys()){
-					Slabels.push(label);
-					Svals.push(Smap.get(label));
-				}
-				chart.setLabelAndData(Slabels,Svals);
-
-				//stackedChartDecorator.applyBackgroundColor(chart);
-				//stackedChartDecorator.applyBorderColor(chart);		
-			} else if(chartsSelected[i] == "Pivot Chart"){
-				viewObj.createCanvasElement("pivotchartcanvas");
-				let pivotChart = new PivotChart();
-				pivotChart.plot(labels,vals);			
+			for (let label of map.keys()){
+				labels.push(label);
+				vals.push(map.get(label));
 			}
-			if(chartsSelected[i] != "Stacked Chart"){
-				chart.plot();
-			} else if(chartsSelected[i] == "Stacked Chart"){
-				chart.plotStackedChart();
+			
+			for(let i =0;i<chartsSelected.length;i++){
+				document.getElementById('parentChart').style.display = "block";
+				let chart = null;
+				let isBackgroundColorRequired = true;
+				if(chartsSelected[i] == "Bar Chart"){
+					viewObj.createCanvasElement("barchartcanvas");
+					let barChartDecorator = new BarChartDecorator();
+					chart = cs.orderChart("bar");
+					chart.setLabelAndData(labels,vals);
+					barChartDecorator.applyBackgroundColor(chart);
+					barChartDecorator.applyBorderColor(chart);
+				} else if(chartsSelected[i] == "Line Chart"){
+					let lineChartDecorator = new LineChartDecorator();
+					viewObj.createCanvasElement("linechartcanvas");
+					chart = cs.orderChart("line");
+					chart.setLabelAndData(labels,vals);
+					lineChartDecorator.applyBorderColor(chart);
+				} else if(chartsSelected[i] == "Pie Chart"){
+					let pieChartDecorator = new PieChartDecorator();
+					viewObj.createCanvasElement("piechartcanvas");
+					chart = cs.orderChart("pie");
+					chart.setLabelAndData(labels,vals); 
+					pieChartDecorator.applyBackgroundColor(chart);
+					pieChartDecorator.applyBorderColor(chart);
+				}else if(chartsSelected[i] == "Doughnut Chart") {
+					let doughnutChartDecorator = new DoughnutChartDecorator();
+					viewObj.createCanvasElement("doughnutchartcanvas");
+					chart = cs.orderChart("doughnut");
+					chart.setLabelAndData(labels,vals); 
+					doughnutChartDecorator.applyBackgroundColor(chart);
+					doughnutChartDecorator.applyBorderColor(chart);					
+				} else if(chartsSelected[i] == "Stacked Chart"){
+					//let stackedChartDecorator = new StackedChartDecorator();
+					viewObj.createCanvasElement("stackedchartcanvas");
+					chart = cs.orderChart("stacked");
+					let Smap = filterObj.preProcessFilter(filteredConditiontionsMap, true);
+					let Slabels = [];
+					let Svals = [];
+
+					for (let label of Smap.keys()){
+						Slabels.push(label);
+						Svals.push(Smap.get(label));
+					}
+					chart.setLabelAndData(Slabels,Svals);
+
+					//stackedChartDecorator.applyBackgroundColor(chart);
+					//stackedChartDecorator.applyBorderColor(chart);		
+				} else if(chartsSelected[i] == "Pivot Chart"){
+					viewObj.createCanvasElement("pivotchartcanvas");
+					let pivotChart = new PivotChart();
+					pivotChart.plot(labels,vals);			
+				}
+				if(chartsSelected[i] != "Stacked Chart"){
+					chart.plot();
+				} else if(chartsSelected[i] == "Stacked Chart"){
+					chart.plotStackedChart();
+				}
+
 			}
 		}
 	}
-
+	
 	/*
 	 * Chart Selections 
 	 */
@@ -113,7 +123,61 @@ class ViewUtility {
 			}
 		}
 		return chartsSelected;
+	}
+
+	/*
+	 * Function to validate On Add Filter
+	 */
+	validateOnAddFilter(){
+		let isValid = true;
+		if(document.getElementById("filter-row").hidden == false){
+			let filterObj = new FilterData();
+			if(document.getElementById('stackedChart').checked){ // is stacked chart checked
+				if(filterObj.getCheckedNumericalColumns().size > 0){
+					let errorMsgDiv = this.showErrorBox();
+					errorMsgDiv.children[1].innerText = "Error! Numerical Filters cannot be applied for Stacked Chart.";
+					isValid = false;
+				}
+			}	
+		}
+		return isValid;	
+	}
+	
+	/*
+	 * Function to validate On Apply Statistics
+	 */
+	validateOnApplyStatistics(){
+		let isValid = true;
+		if(document.getElementById("plot-statistics").hidden == false){
+			let filterObj = new FilterData();
+			if(filterObj.getCheckedCategorisedColumns().size > 0){
+				let errorMsgDiv = this.showErrorBox();
+				errorMsgDiv.children[1].innerText = "Error! Categorised Filter cannot be chosen for statistics. Please re-select columns";
+				isValid = false;
+			}else if(filterObj.getCheckedNumericalColumns().size > 1){
+				let errorMsgDiv = this.showErrorBox();
+				errorMsgDiv.children[1].innerText = "Error! More than one Numerical Filter cannot be chosen for statistics. Please re-select columns";
+				isValid = false;
+			}
+		}
+		return isValid;
 	}	
-}
+	
+	/*
+	 * Function to hide Error Box
+	 */
+	hideErrorBox(){
+		document.getElementById('invalid-msg').hidden = true;
+	}
+	
+	/*
+	 * Function to show Error Box
+	 */
+	showErrorBox(){
+		var invalidMsgDiv = document.getElementById('invalid-msg');
+		invalidMsgDiv.hidden = false;
+		return invalidMsgDiv;
+	}
+}	
 
 let viewUtilityInstance = new ViewUtility();

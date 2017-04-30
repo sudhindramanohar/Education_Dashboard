@@ -149,7 +149,10 @@ class BaseChartOperation{
                 options: {
                     title:{
                         display:true,
-                        text:"Stacked Chart"
+                        text:"Stacked Chart",
+						position: 'bottom',
+						fontSize: 20,
+						fontStyle: 'bold'
                     },
                     responsive: true,
                     scales: {

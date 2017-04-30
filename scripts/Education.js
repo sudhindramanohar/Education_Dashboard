@@ -3,7 +3,7 @@ let c = document.getElementById("newChart");
 var dataframeSet = 0;
 var objArr = [];
 var currentDataSet = "";
-
+let df = {};
 /*function import_data(){
 	let DataFrame = dfjs.DataFrame;
 	schoolProfileInfoObjArr = new Array();

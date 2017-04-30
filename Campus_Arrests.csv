@@ -1,4 +1,4 @@
-﻿School Code,School Name,Address,City,State Code,Zip Code,Men Arrested,Women Arrested,Total,People arrested using Weapons,People arrested using Drugs,People arrested using Liquor,Suspensions Per 100 Students Year 1 Pct,Suspensions Per 100 Students Year 2 Pct,Suspensions Per 100 Students Avg Pct,Misconducts To Suspensions Year 1 Pct,Misconducts To Suspensions Year 2 Pct,Misconducts To Suspensions Avg Pct
+﻿School Id,School Name,Address,City,State,Zip Code,Men Arrested,Women Arrested,Total,People arrested using Weapons,People arrested using Drugs,People arrested using Liquor,Suspensions Per 100 Students Year 1 %,Suspensions Per 100 Students Year 2 %,Suspensions Per 100 Students Avg %,Misconducts To Suspensions Year 1 %,Misconducts To Suspensions Year 2 %,Misconducts To Suspensions Avg %
 E00254,LMU - LOYOLA LAW SCHOOL,919 SOUTH ALBANY STREET,LOS ANGELES,CA,90015,5678,8122,13800,10,65,20,,,8.1,,,18.8
 E00341,STANFORD UNIVERSITY - STANFORD LAW SCHOO,559 NATHAN ABBOTT WAY,STANFORD,CA,94305,43,93,136,13,45,75,1.2,1.4,8.1,5.1,35.3,18.8
 E00374,UNIV OF CALIFORNIA LOS ANG SCH MED,FIN AID OFFICE 12-109 CHS,LOS ANGELES,CA,90095,16,18,34,15,39,12,20.6,5.7,8.1,18.9,6.3,18.8

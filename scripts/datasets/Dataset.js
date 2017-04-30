@@ -10,10 +10,12 @@ class Dataset{
 	import_data(){
 		var vals = document.getElementById("datasets");
 		currentDataSet = vals.options[vals.selectedIndex].value;
-		this.dataFrame.fromCSV(currentDataSet).then(df => 
+		this.dataFrame.fromCSV(currentDataSet).then(data => {df=data});
+
+		this.dataFrame.fromCSV(currentDataSet).then(dataframe => 
 		{
-			var data = df.toJSON('SAT.json');        
-			this.export_data(data);
+		var data = dataframe.toJSON('SAT.json');        
+		this.export_data(data);
 		});
 	}
 
@@ -108,6 +110,20 @@ class Dataset{
 			columnSet.add(key);
 		}
 		return columnSet;
+	}
+	
+	/*
+	 * Function added to get Label based on parameterName
+     */	
+	getLabel(parameterName){
+		let allColumnsSet = this.getAllColumns();
+		let filterObj = new FilterData();
+		for (const key of allColumnsSet) {
+			if(parameterName == filterObj.convertToCamelCase(key," ")){
+				return key;
+			}
+		}
+		return parameterName;
 	}
 }
 
