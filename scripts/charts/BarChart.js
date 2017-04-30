@@ -31,18 +31,26 @@ class BarChart extends ChartConfig{
                             return value;
                         }                        
                     },
-					fontSize: 15,
+					fontSize: 12,
 					fontStyle: 'bold'
 					}
 				}],
 	            yAxes: [{
 	                ticks: {
-						fontSize: 17,
+						fontSize: 15,
 						fontStyle:'bold',
 	                    min: 0	                   
 	                }
 	            }]
-			}
+			},
+			tooltips: {
+					mode: 'label',
+		          callbacks: {
+			          label: function(tooltipItem, some) { 
+			          	return tooltipItem.xLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			          }
+		          }
+         }
 		}
     });
   }

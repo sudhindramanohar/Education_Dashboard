@@ -11,6 +11,8 @@ class ChartFactory{
 			chart = new StackedChart();
 		} else if(chartType == "pivot"){
 			chart = new PivotChart();
+		} else if(chartType == "doughnut"){
+			chart = new DoughnutChart();
 		}
 		return chart;
 	}

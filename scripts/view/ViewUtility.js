@@ -61,7 +61,6 @@ class ViewUtility {
 				} else if(chartsSelected[i] == "Line Chart"){
 					let lineChartDecorator = new LineChartDecorator();
 					viewObj.createCanvasElement("linechartcanvas");
-
 					chart = cs.orderChart("line");
 					chart.setLabelAndData(labels,vals);
 					lineChartDecorator.applyBorderColor(chart);
@@ -72,6 +71,13 @@ class ViewUtility {
 					chart.setLabelAndData(labels,vals); 
 					pieChartDecorator.applyBackgroundColor(chart);
 					pieChartDecorator.applyBorderColor(chart);
+				}else if(chartsSelected[i] == "Doughnut Chart") {
+					let doughnutChartDecorator = new DoughnutChartDecorator();
+					viewObj.createCanvasElement("doughnutchartcanvas");
+					chart = cs.orderChart("doughnut");
+					chart.setLabelAndData(labels,vals); 
+					doughnutChartDecorator.applyBackgroundColor(chart);
+					doughnutChartDecorator.applyBorderColor(chart);					
 				} else if(chartsSelected[i] == "Stacked Chart"){
 					//let stackedChartDecorator = new StackedChartDecorator();
 					viewObj.createCanvasElement("stackedchartcanvas");

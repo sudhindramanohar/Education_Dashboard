@@ -39,14 +39,14 @@ class LineChart extends ChartConfig{
                         }
                         
                     },
-					fontSize: 17,
+					fontSize: 12,
 					fontStyle: 'bold'
 					}
 				}],
 				yAxes: [{
 					ticks: {
 						fontStyle: 'bold',
-						fontSize: 17
+						fontSize: 15
 					}
 				}]				
 			},
