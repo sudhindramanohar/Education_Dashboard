@@ -269,6 +269,7 @@ function createRowFilters() {
 	divContainer.innerHTML = "";
 	//show filter div
 	document.getElementById("filter-row").hidden=false;
+
 	var checkedCategorisedColumnsSet = filterData.getCheckedCategorisedColumns();
 	
 	//for each categorical value in set build multiselect dropdown
@@ -286,7 +287,6 @@ function createRowFilters() {
 		var selectLabel = document.createElement('label')
 		selectLabel.htmlFor = "id";
 		selectLabel.appendChild(document.createTextNode(value));
-		
 		var categoryValueSet = filterData.getAllValuesForCategory(value);
 		for (const value of categoryValueSet) {
 			var option = document.createElement("option");
@@ -516,6 +516,7 @@ function createCanvasElement(chartType){
  /*
 function applyChart() {
 	cleanUpSpace();
+
 	let filterData = new FilterData();
 	var filteredConditiontionsMap = filterData.getAllFilteredConditions();
 	var map = filterData.preProcessFilter(filteredConditiontionsMap);
@@ -582,98 +583,6 @@ function getChartSelections(){
 		}
 	}
 	return chartsSelected;
-}
-
-class Filter{
-	constructor(){}
-	filterRow(dataSet, columnName, columnValue, operand, isCategorical, isNumerical){
-		let result;
-		if(isCategorical){
-			result = dataSet.filter(fil => fil[columnName] === columnValue );		
-		}
-
-		if(isNumerical){
-			if(operand == '='){
-				result = dataSet.filter(fil => fil[columnName] === Number.parseInt(columnValue) );
-			}
-			else if(operand == '>='){
-				result = dataSet.filter(fil => fil[columnName] >= Number.parseInt(columnValue) );
-			}
-			else{
-				result = dataSet.filter(fil => fil[columnName] <= Number.parseInt(columnValue) );
-			}
-		}
-		return result.length;
-    }
-}
-
-function preProcessFilter(filterCondition)
-{
-	let isCategorical = 0;
-	let isNumerical = 0;
-	let columnName;
-	let categoryValues;
-	let columnValue;
-	let operand;
-	let colNames = [];
-	let resultDataMap = new Map();
-	for (let categoryKey of filterCondition[0].keys()){
-		isCategorical = 1;
-		isNumerical = 0;
-		columnName = categoryKey;
-		categoryValues = filterCondition[0].get(categoryKey);
-		for(let columnVal of categoryValues){
-			let count = filterData(columnName, columnVal, isCategorical, isNumerical);
-			resultDataMap.set(columnVal, count);
-		}
-	}
-
-	for(let numericalKey of filterCondition[1].keys())
-	{
-		isNumerical = 1;
-		isCategorical = 0;		
-		if(numericalKey == "selectedNumericalValues"){
-			let numericalVals = filterCondition[1].get(numericalKey);
-			
-			for(let val of numericalVals.keys())
-			{
-				colNames.push(val);
-			}
-		}
-		else if(numericalKey == "numericalFilterCondition")
-		{
-			let operandName = filterCondition[1].get(numericalKey);
-			if(operandName == "greaterThanEqualTo"){
-				operand = ">=";
-			}
-			else if(operandName == "lessThanEqualTo"){
-				operand = "<=";
-			}
-			else if(operandName == "equalTo"){
-				operand = "=";
-			}
-		}
-		else if(numericalKey == "numericalFilterValue"){
-			columnValue = filterCondition[1].get(numericalKey);
-		}
-		
-	}
-	
-	if(isNumerical){
-		for(let col of colNames)
-		{
-			let count = filterData(col,columnValue, isCategorical, isNumerical, operand);
-			resultDataMap.set(col, count);
-		}
-	}
-	return resultDataMap;
-}
-
-function filterData(columnName,columnValue,isCategorical, isNumerical, operand = '=')
-{
-	let filterdata = new Filter();
-	let result = filterdata.filterRow(objArr, columnName, columnValue, operand, isCategorical, isNumerical);
-	return result;
 }
 
 
