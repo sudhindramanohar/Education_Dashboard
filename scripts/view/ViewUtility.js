@@ -24,7 +24,7 @@ class ViewUtility {
 	 */
 	applyChart() {
 
-		if(this.validateOnApplyStatistics()){
+		if(this.validateOnApplyStatistics() && this.validateOnAddFilter()){
 			
 			let filterObj = new FilterData();
 			let viewObj = new EducationView();
@@ -106,9 +106,6 @@ class ViewUtility {
 				}
 
 			}
-		} else {
-			document.getElementById('invalid-msg').hidden = false;			
-			
 		}
 	}
 	
@@ -129,6 +126,24 @@ class ViewUtility {
 	}
 
 	/*
+	 * Function to validate On Add Filter
+	 */
+	validateOnAddFilter(){
+		let isValid = true;
+		if(document.getElementById("filter-row").hidden == false){
+			let filterObj = new FilterData();
+			if(document.getElementById('stackedChart').checked){ // is stacked chart checked
+				if(filterObj.getCheckedNumericalColumns().size > 0){
+					let errorMsgDiv = this.showErrorBox();
+					errorMsgDiv.children[1].innerText = "Error! Numerical Filters cannot be applied for Stacked Chart.";
+					isValid = false;
+				}
+			}	
+		}
+		return isValid;	
+	}
+	
+	/*
 	 * Function to validate On Apply Statistics
 	 */
 	validateOnApplyStatistics(){
@@ -136,8 +151,12 @@ class ViewUtility {
 		if(document.getElementById("plot-statistics").hidden == false){
 			let filterObj = new FilterData();
 			if(filterObj.getCheckedCategorisedColumns().size > 0){
+				let errorMsgDiv = this.showErrorBox();
+				errorMsgDiv.children[1].innerText = "Error! Categorised Filter cannot be chosen for statistics. Please re-select columns";
 				isValid = false;
 			}else if(filterObj.getCheckedNumericalColumns().size > 1){
+				let errorMsgDiv = this.showErrorBox();
+				errorMsgDiv.children[1].innerText = "Error! More than one Numerical Filter cannot be chosen for statistics. Please re-select columns";
 				isValid = false;
 			}
 		}
@@ -149,6 +168,15 @@ class ViewUtility {
 	 */
 	hideErrorBox(){
 		document.getElementById('invalid-msg').hidden = true;
+	}
+	
+	/*
+	 * Function to show Error Box
+	 */
+	showErrorBox(){
+		var invalidMsgDiv = document.getElementById('invalid-msg');
+		invalidMsgDiv.hidden = false;
+		return invalidMsgDiv;
 	}
 }	
 
